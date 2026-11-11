@@ -10,6 +10,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- MathJax for Rendering LaTeX Math Equations -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
         :root {
             --bg-color: #0f172a;
@@ -198,12 +210,18 @@
             color: var(--text-main);
         }
 
-        /* Video Showcase Grids */
+        /* Explicit 2x2 CFD Video Grid */
         .video-grid-2x2 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 1.25rem;
             margin-top: 1rem;
+        }
+
+        @media (max-width: 640px) {
+            .video-grid-2x2 {
+                grid-template-columns: 1fr;
+            }
         }
 
         .video-grid-3col {
@@ -433,7 +451,7 @@
             </p>
         </div>
 
-        <!-- Section 2: CFD Animations Grid (4 Videos) -->
+        <!-- Section 2: CFD Animations Grid (Arranged strictly as 2x2) -->
         <div class="section">
             <h2><i class="fa-solid fa-wind"></i> Computational Fluid Dynamics (CFD) Simulations</h2>
             <p style="color: var(--text-muted);">Transient ANSYS Fluent flow visualizations ($k-\omega$ SST, $y^+ \approx 1.13$) comparing pressure contours and velocity magnitude fields at $10\text{ m/s}$.</p>
@@ -442,12 +460,12 @@
                 <!-- CFD Video 1: 50mm Baseline Pressure -->
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls autoplay loop muted playsinline>
+                        <video controls autoplay loop muted playsinline preload="auto">
                             <source src="videos/50mm10msPressure.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>50mm Cylinder - Pressure Contours (10 m/s)</h3>
+                        <h3>50mm Cylinder - Pressure Contours ($10\text{ m/s}$)</h3>
                         <p>Dynamic pressure distribution across the standard baseline cylinder.</p>
                     </div>
                 </div>
@@ -455,12 +473,12 @@
                 <!-- CFD Video 2: 50mm Baseline Velocity -->
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls autoplay loop muted playsinline>
+                        <video controls autoplay loop muted playsinline preload="auto">
                             <source src="videos/50mm10msVelocity.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>50mm Cylinder - Velocity Shedding (10 m/s)</h3>
+                        <h3>50mm Cylinder - Velocity Shedding ($10\text{ m/s}$)</h3>
                         <p>Transient velocity flow field and von Kármán street formation.</p>
                     </div>
                 </div>
@@ -468,12 +486,12 @@
                 <!-- CFD Video 3: Amplifier Pressure -->
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls autoplay loop muted playsinline>
+                        <video controls autoplay loop muted playsinline preload="auto">
                             <source src="videos/10msAmpPressure.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Amplifier Geometry - Pressure Field (10 m/s)</h3>
+                        <h3>Amplifier Geometry - Pressure Field ($10\text{ m/s}$)</h3>
                         <p>Feedback attachment modifying surface pressure for enhanced force capture.</p>
                     </div>
                 </div>
@@ -481,12 +499,12 @@
                 <!-- CFD Video 4: Amplifier Velocity -->
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls autoplay loop muted playsinline>
+                        <video controls autoplay loop muted playsinline preload="auto">
                             <source src="videos/10msAmpVelocity.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Amplifier Geometry - Velocity Field (10 m/s)</h3>
+                        <h3>Amplifier Geometry - Velocity Field ($10\text{ m/s}$)</h3>
                         <p>High-velocity flow separation producing 5.32x increased force output.</p>
                     </div>
                 </div>
@@ -501,7 +519,7 @@
             <div class="video-grid-3col">
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls autoplay loop muted playsinline>
+                        <video controls autoplay loop muted playsinline preload="auto">
                             <source src="videos/exp-wind-tunnel-resonance.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -513,7 +531,7 @@
 
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls autoplay loop muted playsinline>
+                        <video controls autoplay loop muted playsinline preload="auto">
                             <source src="videos/exp-amplifier-deflection.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -525,7 +543,7 @@
 
                 <div class="video-card">
                     <div class="video-wrapper">
-                        <video controls autoplay loop muted playsinline>
+                        <video controls autoplay loop muted playsinline preload="auto">
                             <source src="videos/exp-daq-strain-gauge.mp4" type="video/mp4">
                         </video>
                     </div>
