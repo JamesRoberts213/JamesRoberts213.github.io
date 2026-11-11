@@ -355,10 +355,10 @@
     // Sequential List of Projects
     const allProjects = [
         {
-            title: "Numerical Advection Solver",
-            desc: "Finite difference scheme implementations analyzing stability bounds and amplification factors.",
-            tags: ["Python", "CFD", "Numerical Methods"],
-            link: "cagd-solver.html",
+            title: "VIV Energy Extraction & Aerofoil Deflection",
+            desc: "Feasibility investigation of harnessing vortex-induced vibrations (VIV) with custom feedback geometries.",
+            tags: ["ANSYS Fluent", "CFD", "Wind Tunnel", "SolidWorks"],
+            link: "viv-dissertation.html",
             starred: true
         },
         {
@@ -496,7 +496,6 @@
     }
 
     function nextSlide() {
-        // Steps by 1 project forward
         const nextIndex = (currentIndex + 1) % allProjects.length;
         goToIndex(nextIndex, 'forward');
     }
