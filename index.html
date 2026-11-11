@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>James Roberts | Portfolio</title>
-    <!-- Google Fonts -->
+    <!-- Google Fonts & MathJax -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         :root {
             --bg-color: #0f172a;
@@ -103,13 +111,13 @@
             background-color: var(--accent-hover);
         }
 
-        /* Projects Section */
+        /* Projects Section Title */
         .section-title {
             font-size: 1.75rem;
             position: relative;
         }
 
-        /* Swipe Container */
+        /* Swipe Grid Wrapper */
         .grid-wrapper {
             overflow: hidden;
             width: 100%;
@@ -131,9 +139,9 @@
             flex-direction: column;
             justify-content: space-between;
             
-            /* Smooth cubic bezier transition */
-            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), 
-                        opacity 0.55s cubic-bezier(0.25, 1, 0.5, 1), 
+            /* Continuous smooth translation */
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
+                        opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
                         border-color 0.2s ease;
             transform: translateX(0);
             opacity: 1;
@@ -149,31 +157,26 @@
             border-color: var(--gold);
         }
 
-        .card:nth-child(1) { transition-delay: 0.0s; }
-        .card:nth-child(2) { transition-delay: 0.06s; }
-        .card:nth-child(3) { transition-delay: 0.12s; }
-
-        /* Exit Swipe States */
-        .grid.swipe-out-left .card {
-            transform: translateX(-40px);
+        /* Edge-only Fade & Shift Animations */
+        .grid.fade-left .card:nth-child(1) {
+            transform: translateX(-30px);
             opacity: 0;
         }
 
-        .grid.swipe-out-right .card {
-            transform: translateX(40px);
+        .grid.fade-right .card:nth-child(3) {
+            transform: translateX(30px);
             opacity: 0;
         }
 
-        /* Enter Swipe Preparation States */
-        .grid.swipe-prep-right .card {
+        .grid.prep-right .card:nth-child(3) {
             transition: none !important;
-            transform: translateX(40px);
+            transform: translateX(30px);
             opacity: 0;
         }
 
-        .grid.swipe-prep-left .card {
+        .grid.prep-left .card:nth-child(1) {
             transition: none !important;
-            transform: translateX(-40px);
+            transform: translateX(-30px);
             opacity: 0;
         }
 
@@ -210,7 +213,7 @@
             margin-bottom: 0.4rem;
         }
 
-        /* Slider Controls & Smooth Progress Track */
+        /* Slider Controls */
         .slider-controls {
             display: flex;
             flex-direction: column;
@@ -236,7 +239,7 @@
             background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--slider-progress), var(--border) var(--slider-progress), var(--border) 100%);
             outline: none;
             cursor: pointer;
-            transition: background 0.55s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: background 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .slider-bar::-webkit-slider-thumb {
@@ -248,23 +251,11 @@
             background: var(--accent);
             cursor: pointer;
             box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .slider-bar::-webkit-slider-thumb:hover {
             transform: scale(1.3);
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.8);
-        }
-
-        .slider-bar::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--accent);
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.3s ease;
         }
 
         .slider-dots {
@@ -302,7 +293,7 @@
     <div class="container">
         <!-- Navigation Bar -->
         <nav>
-            <a href="#" class="logo">James Roberts</a>
+            <a href="index.html" class="logo">James Roberts</a>
             <div class="nav-links">
                 <a href="#projects">Projects</a>
                 <a href="projects.html">All Projects</a>
@@ -313,7 +304,7 @@
         <!-- Main Hero Header -->
         <header class="hero">
             <h1>Engineering & Analytical Portfolio</h1>
-            <p>Welcome to my site. I document projects in hardware prototyping, computational analysis, and signal processing.</p>
+            <p>Welcome to my site. I document projects in computational fluid dynamics, embedded microcontrollers, signal processing, and structural analysis.</p>
             <a href="projects.html" class="cta-btn">View All Projects</a>
         </header>
 
@@ -352,7 +343,6 @@
     </div>
 
     <script>
-    // Sequential List of Projects
     const allProjects = [
         {
             title: "VIV Energy Extraction & Aerofoil Deflection",
@@ -363,36 +353,36 @@
         },
         {
             title: "Embedded Hardware Module",
-            desc: "Compact display system built with a microcontroller, custom sensors, and integrated power management.",
-            tags: ["C++", "Hardware", "Prototyping"],
+            desc: "Compact display system built with an Arduino Nano, ST7789V LCD screen, custom sensors, and TP4056 Li-ion power management.",
+            tags: ["C++", "Arduino Nano", "ST7789V LCD", "Hardware"],
             link: "projects.html",
             starred: false
         },
         {
             title: "Active Noise Control System",
-            desc: "Algorithmic architecture evaluating FxLMS adaptive filters and secondary path phase errors.",
-            tags: ["MATLAB", "DSP", "Control Systems"],
+            desc: "Algorithmic ANC architecture evaluating FxLMS adaptive filters, FIR dynamics, and secondary path phase errors.",
+            tags: ["MATLAB", "FxLMS", "DSP", "Control Systems"],
             link: "projects.html",
             starred: true
         },
         {
             title: "Structural Strain Analysis",
-            desc: "Half-bridge strain gauge calibration and bending force measurement on structural steel bars.",
-            tags: ["Sensors", "Data Acquisition", "Instrumentation"],
+            desc: "Half-bridge strain gauge calibration (GF=2.08) and bending force measurement on a 2mm thick steel bar with P3 indicator.",
+            tags: ["Sensors", "Strain Gauges", "P3 DAQ", "Instrumentation"],
             link: "projects.html",
             starred: false
         },
         {
-            title: "Flow-Forming Defect Diagnostics",
-            desc: "Investigation into primary pass forming cracks and material stress bounds in aluminum-lithium alloys.",
-            tags: ["Materials", "Failure Analysis", "Aerospace"],
+            title: "Numerical Advection Solver",
+            desc: "Finite difference scheme implementations in CFD analyzing Crank-Nicolson stability bounds and Von Neumann amplification factors.",
+            tags: ["Python", "CFD", "Crank-Nicolson", "Numerical Methods"],
             link: "projects.html",
             starred: true
         },
         {
-            title: "Personal Portfolio Website",
-            desc: "Responsive personal website engineered with pure HTML, CSS, and modern JavaScript hosted on GitHub Pages.",
-            tags: ["HTML5", "CSS3", "GitHub Pages"],
+            title: "Flow-Forming Defect Diagnostics",
+            desc: "Investigation into primary pass forming cracks and stress bounds in flow-formed 2195 aluminum-lithium liquid hydrogen tanks.",
+            tags: ["Materials", "2195 Al-Li", "Failure Analysis", "Aerospace"],
             link: "projects.html",
             starred: false
         }
@@ -403,7 +393,6 @@
     let isHovered = false;
     let isAnimating = false;
 
-    // Render 3 consecutive projects stepping by 1 (e.g. 0-1-2, 1-2-3, 2-3-4...)
     function renderProjects(startIndex) {
         const grid = document.getElementById('featured-grid');
         grid.innerHTML = '';
@@ -434,13 +423,16 @@
             grid.appendChild(card);
         }
 
-        // Update Slider value and smooth CSS fill track
         const slider = document.getElementById('project-slider');
         slider.value = startIndex;
         const progressPercentage = (startIndex / (allProjects.length - 1)) * 100;
         document.documentElement.style.setProperty('--slider-progress', `${progressPercentage}%`);
 
         updateDots(startIndex);
+
+        if (window.MathJax && window.MathJax.typesetPromise) {
+            window.MathJax.typesetPromise([grid]);
+        }
     }
 
     function createDots() {
@@ -461,6 +453,7 @@
         });
     }
 
+    /* Edge-fading single-step shift animation */
     function goToIndex(targetIndex, direction) {
         if (targetIndex === currentIndex || isAnimating) return;
         isAnimating = true;
@@ -470,27 +463,29 @@
         }
 
         const grid = document.getElementById('featured-grid');
-        const outClass = direction === 'forward' ? 'swipe-out-left' : 'swipe-out-right';
-        const prepClass = direction === 'forward' ? 'swipe-prep-right' : 'swipe-prep-left';
+        const fadeClass = direction === 'forward' ? 'fade-left' : 'fade-right';
+        const prepClass = direction === 'forward' ? 'prep-right' : 'prep-left';
 
-        grid.classList.add(outClass);
+        // Phase 1: Fade out edge card
+        grid.classList.add(fadeClass);
 
         setTimeout(() => {
             currentIndex = targetIndex;
             renderProjects(currentIndex);
 
-            grid.classList.remove(outClass);
+            grid.classList.remove(fadeClass);
             grid.classList.add(prepClass);
 
+            // Phase 2: Fade in new incoming card on opposite edge
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     grid.classList.remove(prepClass);
                     setTimeout(() => {
                         isAnimating = false;
-                    }, 550);
+                    }, 450);
                 });
             });
-        }, 450);
+        }, 350);
 
         resetTimer();
     }
@@ -517,7 +512,6 @@
         startTimer();
     }
 
-    // Range Slider listener (steps by 1)
     const slider = document.getElementById('project-slider');
     slider.oninput = (e) => {
         const targetVal = parseInt(e.target.value);
@@ -525,12 +519,10 @@
         goToIndex(targetVal, direction);
     };
 
-    // Pause on hover
     const wrapper = document.getElementById('grid-wrapper');
     wrapper.onmouseenter = () => { isHovered = true; };
     wrapper.onmouseleave = () => { isHovered = false; resetTimer(); };
 
-    // Initial setup
     createDots();
     renderProjects(currentIndex);
     startTimer();
