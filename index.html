@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <script>
         MathJax = {
@@ -34,6 +35,10 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -92,7 +97,7 @@
         .hero p {
             font-size: 1.2rem;
             color: var(--text-muted);
-            max-width: 600px;
+            max-width: 650px;
             margin-bottom: 2rem;
         }
 
@@ -111,127 +116,125 @@
             background-color: var(--accent-hover);
         }
 
-        /* Projects Section Title */
         .section-title {
             font-size: 1.75rem;
-            position: relative;
         }
 
-        /* Swipe Grid Wrapper */
-        .grid-wrapper {
-            overflow: hidden;
+        /* Smooth Continuous Carousel Slider */
+        .slider-viewport {
             width: 100%;
-            padding: 0.5rem 0;
+            overflow: hidden;
+            position: relative;
+            padding: 1rem 0;
+            /* Soft edge masks for smooth entry/exit */
+            mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        .slider-track {
+            display: flex;
             gap: 1.5rem;
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+            cursor: grab;
         }
 
-        .card {
+        .slider-track:active {
+            cursor: grabbing;
+        }
+
+        .card-item {
+            flex: 0 0 calc(33.333% - 1rem);
+            min-width: 280px;
             background-color: var(--card-bg);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 12px;
             padding: 1.5rem;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            
-            /* Continuous smooth translation */
-            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
-                        opacity 0.5s cubic-bezier(0.25, 1, 0.5, 1), 
-                        border-color 0.2s ease;
-            transform: translateX(0);
-            opacity: 1;
-            will-change: transform, opacity;
+            transition: border-color 0.2s, transform 0.2s;
+            text-decoration: none;
+            color: inherit;
+            user-select: none;
         }
 
-        .card:hover {
-            transform: translateY(-4px) !important;
+        @media (max-width: 900px) {
+            .card-item {
+                flex: 0 0 calc(50% - 0.75rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .card-item {
+                flex: 0 0 100%;
+            }
+        }
+
+        .card-item:hover {
+            transform: translateY(-4px);
             border-color: var(--accent);
         }
 
-        .card.starred {
+        .card-item.starred {
+            border-color: rgba(245, 158, 11, 0.4);
+        }
+
+        .card-item.starred:hover {
             border-color: var(--gold);
-        }
-
-        /* Edge-only Fade & Shift Animations */
-        .grid.fade-left .card:nth-child(1) {
-            transform: translateX(-30px);
-            opacity: 0;
-        }
-
-        .grid.fade-right .card:nth-child(3) {
-            transform: translateX(30px);
-            opacity: 0;
-        }
-
-        .grid.prep-right .card:nth-child(3) {
-            transition: none !important;
-            transform: translateX(30px);
-            opacity: 0;
-        }
-
-        .grid.prep-left .card:nth-child(1) {
-            transition: none !important;
-            transform: translateX(-30px);
-            opacity: 0;
-        }
-
-        .card h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.25rem;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-
-        .tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            font-size: 0.8rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
         }
 
         .star-badge {
             color: var(--gold);
             font-size: 0.85rem;
             font-weight: 600;
-            display: inline-block;
-            margin-bottom: 0.4rem;
+            display: block;
+            margin-bottom: 0.5rem;
         }
 
-        /* Slider Controls */
-        .slider-controls {
+        .card-item h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--text-main);
+        }
+
+        .card-item p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .tags {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            font-size: 0.78rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        /* Controls */
+        .controls-wrapper {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 1rem;
+            gap: 1.25rem;
             margin-top: 2rem;
         }
 
-        .slider-bar-container {
+        .range-container {
             width: 100%;
-            max-width: 400px;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
+            max-width: 350px;
         }
 
-        .slider-bar {
-            flex-grow: 1;
+        .range-slider {
+            width: 100%;
             -webkit-appearance: none;
             appearance: none;
             height: 6px;
@@ -239,42 +242,36 @@
             background: linear-gradient(to right, var(--accent) 0%, var(--accent) var(--slider-progress), var(--border) var(--slider-progress), var(--border) 100%);
             outline: none;
             cursor: pointer;
-            transition: background 0.5s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        .slider-bar::-webkit-slider-thumb {
+        .range-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
             background: var(--accent);
             cursor: pointer;
-            box-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
         }
 
-        .slider-bar::-webkit-slider-thumb:hover {
-            transform: scale(1.3);
-        }
-
-        .slider-dots {
+        .dots-container {
             display: flex;
             gap: 0.5rem;
         }
 
         .dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background-color: var(--border);
             cursor: pointer;
-            transition: background-color 0.4s ease, transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            transition: all 0.3s ease;
         }
 
         .dot.active {
             background-color: var(--accent);
-            transform: scale(1.3);
+            transform: scale(1.4);
         }
 
         /* Footer */
@@ -291,48 +288,138 @@
 <body>
 
     <div class="container">
-        <!-- Navigation Bar -->
+        <!-- Navigation -->
         <nav>
             <a href="index.html" class="logo">James Roberts</a>
             <div class="nav-links">
-                <a href="#projects">Projects</a>
+                <a href="#projects">Featured</a>
                 <a href="projects.html">All Projects</a>
                 <a href="#contact">Contact</a>
             </div>
         </nav>
 
-        <!-- Main Hero Header -->
+        <!-- Hero -->
         <header class="hero">
-            <h1>Engineering & Analytical Portfolio</h1>
-            <p>Welcome to my site. I document projects in computational fluid dynamics, embedded microcontrollers, signal processing, and structural analysis.</p>
-            <a href="projects.html" class="cta-btn">View All Projects</a>
+            <h1>Engineering & Computational Portfolio</h1>
+            <p>Specializing in fluid-structure interaction, transient CFD, embedded microcontrollers, dynamic strain measurement, and structural failure mechanics.</p>
+            <a href="projects.html" class="cta-btn">Explore All Projects &rarr;</a>
         </header>
 
-        <!-- Featured Projects Grid -->
+        <!-- Featured Projects Showcase Slider -->
         <main id="projects">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin: 4rem 0 2rem; flex-wrap: wrap; gap: 1rem;">
-                <h2 class="section-title">Featured Projects</h2>
-                <a href="projects.html" class="cta-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View All Projects &rarr;</a>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2 class="section-title">Featured Showcase</h2>
+                <a href="projects.html" style="color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.95rem;">View All (6) &rarr;</a>
             </div>
 
-            <!-- Swipe Wrapper -->
-            <div class="grid-wrapper" id="grid-wrapper">
-                <div class="grid" id="featured-grid"></div>
-            </div>
+            <div class="slider-viewport">
+                <div class="slider-track" id="slider-track">
+                    
+                    <!-- Card 1: VIV Dissertation -->
+                    <a href="viv-dissertation.html" class="card-item starred">
+                        <div>
+                            <span class="star-badge"><i class="fa-solid fa-award"></i> First-Class MEng Project</span>
+                            <h3>VIV Energy Harvesting & Aerofoil Deflection</h3>
+                            <p>Combined 2D CFD (ANSYS Fluent) and low-speed wind tunnel testing evaluating solid-state power capture.</p>
+                            <div class="tags">
+                                <span class="tag">ANSYS Fluent</span>
+                                <span class="tag">CFD</span>
+                                <span class="tag">Wind Tunnel</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">Read Case Study &rarr;</div>
+                    </a>
 
-            <!-- Slider Bar & Dot Navigation -->
-            <div class="slider-controls">
-                <div class="slider-bar-container">
-                    <input type="range" min="0" max="5" value="0" step="1" class="slider-bar" id="project-slider">
+                    <!-- Card 2: ANC System -->
+                    <a href="projects.html" class="card-item starred">
+                        <div>
+                            <span class="star-badge"><i class="fa-solid fa-star"></i> Signal Processing</span>
+                            <h3>Active Noise Control (ANC) Architecture</h3>
+                            <p>Evaluated FxLMS adaptive filter convergence rates, secondary path phase errors, and quiet zones.</p>
+                            <div class="tags">
+                                <span class="tag">MATLAB</span>
+                                <span class="tag">FxLMS</span>
+                                <span class="tag">DSP</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Analysis &rarr;</div>
+                    </a>
+
+                    <!-- Card 3: Embedded Rangefinder -->
+                    <a href="projects.html" class="card-item">
+                        <div>
+                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-microchip"></i> Hardware System</span>
+                            <h3>Embedded Hardware Rangefinder</h3>
+                            <p>Arduino Nano display module integrating an ST7789V LCD, GPS, and TP4056 Li-ion charger.</p>
+                            <div class="tags">
+                                <span class="tag">C++</span>
+                                <span class="tag">Arduino</span>
+                                <span class="tag">ST7789V</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View System &rarr;</div>
+                    </a>
+
+                    <!-- Card 4: Numerical Advection Solver -->
+                    <a href="projects.html" class="card-item starred">
+                        <div>
+                            <span class="star-badge"><i class="fa-solid fa-star"></i> Computational Math</span>
+                            <h3>Numerical Advection CFD Solver</h3>
+                            <p>Finite difference scheme implementations in Python evaluating Crank-Nicolson stability bounds.</p>
+                            <div class="tags">
+                                <span class="tag">Python</span>
+                                <span class="tag">CFD</span>
+                                <span class="tag">Numerical Methods</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Solver Code &rarr;</div>
+                    </a>
+
+                    <!-- Card 5: Structural Strain Analysis -->
+                    <a href="projects.html" class="card-item">
+                        <div>
+                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-wave-square"></i> Instrumentation</span>
+                            <h3>Half-Bridge Strain Calibration</h3>
+                            <p>Dynamic force measurement on a 2mm steel bar using Kyowa strain gauges and a P3 indicator.</p>
+                            <div class="tags">
+                                <span class="tag">Sensors</span>
+                                <span class="tag">P3 DAQ</span>
+                                <span class="tag">Oscilloscope</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Setup &rarr;</div>
+                    </a>
+
+                    <!-- Card 6: Flow-Forming Diagnostics -->
+                    <a href="projects.html" class="card-item">
+                        <div>
+                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-industry"></i> Aerospace Materials</span>
+                            <h3>Flow-Forming Defect Analysis</h3>
+                            <p>Investigation into forming cracks and stress limits in flow-formed 2195 Al-Li cylinders.</p>
+                            <div class="tags">
+                                <span class="tag">2195 Al-Li</span>
+                                <span class="tag">Failure Analysis</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">Read Investigation &rarr;</div>
+                    </a>
+
                 </div>
-                <div class="slider-dots" id="slider-dots"></div>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls-wrapper">
+                <div class="range-container">
+                    <input type="range" min="0" max="3" value="0" step="1" class="range-slider" id="range-slider">
+                </div>
+                <div class="dots-container" id="dots-container"></div>
             </div>
         </main>
 
-        <!-- Contact Section -->
+        <!-- Contact -->
         <section id="contact" style="margin-top: 6rem;">
-            <h2 class="section-title">Get in Touch</h2>
-            <p style="color: var(--text-muted); margin-top: 0.5rem;">Interested in collaborating or discussing technical projects?</p>
+            <h2 class="section-title">Contact</h2>
+            <p style="color: var(--text-muted); margin-top: 0.5rem;">Reach out for technical documentation, collaboration, or engineering inquiries.</p>
             <p style="margin-top: 0.5rem;"><a href="mailto:your.email@example.com" style="color: var(--accent); text-decoration: none;">your.email@example.com</a></p>
         </section>
 
@@ -343,189 +430,105 @@
     </div>
 
     <script>
-    const allProjects = [
-        {
-            title: "VIV Energy Extraction & Aerofoil Deflection",
-            desc: "Feasibility investigation of harnessing vortex-induced vibrations (VIV) with custom feedback geometries.",
-            tags: ["ANSYS Fluent", "CFD", "Wind Tunnel", "SolidWorks"],
-            link: "viv-dissertation.html",
-            starred: true
-        },
-        {
-            title: "Embedded Hardware Module",
-            desc: "Compact display system built with an Arduino Nano, ST7789V LCD screen, custom sensors, and TP4056 Li-ion power management.",
-            tags: ["C++", "Arduino Nano", "ST7789V LCD", "Hardware"],
-            link: "projects.html",
-            starred: false
-        },
-        {
-            title: "Active Noise Control System",
-            desc: "Algorithmic ANC architecture evaluating FxLMS adaptive filters, FIR dynamics, and secondary path phase errors.",
-            tags: ["MATLAB", "FxLMS", "DSP", "Control Systems"],
-            link: "projects.html",
-            starred: true
-        },
-        {
-            title: "Structural Strain Analysis",
-            desc: "Half-bridge strain gauge calibration (GF=2.08) and bending force measurement on a 2mm thick steel bar with P3 indicator.",
-            tags: ["Sensors", "Strain Gauges", "P3 DAQ", "Instrumentation"],
-            link: "projects.html",
-            starred: false
-        },
-        {
-            title: "Numerical Advection Solver",
-            desc: "Finite difference scheme implementations in CFD analyzing Crank-Nicolson stability bounds and Von Neumann amplification factors.",
-            tags: ["Python", "CFD", "Crank-Nicolson", "Numerical Methods"],
-            link: "projects.html",
-            starred: true
-        },
-        {
-            title: "Flow-Forming Defect Diagnostics",
-            desc: "Investigation into primary pass forming cracks and stress bounds in flow-formed 2195 aluminum-lithium liquid hydrogen tanks.",
-            tags: ["Materials", "2195 Al-Li", "Failure Analysis", "Aerospace"],
-            link: "projects.html",
-            starred: false
-        }
-    ];
-
+    const track = document.getElementById('slider-track');
+    const cards = document.querySelectorAll('.card-item');
+    const slider = document.getElementById('range-slider');
+    const dotsContainer = document.getElementById('dots-container');
+    
     let currentIndex = 0;
+    const maxIndex = cards.length - 3; // 6 cards total, 3 visible = max index 3
     let autoSlideTimer = null;
-    let isHovered = false;
-    let isAnimating = false;
+    let isDragging = false;
+    let startX = 0;
+    let currentTranslate = 0;
+    let prevTranslate = 0;
 
-    function renderProjects(startIndex) {
-        const grid = document.getElementById('featured-grid');
-        grid.innerHTML = '';
-
-        const total = allProjects.length;
-        for (let i = 0; i < 3; i++) {
-            const project = allProjects[(startIndex + i) % total];
-
-            const card = document.createElement('div');
-            card.className = project.starred ? 'card starred' : 'card';
-            card.style.cursor = 'pointer';
-            card.onclick = () => window.location.href = project.link;
-
-            const tagsHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-            const starBadge = project.starred ? `<span class="star-badge">&#9733; Priority Project</span>` : '';
-
-            card.innerHTML = `
-                <div>
-                    ${starBadge}
-                    <h3>${project.title}</h3>
-                    <p>${project.desc}</p>
-                    <div class="tags">${tagsHTML}</div>
-                </div>
-                <div style="margin-top: 1.25rem;">
-                    <span style="color: var(--accent); font-size: 0.85rem; font-weight: 600;">View Details &rarr;</span>
-                </div>
-            `;
-            grid.appendChild(card);
-        }
-
-        const slider = document.getElementById('project-slider');
-        slider.value = startIndex;
-        const progressPercentage = (startIndex / (allProjects.length - 1)) * 100;
-        document.documentElement.style.setProperty('--slider-progress', `${progressPercentage}%`);
-
-        updateDots(startIndex);
-
-        if (window.MathJax && window.MathJax.typesetPromise) {
-            window.MathJax.typesetPromise([grid]);
-        }
+    // Build navigation dots
+    for (let i = 0; i <= maxIndex; i++) {
+        const dot = document.createElement('div');
+        dot.className = i === 0 ? 'dot active' : 'dot';
+        dot.onclick = () => updateSlider(i);
+        dotsContainer.appendChild(dot);
     }
 
-    function createDots() {
-        const dotsContainer = document.getElementById('slider-dots');
-        dotsContainer.innerHTML = '';
-        allProjects.forEach((_, index) => {
-            const dot = document.createElement('div');
-            dot.className = index === 0 ? 'dot active' : 'dot';
-            dot.onclick = () => goToIndex(index);
-            dotsContainer.appendChild(dot);
+    function updateSlider(index) {
+        currentIndex = Math.max(0, Math.min(index, maxIndex));
+        
+        // Calculate offset percentage dynamically
+        const cardWidth = cards[0].offsetWidth + 24; // Width + 1.5rem (24px) gap
+        currentTranslate = -currentIndex * cardWidth;
+        prevTranslate = currentTranslate;
+
+        track.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
+
+        // Update range slider & dots
+        slider.value = currentIndex;
+        const progress = (currentIndex / maxIndex) * 100;
+        document.documentElement.style.setProperty('--slider-progress', `${progress}%`);
+
+        document.querySelectorAll('.dot').forEach((dot, idx) => {
+            dot.classList.toggle('active', idx === currentIndex);
         });
     }
 
-    function updateDots(activeIdx) {
-        const dots = document.querySelectorAll('.dot');
-        dots.forEach((dot, idx) => {
-            dot.classList.toggle('active', idx === activeIdx);
-        });
+    slider.oninput = (e) => updateSlider(parseInt(e.target.value));
+
+    // Touch & Mouse Drag Handling
+    track.addEventListener('mousedown', dragStart);
+    track.addEventListener('touchstart', dragStart);
+    track.addEventListener('mouseup', dragEnd);
+    track.addEventListener('touchend', dragEnd);
+    track.addEventListener('mousemove', dragMove);
+    track.addEventListener('touchmove', dragMove);
+
+    function dragStart(e) {
+        isDragging = true;
+        startX = getPositionX(e);
+        track.style.transition = 'none';
+        stopAutoSlide();
     }
 
-    /* Edge-fading single-step shift animation */
-    function goToIndex(targetIndex, direction) {
-        if (targetIndex === currentIndex || isAnimating) return;
-        isAnimating = true;
+    function dragMove(e) {
+        if (!isDragging) return;
+        const currentPosition = getPositionX(e);
+        const diff = currentPosition - startX;
+        track.style.transform = `translate3d(${prevTranslate + diff}px, 0, 0)`;
+    }
 
-        if (!direction) {
-            direction = targetIndex > currentIndex ? 'forward' : 'backward';
+    function dragEnd(e) {
+        if (!isDragging) return;
+        isDragging = false;
+        track.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+        const movedBy = currentTranslate - prevTranslate;
+        
+        if (movedBy < -50 && currentIndex < maxIndex) {
+            currentIndex += 1;
+        } else if (movedBy > 50 && currentIndex > 0) {
+            currentIndex -= 1;
         }
-
-        const grid = document.getElementById('featured-grid');
-        const fadeClass = direction === 'forward' ? 'fade-left' : 'fade-right';
-        const prepClass = direction === 'forward' ? 'prep-right' : 'prep-left';
-
-        // Phase 1: Fade out edge card
-        grid.classList.add(fadeClass);
-
-        setTimeout(() => {
-            currentIndex = targetIndex;
-            renderProjects(currentIndex);
-
-            grid.classList.remove(fadeClass);
-            grid.classList.add(prepClass);
-
-            // Phase 2: Fade in new incoming card on opposite edge
-            requestAnimationFrame(() => {
-                requestAnimationFrame(() => {
-                    grid.classList.remove(prepClass);
-                    setTimeout(() => {
-                        isAnimating = false;
-                    }, 450);
-                });
-            });
-        }, 350);
-
-        resetTimer();
+        updateSlider(currentIndex);
+        startAutoSlide();
     }
 
-    function nextSlide() {
-        const nextIndex = (currentIndex + 1) % allProjects.length;
-        goToIndex(nextIndex, 'forward');
+    function getPositionX(e) {
+        return e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
     }
 
-    function startTimer() {
-        stopTimer();
+    function startAutoSlide() {
+        stopAutoSlide();
         autoSlideTimer = setInterval(() => {
-            if (!isHovered) {
-                nextSlide();
-            }
+            let nextIdx = currentIndex + 1;
+            if (nextIdx > maxIndex) nextIdx = 0;
+            updateSlider(nextIdx);
         }, 5000);
     }
 
-    function stopTimer() {
+    function stopAutoSlide() {
         if (autoSlideTimer) clearInterval(autoSlideTimer);
     }
 
-    function resetTimer() {
-        startTimer();
-    }
-
-    const slider = document.getElementById('project-slider');
-    slider.oninput = (e) => {
-        const targetVal = parseInt(e.target.value);
-        const direction = targetVal >= currentIndex ? 'forward' : 'backward';
-        goToIndex(targetVal, direction);
-    };
-
-    const wrapper = document.getElementById('grid-wrapper');
-    wrapper.onmouseenter = () => { isHovered = true; };
-    wrapper.onmouseleave = () => { isHovered = false; resetTimer(); };
-
-    createDots();
-    renderProjects(currentIndex);
-    startTimer();
+    window.addEventListener('resize', () => updateSlider(currentIndex));
+    startAutoSlide();
     </script>
 </body>
 </html>
