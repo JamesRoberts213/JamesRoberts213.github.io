@@ -33,6 +33,7 @@
             color: var(--text-main);
             line-height: 1.6;
             padding: 0 1.5rem;
+            overflow-x: hidden;
         }
 
         .container {
@@ -107,14 +108,32 @@
             position: relative;
         }
 
+        /* Swipe / Slide Container */
+        .grid-wrapper {
+            overflow: hidden;
+            width: 100%;
+            padding: 0.5rem 0;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
-            transition: opacity 0.4s ease-in-out;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+            transform: translateX(0);
+            opacity: 1;
         }
 
-        .grid.fade-out {
+        /* Swipe Out (Slide Left) */
+        .grid.swipe-out {
+            transform: translateX(-50px);
+            opacity: 0;
+        }
+
+        /* Swipe Ready (Position Right before entering) */
+        .grid.swipe-prep {
+            transition: none;
+            transform: translateX(50px);
             opacity: 0;
         }
 
@@ -202,15 +221,17 @@
             <a href="projects.html" class="cta-btn">View All Projects</a>
         </header>
 
-        <!-- Featured Projects Grid (Dynamic 5-second cycle) -->
+        <!-- Featured Projects Grid (Dynamic 5-second swipe cycle) -->
         <main id="projects">
             <div style="display: flex; justify-content: space-between; align-items: center; margin: 4rem 0 2rem; flex-wrap: wrap; gap: 1rem;">
                 <h2 class="section-title">Featured Projects</h2>
                 <a href="projects.html" class="cta-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View All Projects &rarr;</a>
             </div>
 
-            <!-- Dynamic grid container for 3 cards -->
-            <div class="grid" id="featured-grid"></div>
+            <!-- Swipe Wrapper to prevent page horizontal scrollbars -->
+            <div class="grid-wrapper">
+                <div class="grid" id="featured-grid"></div>
+            </div>
         </main>
 
         <!-- Contact Section -->
@@ -272,57 +293,69 @@
         }
     ];
 
-    function renderFeaturedProjects() {
+    function populateGrid() {
         const grid = document.getElementById('featured-grid');
-        
-        // Quick fade-out effect
-        grid.classList.add('fade-out');
+        grid.innerHTML = '';
 
-        setTimeout(() => {
-            grid.innerHTML = '';
+        const starred = allProjects.filter(p => p.starred);
+        const regular = allProjects.filter(p => !p.starred);
 
-            // Separate starred and regular projects
-            const starred = allProjects.filter(p => p.starred);
-            const regular = allProjects.filter(p => !p.starred);
+        const shuffledStarred = [...starred].sort(() => 0.5 - Math.random());
+        const shuffledRegular = [...regular].sort(() => 0.5 - Math.random());
+        const selected = [...shuffledStarred.slice(0, 2), ...shuffledRegular.slice(0, 1)];
 
-            // Randomly select 2 starred and 1 regular project each cycle
-            const shuffledStarred = [...starred].sort(() => 0.5 - Math.random());
-            const shuffledRegular = [...regular].sort(() => 0.5 - Math.random());
-            const selected = [...shuffledStarred.slice(0, 2), ...shuffledRegular.slice(0, 1)];
+        selected.forEach(project => {
+            const card = document.createElement('div');
+            card.className = project.starred ? 'card starred' : 'card';
+            card.style.cursor = 'pointer';
+            card.onclick = () => window.location.href = project.link;
 
-            selected.forEach(project => {
-                const card = document.createElement('div');
-                card.className = project.starred ? 'card starred' : 'card';
-                card.style.cursor = 'pointer';
-                card.onclick = () => window.location.href = project.link;
+            const tagsHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+            const starBadge = project.starred ? `<span class="star-badge">&#9733; Priority Project</span>` : '';
 
-                const tagsHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-                const starBadge = project.starred ? `<span class="star-badge">&#9733; Priority Project</span>` : '';
-
-                card.innerHTML = `
-                    <div>
-                        ${starBadge}
-                        <h3>${project.title}</h3>
-                        <p>${project.desc}</p>
-                        <div class="tags">${tagsHTML}</div>
-                    </div>
-                    <div style="margin-top: 1.25rem;">
-                        <span style="color: var(--accent); font-size: 0.85rem; font-weight: 600;">View Details &rarr;</span>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-
-            // Fade back in
-            grid.classList.remove('fade-out');
-        }, 400); // 400ms delay matches CSS transition speed
+            card.innerHTML = `
+                <div>
+                    ${starBadge}
+                    <h3>${project.title}</h3>
+                    <p>${project.desc}</p>
+                    <div class="tags">${tagsHTML}</div>
+                </div>
+                <div style="margin-top: 1.25rem;">
+                    <span style="color: var(--accent); font-size: 0.85rem; font-weight: 600;">View Details &rarr;</span>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
     }
 
-    // Render immediately on page load
-    renderFeaturedProjects();
+    function cycleWithSwipe() {
+        const grid = document.getElementById('featured-grid');
 
-    // Automatically cycle projects every 5 seconds (5000 milliseconds)
-    setInterval(renderFeaturedProjects, 5000);
+        // 1. Swipe current cards out to the left
+        grid.classList.add('swipe-out');
+
+        setTimeout(() => {
+            // 2. Load new project cards
+            populateGrid();
+
+            // 3. Move grid to the right instantly (without animation)
+            grid.classList.remove('swipe-out');
+            grid.classList.add('swipe-prep');
+
+            // 4. Trigger swipe-in from the right to center
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    grid.classList.remove('swipe-prep');
+                });
+            });
+        }, 400); // 400ms matches CSS transition duration
+    }
+
+    // Initial render
+    populateGrid();
+
+    // Automatically swipe cards every 5 seconds
+    setInterval(cycleWithSwipe, 5000);
     </script>
 </body>
 </html>
