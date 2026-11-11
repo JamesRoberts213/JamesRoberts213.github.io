@@ -119,32 +119,6 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
-            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        /* Swipe Animations */
-        .grid.swipe-out-left {
-            transform: translateX(-50px);
-            opacity: 0;
-        }
-
-        .grid.swipe-out-right {
-            transform: translateX(50px);
-            opacity: 0;
-        }
-
-        .grid.swipe-prep-right {
-            transition: none;
-            transform: translateX(50px);
-            opacity: 0;
-        }
-
-        .grid.swipe-prep-left {
-            transition: none;
-            transform: translateX(-50px);
-            opacity: 0;
         }
 
         .card {
@@ -152,19 +126,55 @@
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 1.5rem;
-            transition: transform 0.2s, border-color 0.2s;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            
+            /* Ultra-smooth cubic bezier transition */
+            transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), 
+                        opacity 0.55s cubic-bezier(0.25, 1, 0.5, 1), 
+                        border-color 0.2s ease;
+            transform: translateX(0);
+            opacity: 1;
+            will-change: transform, opacity;
         }
 
         .card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-4px) !important;
             border-color: var(--accent);
         }
 
         .card.starred {
             border-color: var(--gold);
+        }
+
+        /* Staggered transition delays for fluid cascade effect */
+        .card:nth-child(1) { transition-delay: 0.0s; }
+        .card:nth-child(2) { transition-delay: 0.06s; }
+        .card:nth-child(3) { transition-delay: 0.12s; }
+
+        /* Exit Swipe States */
+        .grid.swipe-out-left .card {
+            transform: translateX(-40px);
+            opacity: 0;
+        }
+
+        .grid.swipe-out-right .card {
+            transform: translateX(40px);
+            opacity: 0;
+        }
+
+        /* Enter Swipe Preparation States */
+        .grid.swipe-prep-right .card {
+            transition: none !important;
+            transform: translateX(40px);
+            opacity: 0;
+        }
+
+        .grid.swipe-prep-left .card {
+            transition: none !important;
+            transform: translateX(-40px);
+            opacity: 0;
         }
 
         .card h3 {
@@ -200,7 +210,7 @@
             margin-bottom: 0.4rem;
         }
 
-        /* Slider Bar & Controls */
+        /* Slider Controls */
         .slider-controls {
             display: flex;
             flex-direction: column;
@@ -237,11 +247,11 @@
             border-radius: 50%;
             background: var(--accent);
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .slider-bar::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
+            transform: scale(1.25);
         }
 
         .slider-bar::-moz-range-thumb {
@@ -264,12 +274,12 @@
             border-radius: 50%;
             background-color: var(--border);
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
+            transition: background-color 0.3s, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
         .dot.active {
             background-color: var(--accent);
-            transform: scale(1.2);
+            transform: scale(1.25);
         }
 
         /* Footer */
@@ -387,6 +397,7 @@
     let currentIndex = 0;
     let autoSlideTimer = null;
     let isHovered = false;
+    let isAnimating = false;
 
     // Render 3 consecutive projects starting from startIndex
     function renderProjects(startIndex) {
@@ -419,7 +430,6 @@
             grid.appendChild(card);
         }
 
-        // Update Slider and Dots position UI
         document.getElementById('project-slider').value = startIndex;
         updateDots(startIndex);
     }
@@ -443,7 +453,8 @@
     }
 
     function goToIndex(targetIndex, direction = 'forward') {
-        if (targetIndex === currentIndex) return;
+        if (targetIndex === currentIndex || isAnimating) return;
+        isAnimating = true;
 
         const grid = document.getElementById('featured-grid');
         const outClass = direction === 'forward' ? 'swipe-out-left' : 'swipe-out-right';
@@ -461,9 +472,12 @@
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => {
                     grid.classList.remove(prepClass);
+                    setTimeout(() => {
+                        isAnimating = false;
+                    }, 550);
                 });
             });
-        }, 400);
+        }, 450);
 
         resetTimer();
     }
@@ -473,7 +487,6 @@
         goToIndex(nextIndex, 'forward');
     }
 
-    // Auto-slide Timer logic
     function startTimer() {
         stopTimer();
         autoSlideTimer = setInterval(() => {
@@ -491,7 +504,7 @@
         startTimer();
     }
 
-    // Event Listeners for Slider Bar
+    // Range Slider listener
     const slider = document.getElementById('project-slider');
     slider.oninput = (e) => {
         const targetVal = parseInt(e.target.value);
@@ -499,7 +512,7 @@
         goToIndex(targetVal, direction);
     };
 
-    // Pause auto-sliding on hover
+    // Pause on hover
     const wrapper = document.getElementById('grid-wrapper');
     wrapper.onmouseenter = () => { isHovered = true; };
     wrapper.onmouseleave = () => { isHovered = false; resetTimer(); };
