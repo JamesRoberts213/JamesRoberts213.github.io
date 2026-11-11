@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIV Energy Extraction | MEng Dissertation</title>
+    <title>VIV Energy Extraction | MEng Dissertation & Viva</title>
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -198,32 +198,76 @@
             color: var(--text-main);
         }
 
-        /* Tech Stack Tags */
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
+        /* Learned Grid */
+        .learned-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
             margin-top: 1rem;
         }
 
-        .tech-tag {
-            background-color: rgba(56, 189, 248, 0.1);
+        .learned-card {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .learned-card h3 {
+            font-size: 1rem;
             color: var(--accent);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            font-size: 0.85rem;
-            padding: 0.35rem 0.75rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .learned-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Document Viewer Tabs */
+        .doc-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
             border-radius: 6px;
-            font-family: monospace;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--bg-color);
+            background-color: var(--accent);
         }
 
         /* PDF Frame Container */
         .pdf-frame-container {
             width: 100%;
-            height: 750px;
+            height: 700px;
             border-radius: 8px;
             overflow: hidden;
             border: 1px solid var(--border);
-            margin-top: 1rem;
             background-color: #0f172a;
         }
 
@@ -337,31 +381,53 @@
             </ul>
         </div>
 
-        <!-- Section 3: Tools & Technologies -->
+        <!-- Section 3: What I Learnt -->
         <div class="section">
-            <h2><i class="fa-solid fa-code"></i> Tech Stack & Tools</h2>
-            <div class="tags-container">
-                <span class="tech-tag">ANSYS Fluent</span>
-                <span class="tech-tag">SolidWorks</span>
-                <span class="tech-tag">Wind Tunnel Instrumentation</span>
-                <span class="tech-tag">Strain Gauges</span>
-                <span class="tech-tag">3D Printing</span>
-                <span class="tech-tag">CNC Waterjet</span>
-                <span class="tech-tag">Oscilloscope DAQ</span>
+            <h2><i class="fa-solid fa-lightbulb"></i> Key Insights & Personal Takeaways</h2>
+            <div class="learned-grid">
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-chart-line"></i> CFD vs Real-World Discrepancies</h3>
+                    <p>Discovered how structural damping and physical mounting rigidity shift actual lock-in frequencies compared to idealized 2D Fluent simulations, emphasizing the need for empirical validation.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-wave-square"></i> Signal Noise in Strain Measurement</h3>
+                    <p>Mastered half-bridge Wheatstone bridge configurations and dynamic filtering techniques to isolate subtle aerodynamic deflections from ambient wind tunnel vibrations.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-layer-group"></i> Rapid Prototyping Iterations</h3>
+                    <p>Gained hands-on experience balancing component weight, stiffness, and structural tolerances across subtractive CNC steel cutting and FDM 3D printing.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-comments"></i> Technical Presentation Defense</h3>
+                    <p>Refined the ability to condense complex fluid dynamics derivations and experimental datasets into a clear, compelling 15-minute viva presentation for academic panel defense.</p>
+                </div>
             </div>
         </div>
 
-        <!-- Section 4: Inline PDF Viewer -->
+        <!-- Section 4: Document Viewer (Tabs for Dissertation & Viva) -->
         <div class="section">
-            <h2><i class="fa-solid fa-file-pdf"></i> Read Dissertation Document</h2>
+            <h2><i class="fa-solid fa-folder-open"></i> Project Documentation & Slides</h2>
+            
+            <div class="doc-tabs">
+                <button class="tab-btn active" id="tab-dissertation" onclick="switchDoc('dissertation.pdf', 'tab-dissertation', 'btn-download-pdf')">
+                    <i class="fa-solid fa-file-pdf"></i> Dissertation PDF
+                </button>
+                <button class="tab-btn" id="tab-viva" onclick="switchDoc('viva-presentation.pdf', 'tab-viva', 'btn-download-pdf')">
+                    <i class="fa-solid fa-file-powerpoint"></i> Viva Presentation Slides
+                </button>
+            </div>
+
             <div class="pdf-frame-container">
                 <iframe 
+                    id="doc-viewer"
                     src="dissertation.pdf" 
                     width="100%" 
                     height="100%" 
                     style="border: none;"
-                    title="Dissertation PDF Viewer">
-                    <p>Your browser does not support inline PDFs. <a href="dissertation.pdf" style="color: var(--accent);">Click here to view the PDF.</a></p>
+                    title="Project Document Viewer">
                 </iframe>
             </div>
         </div>
@@ -371,8 +437,8 @@
             <a href="https://github.com/your-username/viv-energy-harvesting" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                 <i class="fa-brands fa-github"></i> View Repository
             </a>
-            <a href="dissertation.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open PDF in New Tab
+            <a id="btn-download-pdf" href="dissertation.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Current Document in New Tab
             </a>
         </div>
 
@@ -382,5 +448,20 @@
         </footer>
     </div>
 
+    <script>
+    function switchDoc(pdfPath, activeTabId, downloadBtnId) {
+        // Update iframe source
+        const viewer = document.getElementById('doc-viewer');
+        viewer.src = pdfPath;
+
+        // Update active tab buttons
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(activeTabId).classList.add('active');
+
+        // Update external link button
+        const dlBtn = document.getElementById(downloadBtnId);
+        dlBtn.href = pdfPath;
+    }
+    </script>
 </body>
 </html>
