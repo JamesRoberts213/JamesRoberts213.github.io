@@ -1,237 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>James Roberts | Portfolio</title>
-    <!-- Google Fonts for professional typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #0284c7;
-            --border: #334155;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            line-height: 1.6;
-            padding: 0 1.5rem;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        /* Navigation */
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 2rem 0;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .logo {
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .nav-links a {
-            color: var(--text-muted);
-            text-decoration: none;
-            margin-left: 1.5rem;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 5rem 0 3rem;
-        }
-
-        .hero h1 {
-            font-size: 2.75rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: var(--text-muted);
-            max-width: 600px;
-            margin-bottom: 2rem;
-        }
-
-        .cta-btn {
-            display: inline-block;
-            background-color: var(--accent);
-            color: var(--bg-color);
-            font-weight: 600;
-            padding: 0.75rem 1.5rem;
-            border-radius: 6px;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-
-        .cta-btn:hover {
-            background-color: var(--accent-hover);
-        }
-
-        /* Projects Section */
-        .section-title {
-            font-size: 1.75rem;
-            margin: 4rem 0 2rem;
-            position: relative;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent);
-        }
-
-        .card h3 {
-            margin-bottom: 0.5rem;
-            font-size: 1.25rem;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            margin-bottom: 1rem;
-        }
-
-        .tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .tag {
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            font-size: 0.8rem;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-        }
-
-        /* Footer */
-        footer {
-            margin-top: 6rem;
-            padding: 2rem 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-    </style>
-</head>
-<body>
-
-    <div class="container">
-        <!-- Navigation Bar -->
-        <nav>
-            <a href="#" class="logo">James Roberts</a>
-            <div class="nav-links">
-                <a href="#projects">Projects</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-            </div>
-        </nav>
-
-        <!-- Main Intro Header -->
-        <header class="hero">
-            <h1>Engineering & Analytical Portfolio</h1>
-            <p>Welcome to my site. I document projects in hardware prototyping, computational analysis, and signal processing.</p>
-            <a href="#projects" class="cta-btn">View My Work</a>
-        </header>
-
-        <!-- Featured Projects Grid -->
-        <main id="projects">
-            <h2 class="section-title">Featured Projects</h2>
-            <div class="grid">
-                
-                <div class="card">
-                    <h3>Embedded Hardware Module</h3>
-                    <p>Compact display system built with an microcontroller, custom sensors, and integrated battery power management.</p>
-                    <div class="tags">
-                        <span class="tag">C++</span>
-                        <span class="tag">Hardware</span>
-                        <span class="tag">Prototyping</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Numerical Advection Solver</h3>
-                    <p>Finite difference scheme implementations analyzing stability bounds and amplification factors.</p>
-                    <div class="tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">CFD</span>
-                        <span class="tag">Numerical Methods</span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>Signal Processing System</h3>
-                    <p>Filter design and algorithmic architecture exploring adaptive LMS noise control techniques.</p>
-                    <div class="tags">
-                        <span class="tag">MATLAB</span>
-                        <span class="tag">DSP</span>
-                        <span class="tag">Control Systems</span>
-                    </div>
-                </div>
-
-            </div>
-        </main>
-
-        <!-- Contact Section -->
-        <section id="contact">
-            <h2 class="section-title">Get in Touch</h2>
-            <p style="color: var(--text-muted);">Interested in collaborating or discussing technical projects?</p>
-            <p style="margin-top: 0.5rem;"><a href="mailto:your.email@example.com" style="color: var(--accent); text-decoration: none;">your.email@example.com</a></p>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2026 James Roberts. Built with HTML & CSS on GitHub Pages.</p>
-        </footer>
+<!-- Featured Projects Section -->
+<main id="projects">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 4rem 0 2rem;">
+        <h2 class="section-title" style="margin: 0;">Featured Projects</h2>
+        <a href="projects.html" class="cta-btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">View All Projects &rarr;</a>
     </div>
 
-</body>
-</html>
+    <!-- Container for the 3 dynamic tiles -->
+    <div class="grid" id="featured-grid"></div>
+</main>
+
+<script>
+// Array containing all of your projects
+const allProjects = [
+    {
+        title: "Embedded Hardware Module",
+        desc: "Compact display system built with a microcontroller, custom sensors, and integrated power management.",
+        tags: ["C++", "Hardware", "Prototyping"],
+        link: "projects.html#embedded-hardware"
+    },
+    {
+        title: "Numerical Advection Solver",
+        desc: "Finite difference scheme implementations analyzing stability bounds and amplification factors.",
+        tags: ["Python", "CFD", "Numerical Methods"],
+        link: "cagd-solver.html"
+    },
+    {
+        title: "Signal Processing System",
+        desc: "Filter design and algorithmic architecture exploring adaptive LMS noise control techniques.",
+        tags: ["MATLAB", "DSP", "Control Systems"],
+        link: "projects.html#signal-processing"
+    },
+    {
+        title: "Structural Strain Analysis",
+        desc: "Half-bridge strain gauge calibration and bending force measurement on structural steel.",
+        tags: ["Sensors", "Data Acquisition", "Structures"],
+        link: "projects.html#strain-analysis"
+    },
+    {
+        title: "Flow-Forming Defect Diagnostics",
+        desc: "Investigation into cracking mechanisms and material stress bounds during cylindrical pass forming.",
+        tags: ["Materials", "Failure Analysis", "Aerospace"],
+        link: "projects.html#flow-forming"
+    }
+];
+
+function renderFeaturedProjects() {
+    const grid = document.getElementById('featured-grid');
+    grid.innerHTML = '';
+
+    // Pick 3 random distinct projects from the list
+    const shuffled = [...allProjects].sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 3);
+
+    selected.forEach(project => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.cursor = 'pointer';
+        card.onclick = () => window.location.href = project.link;
+
+        const tagsHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+        card.innerHTML = `
+            <h3>${project.title}</h3>
+            <p>${project.desc}</p>
+            <div class="tags">${tagsHTML}</div>
+            <div class="card-links" style="margin-top: 1.25rem;">
+                <span style="color: var(--accent); font-size: 0.85rem; font-weight: 600;">View Details &rarr;</span>
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// Initial render
+renderFeaturedProjects();
+
+// Optional: Automatically swap tiles every 10 seconds
+setInterval(renderFeaturedProjects, 10000);
+</script>
