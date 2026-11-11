@@ -111,6 +111,11 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .grid.fade-out {
+            opacity: 0;
         }
 
         .card {
@@ -197,7 +202,7 @@
             <a href="projects.html" class="cta-btn">View All Projects</a>
         </header>
 
-        <!-- Featured Projects Grid (Dynamic) -->
+        <!-- Featured Projects Grid (Dynamic 5-second cycle) -->
         <main id="projects">
             <div style="display: flex; justify-content: space-between; align-items: center; margin: 4rem 0 2rem; flex-wrap: wrap; gap: 1rem;">
                 <h2 class="section-title">Featured Projects</h2>
@@ -222,7 +227,6 @@
     </div>
 
     <script>
-    // Pool of all projects with 'starred' importance flags
     const allProjects = [
         {
             title: "Numerical Advection Solver",
@@ -270,42 +274,55 @@
 
     function renderFeaturedProjects() {
         const grid = document.getElementById('featured-grid');
-        grid.innerHTML = '';
+        
+        // Quick fade-out effect
+        grid.classList.add('fade-out');
 
-        // Separate starred and unstarred items
-        const starred = allProjects.filter(p => p.starred);
-        const regular = allProjects.filter(p => !p.starred);
+        setTimeout(() => {
+            grid.innerHTML = '';
 
-        // Pick 2 random starred projects and 1 random regular project
-        const shuffledStarred = [...starred].sort(() => 0.5 - Math.random());
-        const shuffledRegular = [...regular].sort(() => 0.5 - Math.random());
-        const selected = [...shuffledStarred.slice(0, 2), ...shuffledRegular.slice(0, 1)];
+            // Separate starred and regular projects
+            const starred = allProjects.filter(p => p.starred);
+            const regular = allProjects.filter(p => !p.starred);
 
-        selected.forEach(project => {
-            const card = document.createElement('div');
-            card.className = project.starred ? 'card starred' : 'card';
-            card.style.cursor = 'pointer';
-            card.onclick = () => window.location.href = project.link;
+            // Randomly select 2 starred and 1 regular project each cycle
+            const shuffledStarred = [...starred].sort(() => 0.5 - Math.random());
+            const shuffledRegular = [...regular].sort(() => 0.5 - Math.random());
+            const selected = [...shuffledStarred.slice(0, 2), ...shuffledRegular.slice(0, 1)];
 
-            const tagsHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
-            const starBadge = project.starred ? `<span class="star-badge">&#9733; Priority Project</span>` : '';
+            selected.forEach(project => {
+                const card = document.createElement('div');
+                card.className = project.starred ? 'card starred' : 'card';
+                card.style.cursor = 'pointer';
+                card.onclick = () => window.location.href = project.link;
 
-            card.innerHTML = `
-                <div>
-                    ${starBadge}
-                    <h3>${project.title}</h3>
-                    <p>${project.desc}</p>
-                    <div class="tags">${tagsHTML}</div>
-                </div>
-                <div style="margin-top: 1.25rem;">
-                    <span style="color: var(--accent); font-size: 0.85rem; font-weight: 600;">View Details &rarr;</span>
-                </div>
-            `;
-            grid.appendChild(card);
-        });
+                const tagsHTML = project.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+                const starBadge = project.starred ? `<span class="star-badge">&#9733; Priority Project</span>` : '';
+
+                card.innerHTML = `
+                    <div>
+                        ${starBadge}
+                        <h3>${project.title}</h3>
+                        <p>${project.desc}</p>
+                        <div class="tags">${tagsHTML}</div>
+                    </div>
+                    <div style="margin-top: 1.25rem;">
+                        <span style="color: var(--accent); font-size: 0.85rem; font-weight: 600;">View Details &rarr;</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Fade back in
+            grid.classList.remove('fade-out');
+        }, 400); // 400ms delay matches CSS transition speed
     }
 
+    // Render immediately on page load
     renderFeaturedProjects();
+
+    // Automatically cycle projects every 5 seconds (5000 milliseconds)
+    setInterval(renderFeaturedProjects, 5000);
     </script>
 </body>
 </html>
