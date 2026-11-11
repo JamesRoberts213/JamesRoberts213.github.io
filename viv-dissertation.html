@@ -214,7 +214,7 @@
             color: var(--text-main);
         }
 
-        /* Explicit 2x2 CFD Video Grid */
+        /* 2x2 CFD Video Grid */
         .video-grid-2x2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -273,7 +273,7 @@
             color: var(--text-muted);
         }
 
-        /* Expanded Learned Grid (6 Items) */
+        /* Learned Grid (6 Items) */
         .learned-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -429,11 +429,11 @@
         <header class="project-header">
             <div class="badges">
                 <span class="badge-first"><i class="fa-solid fa-award"></i> First Class (1st)</span>
-                <span class="badge-type">MEng Individual Project</span>
+                <span class="badge-type">MEng Individual Dissertation</span>
                 <span class="badge-type">Lancaster University</span>
             </div>
-            <h1>Feasibility Investigation of Energy Extraction via Aerofoil Deflection & Vortex Induced Vibration (VIV)</h1>
-            <p>A combined theoretical, computational (CFD), and experimental wind tunnel study evaluating low-maintenance kinetic energy harvesting for ultra-low-power remote sensor nodes.</p>
+            <h1>Feasibility Investigation of Micro-Energy Harvesting via Aerofoil Deflection & Vortex-Induced Vibration (VIV)</h1>
+            <p>A rigorous, first-principles investigation combining analytical dynamic beam modeling, transient 2D Computational Fluid Dynamics (ANSYS Fluent), and experimental wind tunnel testing to evaluate solid-state kinetic energy conversion for ultra-low-power remote sensor architecture.</p>
         </header>
 
         <!-- Metrics Banner -->
@@ -441,27 +441,27 @@
             <div class="metric-card">
                 <div class="metric-label">Force Capture Efficiency</div>
                 <div class="metric-value">5.32x Boost</div>
-                <div class="metric-sub">Compared to standard cylinder baseline</div>
+                <div class="metric-sub">Amplifier geometry vs standard cylindrical baseline</div>
             </div>
             <div class="metric-card">
-                <div class="metric-label">Target Lock-in Speed</div>
+                <div class="metric-label">Resonant Lock-in Envelope</div>
                 <div class="metric-value">6.5 – 7.0 m/s</div>
-                <div class="metric-sub">Resonant frequency coupling window</div>
+                <div class="metric-sub">Structural natural frequency coupling regime</div>
             </div>
         </div>
 
         <!-- Section 1: Overview -->
         <div class="section">
-            <h2><i class="fa-solid fa-compass"></i> Project Overview</h2>
+            <h2><i class="fa-solid fa-compass"></i> Executive Summary</h2>
             <p style="color: var(--text-muted);">
-                Traditional small-scale wind turbines suffer from mechanical wear and bearing failure when deployed in harsh remote locations. This project investigates whether vortex-induced vibrations (VIV) and mechanical aerofoil deflection can be harnessed as a solid-state, long-life alternative for micro-energy harvesting.
+                Conventional micro-scale rotary wind turbines fail in off-grid sensor deployments due to mechanical bearing wear and rotational friction. This project evaluates solid-state energy extraction using vortex-induced vibrations (VIV) coupled with mechanical aerofoil deflection. By matching vortex shedding frequencies to the structural natural frequency of a cantilevered bluff body, aerodynamic force capture is maximized to produce scalable mechanical strain for kinetic harvesting.
             </p>
         </div>
 
         <!-- Section 2: CFD Animations Grid (2x2) -->
         <div class="section">
-            <h2><i class="fa-solid fa-wind"></i> Computational Fluid Dynamics (CFD) Simulations</h2>
-            <p style="color: var(--text-muted);">Transient ANSYS Fluent flow visualizations ($k-\omega$ SST, $y^+ \approx 1.13$) comparing pressure contours and velocity magnitude fields at $10\text{ m/s}$.</p>
+            <h2><i class="fa-solid fa-wind"></i> Computational Fluid Dynamics Analysis</h2>
+            <p style="color: var(--text-muted);">Transient ANSYS Fluent flow field solutions utilizing $k-\omega$ SST turbulence modeling with near-wall boundary layer refinement ($y^+ \approx 1.13$) at $10\text{ m/s}$ incident velocity.</p>
             
             <div class="video-grid-2x2">
                 <!-- CFD Video 1: 50mm Baseline Pressure -->
@@ -472,8 +472,8 @@
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>50mm Cylinder - Pressure Contours ($10\text{ m/s}$)</h3>
-                        <p>Dynamic pressure distribution across the standard baseline cylinder.</p>
+                        <h3>50mm Cylinder — Dynamic Pressure Field</h3>
+                        <p>Surface pressure contours and stagnating flow distribution across the baseline cylinder ($10\text{ m/s}$).</p>
                     </div>
                 </div>
 
@@ -485,8 +485,8 @@
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>50mm Cylinder - Velocity Shedding ($10\text{ m/s}$)</h3>
-                        <p>Transient velocity flow field and von Kármán street formation.</p>
+                        <h3>50mm Cylinder — von Kármán Vortex Shedding</h3>
+                        <p>Transient velocity magnitude contours illustrating periodic shear layer separation in the wake.</p>
                     </div>
                 </div>
 
@@ -498,8 +498,8 @@
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Amplifier Geometry - Pressure Field ($10\text{ m/s}$)</h3>
-                        <p>Feedback attachment modifying surface pressure for enhanced force capture.</p>
+                        <h3>Amplifier Geometry — Surface Pressure Redistribution</h3>
+                        <p>Modified boundary layer pressure gradient resulting from the trailing-edge feedback attachment.</p>
                     </div>
                 </div>
 
@@ -511,8 +511,8 @@
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Amplifier Geometry - Velocity Field ($10\text{ m/s}$)</h3>
-                        <p>High-velocity flow separation producing 5.32x increased force output.</p>
+                        <h3>Amplifier Geometry — Enhanced Shedding Velocity</h3>
+                        <p>High-gradient velocity magnitude field driving a 5.32x increase in dynamic lift force coefficient.</p>
                     </div>
                 </div>
             </div>
@@ -520,8 +520,8 @@
 
         <!-- Section 3: Physical Experimental Videos (3 Videos) -->
         <div class="section">
-            <h2><i class="fa-solid fa-flask"></i> Experimental Wind Tunnel Testing</h2>
-            <p style="color: var(--text-muted);">High-speed footage capturing physical aerofoil dynamic deflection, structural resonance lock-in, and strain gauge DAQ recording during wind tunnel testing.</p>
+            <h2><i class="fa-solid fa-flask"></i> Wind Tunnel Testing & Instrumentation</h2>
+            <p style="color: var(--text-muted);">Empirical validation conducted in a low-speed wind tunnel ($0–20\text{ m/s}$) using dynamic strain gauge DAQ systems and high-speed motion analysis.</p>
             
             <div class="video-grid-3col">
                 <div class="video-card">
@@ -531,8 +531,8 @@
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Wind Tunnel Resonant Lock-in</h3>
-                        <p>Physical prototype oscillating under peak VIV resonance ($6.5 – 7.0\text{ m/s}$).</p>
+                        <h3>Resonant Lock-in Dynamics</h3>
+                        <p>Physical prototype exhibiting steady-state oscillation within the lock-in velocity window ($6.5–7.0\text{ m/s}$).</p>
                     </div>
                 </div>
 
@@ -543,8 +543,8 @@
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Amplifier Attachment Testing</h3>
-                        <p>Demonstrating increased amplitude deflection with feedback geometry.</p>
+                        <h3>Amplified Deflection Amplitude</h3>
+                        <p>Side-by-side verification of mechanical deflection gain using the custom feedback attachment.</p>
                     </div>
                 </div>
 
@@ -555,61 +555,59 @@
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Strain Gauge DAQ Live Signal</h3>
-                        <p>Real-time strain response capture on Micro-Measurements P3 and Oscilloscope.</p>
+                        <h3>Dynamic Strain Gauge DAQ Signal</h3>
+                        <p>Real-time mechanical strain waveform captured via half-bridge Wheatstone circuit on a P3 strain indicator.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Section 4: What I Learnt (Expanded 6 Key Takeaways) -->
+        <!-- Section 4: What I Learnt (6 Focused Engineering Insights) -->
         <div class="section">
-            <h2><i class="fa-solid fa-lightbulb"></i> Key Insights & Personal Takeaways</h2>
+            <h2><i class="fa-solid fa-lightbulb"></i> Critical Engineering Insights</h2>
             <div class="learned-grid">
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-chart-line"></i> CFD vs Real-World Discrepancies</h3>
-                    <p>Discovered how structural damping and physical mounting rigidity shift actual lock-in frequencies compared to idealized 2D Fluent simulations, emphasizing empirical validation.</p>
+                    <h3><i class="fa-solid fa-chart-line"></i> CFD vs. Empirical Lock-in Discrepancies</h3>
+                    <p>Quantified how physical support rigidity and structural damping shift the true lock-in envelope relative to idealized 2D Fluent numerical models, proving the necessity of empirical boundary calibration.</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-wave-square"></i> Signal Noise in Strain Measurement</h3>
-                    <p>Mastered half-bridge Wheatstone bridge configurations and dynamic filtering techniques to isolate subtle aerodynamic deflections from ambient wind tunnel noise.</p>
+                    <h3><i class="fa-solid fa-wave-square"></i> Strain Gauge DAQ Signal Conditioning</h3>
+                    <p>Configured half-bridge Wheatstone bridge circuits ($GF = 2.08$) and dynamic signal filtering to isolate micro-strain mechanical deflections from ambient wind tunnel motor noise.</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-layer-group"></i> Rapid Prototyping Iterations</h3>
-                    <p>Gained hands-on experience balancing component weight, stiffness, and structural tolerances across subtractive CNC steel cutting and FDM 3D printing.</p>
+                    <h3><i class="fa-solid fa-layer-group"></i> Hybrid Subtractive/Additive Manufacturing</h3>
+                    <p>Optimized the stiffness-to-mass ratio by combining CNC waterjet-cut carbon steel flexure elements with FDM 3D-printed aerodynamic shell profiles.</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-comments"></i> Technical Presentation Defense</h3>
-                    <p>Refined the ability to condense complex fluid dynamics derivations and experimental datasets into a clear, compelling 15-minute viva presentation for academic panel defense.</p>
+                    <h3><i class="fa-solid fa-comments"></i> Academic Defense & Data Synthesis</h3>
+                    <p>Distilled multi-variable CFD datasets, structural frequency equations, and experimental strain records into a concise, defense-ready 15-minute viva presentation.</p>
                 </div>
 
-                <!-- Added Insight 1 -->
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-mesh-radial"></i> Boundary Layer & $y^+$ Mesh Sensitivity</h3>
-                    <p>Understood the critical sensitivity of near-wall mesh resolution ($y^+ \approx 1.13$) in predicting boundary layer separation point shifts during dynamic VIV resonance.</p>
+                    <h3><i class="fa-solid fa-mesh-radial"></i> Near-Wall Grid Sensitivity ($y^+ \approx 1.13$)</h3>
+                    <p>Evaluated the critical impact of boundary layer inflation layer resolution on correctly predicting pressure-driven separation points under transient $k-\omega$ SST formulations.</p>
                 </div>
 
-                <!-- Added Insight 2 -->
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-microchip"></i> ULP Energy Harvesting Trade-offs</h3>
-                    <p>Evaluated downstream power conditioning trade-offs, concluding that mechanical resonance broadening is more critical for practical ULP sensors than peak power output at a single wind speed.</p>
+                    <h3><i class="fa-solid fa-microchip"></i> ULP Energy Conversion Trade-Offs</h3>
+                    <p>Demonstrated that broadening the structural resonant lock-in bandwidth yields superior operational reliability for remote sensor nodes compared to chasing narrow peak power output.</p>
                 </div>
             </div>
         </div>
 
         <!-- Section 5: Document & Presentation Viewer -->
         <div class="section">
-            <h2><i class="fa-solid fa-folder-open"></i> Dissertation Document & Viva Slides</h2>
+            <h2><i class="fa-solid fa-folder-open"></i> Technical Documentation & Defense Deck</h2>
             
             <div class="doc-tabs">
                 <button class="tab-btn active" id="tab-dissertation" onclick="switchDoc('dissertation.pdf', 'tab-dissertation', 'btn-download-pdf')">
-                    <i class="fa-solid fa-file-pdf"></i> Dissertation PDF
+                    <i class="fa-solid fa-file-pdf"></i> MEng Dissertation PDF
                 </button>
                 <button class="tab-btn" id="tab-viva" onclick="switchDoc('viva-presentation.pdf', 'tab-viva', 'btn-download-pdf')">
-                    <i class="fa-solid fa-file-powerpoint"></i> Viva Presentation Slides
+                    <i class="fa-solid fa-file-powerpoint"></i> Viva Presentation Deck
                 </button>
             </div>
 
@@ -627,25 +625,25 @@
 
         <!-- Section 6: Tools & Technologies -->
         <div class="section">
-            <h2><i class="fa-solid fa-code"></i> Tech Stack & Tools</h2>
+            <h2><i class="fa-solid fa-code"></i> Technical Stack & Tools</h2>
             <div class="tags-container">
-                <span class="tech-tag">ANSYS Fluent</span>
-                <span class="tech-tag">SolidWorks</span>
-                <span class="tech-tag">Wind Tunnel Testing</span>
-                <span class="tech-tag">Half-Bridge Strain Gauges</span>
-                <span class="tech-tag">P3 Strain Indicator</span>
+                <span class="tech-tag">ANSYS Fluent (2D Transient CFD)</span>
+                <span class="tech-tag">$k-\omega$ SST Turbulence</span>
+                <span class="tech-tag">SolidWorks CAD/CAM</span>
+                <span class="tech-tag">Half-Bridge Wheatstone Circuit</span>
+                <span class="tech-tag">Micro-Measurements P3 Indicator</span>
                 <span class="tech-tag">CNC Waterjet Cutting</span>
-                <span class="tech-tag">3D Printing (FDM)</span>
+                <span class="tech-tag">FDM Rapid Prototyping</span>
             </div>
         </div>
 
         <!-- Action Links -->
         <div class="actions">
             <a href="https://github.com/JamesRoberts213/JamesRoberts213.github.io" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                <i class="fa-brands fa-github"></i> View Repository
+                <i class="fa-brands fa-github"></i> View GitHub Repository
             </a>
             <a id="btn-download-pdf" href="dissertation.pdf" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Current Document in New Tab
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Document in New Tab
             </a>
         </div>
 
