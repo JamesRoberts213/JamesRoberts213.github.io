@@ -38,7 +38,7 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 950px;
             margin: 0 auto;
         }
 
@@ -198,6 +198,59 @@
             color: var(--text-main);
         }
 
+        /* Video Showcase Grids */
+        .video-grid-2x2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .video-grid-3col {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .video-card {
+            background-color: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            background-color: #020617;
+            aspect-ratio: 16 / 9;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .video-info {
+            padding: 1rem;
+        }
+
+        .video-info h3 {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .video-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
         /* Learned Grid */
         .learned-grid {
             display: grid;
@@ -269,6 +322,24 @@
             overflow: hidden;
             border: 1px solid var(--border);
             background-color: #0f172a;
+        }
+
+        /* Tech Stack Tags */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-size: 0.85rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-family: monospace;
         }
 
         /* Action Buttons */
@@ -362,37 +433,122 @@
             </p>
         </div>
 
-        <!-- Section 2: Technical Breakdown -->
+        <!-- Section 2: CFD Animations Grid (4 Videos) -->
         <div class="section">
-            <h2><i class="fa-solid fa-gears"></i> Key Engineering Deliverables</h2>
-            <ul class="deliverables-list">
-                <li>
-                    <strong>Computational Fluid Dynamics (CFD):</strong> Modeled transient 2D von Kármán vortex shedding dynamics in ANSYS Fluent utilizing $k-\omega$ SST turbulence models with wall-refined inflation layers ($y^+ \approx 1.13$) across varying Reynolds numbers.
-                </li>
-                <li>
-                    <strong>CAD & Rapid Prototyping:</strong> Designed modular cylindrical aerofoil assemblies in SolidWorks and manufactured physical test components using 3D printing (PLA) and CNC water-jet cutting (mild carbon steel).
-                </li>
-                <li>
-                    <strong>Experimental Wind Tunnel Testing:</strong> Conducted low-speed wind tunnel evaluations up to 20 m/s using half-bridge strain gauge circuits coupled to a Micro-Measurements P3 strain indicator and oscilloscope to record dynamic deflection.
-                </li>
-                <li>
-                    <strong>Novel Aerodynamic Amplifier Design:</strong> Developed a custom feedback geometry that enhanced aerodynamic coupling, achieving a 5.32x increase in structural force capture efficiency over baseline geometry.
-                </li>
-            </ul>
+            <h2><i class="fa-solid fa-wind"></i> Computational Fluid Dynamics (CFD) Simulations</h2>
+            <p style="color: var(--text-muted);">Transient ANSYS Fluent flow visualizations ($k-\omega$ SST, $y^+ \approx 1.13$) comparing pressure contours and velocity magnitude fields at $10\text{ m/s}$.</p>
+            
+            <div class="video-grid-2x2">
+                <!-- CFD Video 1: 50mm Baseline Pressure -->
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls autoplay loop muted playsinline>
+                            <source src="videos/50mm10msPressure.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>50mm Cylinder - Pressure Contours (10 m/s)</h3>
+                        <p>Dynamic pressure distribution across the standard baseline cylinder.</p>
+                    </div>
+                </div>
+
+                <!-- CFD Video 2: 50mm Baseline Velocity -->
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls autoplay loop muted playsinline>
+                            <source src="videos/50mm10msVelocity.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>50mm Cylinder - Velocity Shedding (10 m/s)</h3>
+                        <p>Transient velocity flow field and von Kármán street formation.</p>
+                    </div>
+                </div>
+
+                <!-- CFD Video 3: Amplifier Pressure -->
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls autoplay loop muted playsinline>
+                            <source src="videos/10msAmpPressure.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Amplifier Geometry - Pressure Field (10 m/s)</h3>
+                        <p>Feedback attachment modifying surface pressure for enhanced force capture.</p>
+                    </div>
+                </div>
+
+                <!-- CFD Video 4: Amplifier Velocity -->
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls autoplay loop muted playsinline>
+                            <source src="videos/10msAmpVelocity.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Amplifier Geometry - Velocity Field (10 m/s)</h3>
+                        <p>High-velocity flow separation producing 5.32x increased force output.</p>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Section 3: What I Learnt -->
+        <!-- Section 3: Physical Experimental Videos (3 Videos) -->
+        <div class="section">
+            <h2><i class="fa-solid fa-flask"></i> Experimental Wind Tunnel Testing</h2>
+            <p style="color: var(--text-muted);">High-speed footage capturing physical aerofoil dynamic deflection, structural resonance lock-in, and strain gauge DAQ recording during wind tunnel testing.</p>
+            
+            <div class="video-grid-3col">
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls autoplay loop muted playsinline>
+                            <source src="videos/exp-wind-tunnel-resonance.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Wind Tunnel Resonant Lock-in</h3>
+                        <p>Physical prototype oscillating under peak VIV resonance ($6.5 – 7.0\text{ m/s}$).</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls autoplay loop muted playsinline>
+                            <source src="videos/exp-amplifier-deflection.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Amplifier Attachment Testing</h3>
+                        <p>Demonstrating increased amplitude deflection with feedback geometry.</p>
+                    </div>
+                </div>
+
+                <div class="video-card">
+                    <div class="video-wrapper">
+                        <video controls autoplay loop muted playsinline>
+                            <source src="videos/exp-daq-strain-gauge.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="video-info">
+                        <h3>Strain Gauge DAQ Live Signal</h3>
+                        <p>Real-time strain response capture on Micro-Measurements P3 and Oscilloscope.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: What I Learnt -->
         <div class="section">
             <h2><i class="fa-solid fa-lightbulb"></i> Key Insights & Personal Takeaways</h2>
             <div class="learned-grid">
                 <div class="learned-card">
                     <h3><i class="fa-solid fa-chart-line"></i> CFD vs Real-World Discrepancies</h3>
-                    <p>Discovered how structural damping and physical mounting rigidity shift actual lock-in frequencies compared to idealized 2D Fluent simulations, emphasizing the need for empirical validation.</p>
+                    <p>Discovered how structural damping and physical mounting rigidity shift actual lock-in frequencies compared to idealized 2D Fluent simulations, emphasizing empirical validation.</p>
                 </div>
 
                 <div class="learned-card">
                     <h3><i class="fa-solid fa-wave-square"></i> Signal Noise in Strain Measurement</h3>
-                    <p>Mastered half-bridge Wheatstone bridge configurations and dynamic filtering techniques to isolate subtle aerodynamic deflections from ambient wind tunnel vibrations.</p>
+                    <p>Mastered half-bridge Wheatstone bridge configurations and dynamic filtering techniques to isolate subtle aerodynamic deflections from ambient wind tunnel noise.</p>
                 </div>
 
                 <div class="learned-card">
@@ -407,9 +563,9 @@
             </div>
         </div>
 
-        <!-- Section 4: Document Viewer (Tabs for Dissertation & Viva) -->
+        <!-- Section 5: Document & Presentation Viewer -->
         <div class="section">
-            <h2><i class="fa-solid fa-folder-open"></i> Project Documentation & Slides</h2>
+            <h2><i class="fa-solid fa-folder-open"></i> Dissertation Document & Viva Slides</h2>
             
             <div class="doc-tabs">
                 <button class="tab-btn active" id="tab-dissertation" onclick="switchDoc('dissertation.pdf', 'tab-dissertation', 'btn-download-pdf')">
@@ -429,6 +585,20 @@
                     style="border: none;"
                     title="Project Document Viewer">
                 </iframe>
+            </div>
+        </div>
+
+        <!-- Section 6: Tools & Technologies -->
+        <div class="section">
+            <h2><i class="fa-solid fa-code"></i> Tech Stack & Tools</h2>
+            <div class="tags-container">
+                <span class="tech-tag">ANSYS Fluent</span>
+                <span class="tech-tag">SolidWorks</span>
+                <span class="tech-tag">Wind Tunnel Testing</span>
+                <span class="tech-tag">Half-Bridge Strain Gauges</span>
+                <span class="tech-tag">P3 Strain Indicator</span>
+                <span class="tech-tag">CNC Waterjet Cutting</span>
+                <span class="tech-tag">3D Printing (FDM)</span>
             </div>
         </div>
 
