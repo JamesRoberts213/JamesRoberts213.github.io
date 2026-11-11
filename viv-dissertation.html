@@ -189,32 +189,7 @@
             color: var(--accent);
         }
 
-        .deliverables-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .deliverables-list li {
-            position: relative;
-            padding-left: 1.75rem;
-            color: var(--text-muted);
-        }
-
-        .deliverables-list li::before {
-            content: "▸";
-            position: absolute;
-            left: 0;
-            color: var(--accent);
-            font-size: 1.1rem;
-        }
-
-        .deliverables-list strong {
-            color: var(--text-main);
-        }
-
-        /* 2x2 CFD Video Grid */
+        /* Video Showcase Grids */
         .video-grid-2x2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -520,49 +495,52 @@
 
         <!-- Section 3: Physical Experimental Videos (3 Videos) -->
         <div class="section">
-            <h2><i class="fa-solid fa-flask"></i> Wind Tunnel Testing & Instrumentation</h2>
-            <p style="color: var(--text-muted);">Empirical validation conducted in a low-speed wind tunnel ($0–20\text{ m/s}$) using dynamic strain gauge DAQ systems and high-speed motion analysis.</p>
+            <h2><i class="fa-solid fa-flask"></i> Wind Tunnel Testing & Empirical Validation</h2>
+            <p style="color: var(--text-muted);">High-speed physical experiment captures evaluating real-world dynamic response, resonant lock-in behavior, and live strain signal acquisition in a low-speed wind tunnel.</p>
             
             <div class="video-grid-3col">
+                <!-- Physical Video 1: DynamicView.mp4 -->
                 <div class="video-card">
                     <div class="video-wrapper">
                         <video controls autoplay loop muted playsinline preload="auto">
-                            <source src="videos/exp-wind-tunnel-resonance.mp4" type="video/mp4">
+                            <source src="videos/DynamicView.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Resonant Lock-in Dynamics</h3>
-                        <p>Physical prototype exhibiting steady-state oscillation within the lock-in velocity window ($6.5–7.0\text{ m/s}$).</p>
+                        <h3>Dynamic Flexure Profile View</h3>
+                        <p>Side-profile capture showing dynamic beam deflection and aerodynamic amplitude growth under steady wind tunnel velocity.</p>
                     </div>
                 </div>
 
+                <!-- Physical Video 2: OverHeadOcsillations.mp4 -->
                 <div class="video-card">
                     <div class="video-wrapper">
                         <video controls autoplay loop muted playsinline preload="auto">
-                            <source src="videos/exp-amplifier-deflection.mp4" type="video/mp4">
+                            <source src="videos/OverHeadOcsillations.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Amplified Deflection Amplitude</h3>
-                        <p>Side-by-side verification of mechanical deflection gain using the custom feedback attachment.</p>
+                        <h3>Planform Oscillation & Lock-in</h3>
+                        <p>Overhead view capturing transversal VIV shedding symmetry and peak resonant lock-in oscillations ($6.5–7.0\text{ m/s}$).</p>
                     </div>
                 </div>
 
+                <!-- Physical Video 3: Oscilloscope.mp4 -->
                 <div class="video-card">
                     <div class="video-wrapper">
                         <video controls autoplay loop muted playsinline preload="auto">
-                            <source src="videos/exp-daq-strain-gauge.mp4" type="video/mp4">
+                            <source src="videos/Oscilloscope.mp4" type="video/mp4">
                         </video>
                     </div>
                     <div class="video-info">
-                        <h3>Dynamic Strain Gauge DAQ Signal</h3>
-                        <p>Real-time mechanical strain waveform captured via half-bridge Wheatstone circuit on a P3 strain indicator.</p>
+                        <h3>Oscilloscope DAQ Signal Output</h3>
+                        <p>Real-time voltage waveform from the half-bridge strain gauge circuit capturing dynamic strain frequency and peak-to-peak amplitude.</p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Section 4: What I Learnt (6 Focused Engineering Insights) -->
+        <!-- Section 4: What I Learnt (6 Engineering Insights) -->
         <div class="section">
             <h2><i class="fa-solid fa-lightbulb"></i> Critical Engineering Insights</h2>
             <div class="learned-grid">
