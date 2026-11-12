@@ -38,6 +38,15 @@
             --gold: #f59e0b;
             --border: #334155;
             --code-bg: #020617;
+
+            /* Masters Theme RGB565 -> Hex Conversions from Firmware */
+            --masters-bg: #002410;
+            --masters-header: #004818;
+            --masters-gold: #e8d810;
+            --masters-red: #c80020;
+            --masters-grid: #084820;
+            --masters-muted: #b8dcb8;
+            --masters-panel: #003818;
         }
 
         * {
@@ -195,16 +204,16 @@
             color: var(--accent);
         }
 
-        /* Interactive Handheld UI Simulator */
+        /* Interactive Handheld UI Simulator (Exact 240x320 Masters Theme) */
         .simulator-layout {
             display: grid;
             grid-template-columns: 300px 1fr;
-            gap: 2rem;
-            align-items: center;
-            margin-top: 1rem;
+            gap: 2.25rem;
+            align-items: start;
+            margin-top: 1.25rem;
         }
 
-        @media (max-width: 740px) {
+        @media (max-width: 760px) {
             .simulator-layout {
                 grid-template-columns: 1fr;
                 justify-items: center;
@@ -212,12 +221,12 @@
         }
 
         .device-chassis {
-            width: 280px;
+            width: 284px;
             background: linear-gradient(145deg, #1e293b, #0f172a);
             border: 3px solid #475569;
             border-radius: 24px;
-            padding: 18px 16px 22px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            padding: 16px 18px 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.12);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -226,120 +235,254 @@
         .chassis-label {
             font-family: 'Fira Code', monospace;
             font-size: 0.65rem;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.14em;
             color: var(--text-muted);
             margin-bottom: 10px;
             text-transform: uppercase;
         }
 
+        /* Exact 240x320 Aspect Ratio LCD */
         .st7789-screen {
-            width: 236px;
-            height: 290px;
-            background-color: #020617;
-            border: 2px solid #334155;
-            border-radius: 8px;
-            padding: 12px;
-            font-family: 'Fira Code', monospace;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            width: 240px;
+            height: 320px;
+            background-color: var(--masters-bg);
+            border: 2px solid #020617;
+            border-radius: 4px;
             position: relative;
             overflow: hidden;
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+            box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.6);
         }
 
-        .lcd-status-bar {
+        /* y: 0..55 Header */
+        .tft-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 55px;
+            background-color: var(--masters-header);
+        }
+
+        .tft-course {
+            position: absolute;
+            top: 9px;
+            left: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            color: var(--masters-gold);
+        }
+
+        .tft-sync-badge {
+            position: absolute;
+            top: 8px;
+            left: 140px;
+            width: 40px;
+            height: 16px;
+            background-color: var(--masters-gold);
+            color: var(--masters-header);
+            border-radius: 3px;
+            font-family: 'Fira Code', monospace;
+            font-size: 9px;
+            font-weight: 700;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            font-size: 0.72rem;
-            color: var(--emerald);
-            border-bottom: 1px solid #1e293b;
-            padding-bottom: 6px;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.12s ease;
         }
 
-        .lcd-hole-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-top: 4px;
+        .tft-sync-badge.visible {
+            opacity: 1;
         }
 
-        .lcd-hole-num {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .lcd-par-badge {
-            background-color: rgba(56, 189, 248, 0.15);
-            color: var(--accent);
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-        }
-
-        .lcd-main-yardage {
-            text-align: center;
-            margin: 6px 0;
-            padding: 8px 0;
-            background: rgba(15, 23, 42, 0.8);
-            border-radius: 6px;
-            border: 1px solid #1e293b;
-        }
-
-        .lcd-target-label {
-            font-size: 0.7rem;
-            color: var(--gold);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .lcd-yards-val {
-            font-size: 3.1rem;
-            font-weight: 700;
-            line-height: 1.05;
+        .tft-hole-par {
+            position: absolute;
+            top: 33px;
+            left: 10px;
+            font-size: 12px;
+            font-weight: 400;
             color: #ffffff;
         }
 
-        .lcd-yards-unit {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+        .tft-gps-bars {
+            position: absolute;
+            top: 34px;
+            left: 187px;
+            width: 16px;
+            height: 12px;
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
         }
 
-        .lcd-fcb-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 4px;
-            text-align: center;
-            font-size: 0.75rem;
+        .tft-bar {
+            width: 2px;
+            background-color: var(--masters-gold);
         }
 
-        .lcd-fcb-box {
-            background: #0f172a;
-            padding: 5px 2px;
-            border-radius: 4px;
-            border: 1px solid transparent;
+        .tft-gps-label {
+            position: absolute;
+            top: 37px;
+            left: 209px;
+            font-family: 'Fira Code', monospace;
+            font-size: 8px;
+            font-weight: 700;
+            color: #ffffff;
         }
 
-        .lcd-fcb-box.selected {
-            border-color: var(--gold);
-            background: rgba(245, 158, 11, 0.1);
+        /* y: 60..115 Distance & Flag */
+        .tft-yds-val {
+            position: absolute;
+            top: 66px;
+            left: 7px;
+            font-size: 42px;
+            font-weight: 700;
+            line-height: 1;
+            color: #ffffff;
+            letter-spacing: -0.02em;
         }
 
-        .lcd-fcb-box span {
-            display: block;
-            font-size: 0.62rem;
-            color: var(--text-muted);
+        .tft-yds-unit {
+            position: absolute;
+            top: 84px;
+            left: 122px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--masters-gold);
         }
 
-        .lcd-coords {
-            font-size: 0.62rem;
-            color: #64748b;
-            text-align: center;
-            border-top: 1px solid #1e293b;
-            padding-top: 5px;
+        .tft-flag-svg {
+            position: absolute;
+            top: 60px;
+            left: 178px;
         }
 
+        /* y: 125 Gridline */
+        .tft-line-125 {
+            position: absolute;
+            top: 125px;
+            left: 0;
+            width: 240px;
+            height: 1px;
+            background-color: var(--masters-grid);
+        }
+
+        /* y: 130..170 Bearings */
+        .tft-lbl-brg {
+            position: absolute;
+            top: 130px;
+            left: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--masters-red);
+        }
+
+        .tft-lbl-hdg {
+            position: absolute;
+            top: 130px;
+            left: 130px;
+            font-family: 'Fira Code', monospace;
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--masters-gold);
+        }
+
+        .tft-val-brg {
+            position: absolute;
+            top: 143px;
+            left: 15px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .tft-val-hdg {
+            position: absolute;
+            top: 143px;
+            left: 130px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* y: 175 Gridline */
+        .tft-line-175 {
+            position: absolute;
+            top: 175px;
+            left: 0;
+            width: 240px;
+            height: 1px;
+            background-color: var(--masters-grid);
+        }
+
+        /* y: 182..255 Compass Dial */
+        .tft-lbl-target {
+            position: absolute;
+            top: 181px;
+            left: 15px;
+            font-family: 'Fira Code', monospace;
+            font-size: 8px;
+            color: var(--masters-muted);
+        }
+
+        .tft-compass-svg {
+            position: absolute;
+            top: 182px;
+            left: 82px;
+        }
+
+        /* y: 260 Gridline */
+        .tft-line-260 {
+            position: absolute;
+            top: 260px;
+            left: 0;
+            width: 240px;
+            height: 1px;
+            background-color: var(--masters-grid);
+        }
+
+        /* y: 267..315 Caddie Recommendation Panel */
+        .tft-caddie-panel {
+            position: absolute;
+            top: 267px;
+            left: 10px;
+            width: 220px;
+            height: 48px;
+            background-color: var(--masters-panel);
+            border: 1px solid var(--masters-header);
+            padding: 4px 9px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .tft-caddie-title {
+            font-family: 'Fira Code', monospace;
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--masters-gold);
+            line-height: 1;
+        }
+
+        .tft-caddie-turn {
+            font-family: 'Fira Code', monospace;
+            font-size: 8.5px;
+            color: var(--masters-muted);
+            line-height: 1;
+        }
+
+        .tft-caddie-club {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.1;
+        }
+
+        /* Physical Tactile Buttons & Heading Slider */
         .tactile-buttons {
             display: flex;
             gap: 14px;
@@ -351,17 +494,19 @@
             color: var(--text-main);
             border: 2px solid #64748b;
             border-radius: 50%;
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             font-family: 'Fira Code', monospace;
-            font-size: 0.7rem;
+            font-size: 0.68rem;
             font-weight: 700;
             cursor: pointer;
             box-shadow: 0 4px 0 #020617;
             transition: transform 0.08s, box-shadow 0.08s;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            line-height: 1.1;
         }
 
         .hw-btn:active {
@@ -369,9 +514,41 @@
             box-shadow: 0 1px 0 #020617;
         }
 
-        .hw-btn.pin-btn {
-            border-color: var(--gold);
-            color: var(--gold);
+        .hw-btn span {
+            font-size: 0.55rem;
+            color: var(--text-muted);
+        }
+
+        .hw-btn.sync-btn {
+            border-color: var(--masters-gold);
+            color: var(--masters-gold);
+        }
+
+        .sim-controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.15rem;
+        }
+
+        .heading-slider-box {
+            background-color: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+        }
+
+        .heading-slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .heading-slider-box input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+            cursor: pointer;
         }
 
         /* System Block Diagram */
@@ -414,6 +591,7 @@
             border-radius: 6px;
             padding: 0.75rem;
             font-size: 0.85rem;
+            color: var(--text-muted);
         }
 
         .diag-node strong {
@@ -483,7 +661,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Code Block Styling */
+        /* Full Source Code Window */
         .code-window {
             background-color: var(--code-bg);
             border: 1px solid var(--border);
@@ -493,8 +671,8 @@
         }
 
         .code-header {
-            background-color: rgba(30, 41, 59, 0.8);
-            padding: 0.6rem 1rem;
+            background-color: rgba(30, 41, 59, 0.9);
+            padding: 0.65rem 1rem;
             border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
@@ -502,21 +680,40 @@
             font-family: 'Fira Code', monospace;
             font-size: 0.8rem;
             color: var(--text-muted);
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .copy-code-btn {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 0.3rem 0.7rem;
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .copy-code-btn:hover {
+            background-color: var(--accent);
+            color: var(--bg-color);
         }
 
         .code-window pre {
             padding: 1.25rem;
-            overflow-x: auto;
+            max-height: 520px;
+            overflow: auto;
             font-family: 'Fira Code', monospace;
-            font-size: 0.83rem;
+            font-size: 0.8rem;
             line-height: 1.5;
             color: #e2e8f0;
         }
-
-        .code-comment { color: #64748b; }
-        .code-keyword { color: #38bdf8; }
-        .code-type { color: #34d399; }
-        .code-number { color: #f59e0b; }
 
         /* Design Split Grid (PCB & CAD Panels) */
         .design-split {
@@ -776,8 +973,8 @@
                 <span class="badge-type">Embedded Systems</span>
                 <span class="badge-type">PCB & Mechanical CAD</span>
             </div>
-            <h1>Handheld GPS Golf Rangefinder & Telemetry Module</h1>
-            <p>End-to-end product engineering combining bare-metal Embedded C++ firmware, custom schematic capture and PCB layout, and SolidWorks mechanical packaging with FDM rapid prototyping.</p>
+            <h1>Handheld GPS & Magnetometer Golf Rangefinder</h1>
+            <p>End-to-end product engineering combining bare-metal Embedded C++ firmware, sensor fusion (GNSS + QMC5883P 3-axis compass), custom PCB layout, and SolidWorks mechanical packaging.</p>
         </header>
 
         <!-- Metrics Banner -->
@@ -788,84 +985,118 @@
                 <div class="metric-sub">16 MHz bare-metal C++ architecture</div>
             </div>
             <div class="metric-card">
-                <div class="metric-label">Display & Bus</div>
+                <div class="metric-label">Sensors & Telemetry</div>
+                <div class="metric-value">GNSS + QMC5883P</div>
+                <div class="metric-sub">9600 baud UART + 50 Hz I2C compass</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Display Interface</div>
                 <div class="metric-value">2.0" IPS SPI</div>
-                <div class="metric-sub">ST7789V ($240 \times 320$) hardware SPI</div>
+                <div class="metric-sub">ST7789V ($240 \times 320$) RGB565 UI</div>
             </div>
             <div class="metric-card">
                 <div class="metric-label">Field Endurance</div>
-                <div class="metric-value">~9.5 Hours</div>
+                <div class="metric-value">~9.2 Hours</div>
                 <div class="metric-sub">1200 mAh 3.7V Li-Ion (2+ rounds)</div>
-            </div>
-            <div class="metric-card">
-                <div class="metric-label">Memory Footprint</div>
-                <div class="metric-value">&lt; 1.1 KB SRAM</div>
-                <div class="metric-sub">Flash PROGMEM coordinate storage</div>
             </div>
         </div>
 
-        <!-- Section 1: Interactive Device UI Simulator -->
+        <!-- Section 1: Interactive Device UI Simulator (Exact Replica of C++ ST7789V UI) -->
         <div class="section">
             <h2><i class="fa-solid fa-display"></i> Interactive ST7789V Firmware Simulator</h2>
-            <p style="color: var(--text-muted);">Test the live handheld state machine directly in your browser. Click the physical tactile buttons on the chassis below to cycle holes or toggle between <strong>Front</strong>, <strong>Center</strong>, and <strong>Back</strong> green targets.</p>
+            <p style="color: var(--text-muted);">A pixel-accurate replica of the device's custom "Masters Theme" UI rendered on the $240 \times 320$ ST7789V display[cite: 7]. Use the physical buttons (`D4`, `D5`, `A3`) or rotate the compass heading slider to test real-time bearing calculation, compass pointer rotation, and automatic club recommendations[cite: 7].</p>
 
             <div class="simulator-layout">
                 <!-- Virtual Handheld Hardware -->
                 <div class="device-chassis">
-                    <div class="chassis-label">JR-GNSS MK1 // ST7789V</div>
+                    <div class="chassis-label">NANO // ST7789V // QMC5883P</div>
+                    
+                    <!-- Exact 240x320 TFT Screen -->
                     <div class="st7789-screen">
-                        <div class="lcd-status-bar">
-                            <span><i class="fa-solid fa-satellite-dish"></i> 3D FIX (9 SAT)</span>
-                            <span><i class="fa-solid fa-battery-three-quarters"></i> 88%</span>
-                        </div>
-
-                        <div class="lcd-hole-header">
-                            <span class="lcd-hole-num" id="sim-hole">HOLE 01</span>
-                            <span class="lcd-par-badge" id="sim-par">PAR 4</span>
-                        </div>
-
-                        <div class="lcd-main-yardage">
-                            <div class="lcd-target-label" id="sim-target-label">CENTER GREEN</div>
-                            <div class="lcd-yards-val" id="sim-main-yards">154</div>
-                            <div class="lcd-yards-unit">YARDS TO PIN</div>
-                        </div>
-
-                        <div class="lcd-fcb-row">
-                            <div class="lcd-fcb-box" id="box-front">
-                                <span>FRONT</span>
-                                <strong id="sim-front">142</strong>
+                        <!-- Header (y: 0..55) -->
+                        <div class="tft-header">
+                            <div class="tft-course">AUGUSTA NATIONAL</div>
+                            <div class="tft-sync-badge" id="tft-sync">SYNC</div>
+                            <div class="tft-hole-par" id="tft-hole-par">HOLE 12   |   PAR 3</div>
+                            
+                            <!-- 4-bar GPS strength indicator -->
+                            <div class="tft-gps-bars">
+                                <div class="tft-bar" style="height: 3px;"></div>
+                                <div class="tft-bar" style="height: 6px;"></div>
+                                <div class="tft-bar" style="height: 9px;"></div>
+                                <div class="tft-bar" style="height: 12px;"></div>
                             </div>
-                            <div class="lcd-fcb-box selected" id="box-center">
-                                <span>CENTER</span>
-                                <strong id="sim-center">154</strong>
-                            </div>
-                            <div class="lcd-fcb-box" id="box-back">
-                                <span>BACK</span>
-                                <strong id="sim-back">167</strong>
-                            </div>
+                            <div class="tft-gps-label">GPS</div>
                         </div>
 
-                        <div class="lcd-coords" id="sim-coords">54.01055°N, 002.78501°W // HDOP 0.9</div>
+                        <!-- Distance & Gold Flag (y: 60..115) -->
+                        <div class="tft-yds-val" id="tft-yds">155</div>
+                        <div class="tft-yds-unit">YDS</div>
+
+                        <svg class="tft-flag-svg" width="26" height="48" viewBox="0 0 26 48">
+                            <line x1="7" y1="0" x2="7" y2="45" stroke="#ffffff" stroke-width="1.5"/>
+                            <rect x="2" y="43" width="11" height="2" fill="#ffffff"/>
+                            <polygon points="8,0 23,5 8,11" fill="#e8d810"/>
+                        </svg>
+
+                        <div class="tft-line-125"></div>
+
+                        <!-- Target Bearing & Heading (y: 130..170) -->
+                        <div class="tft-lbl-brg">TARGET BRG</div>
+                        <div class="tft-lbl-hdg">YOUR HDG</div>
+                        <div class="tft-val-brg" id="tft-brg">312</div>
+                        <div class="tft-val-hdg" id="tft-hdg">315</div>
+
+                        <div class="tft-line-175"></div>
+
+                        <!-- Compass Dial (y: 181..255) -->
+                        <div class="tft-lbl-target">TO FIXED TARGET</div>
+                        <svg class="tft-compass-svg" width="76" height="76" viewBox="0 0 76 76">
+                            <circle cx="38" cy="38" r="25" fill="none" stroke="#084820" stroke-width="1.5"/>
+                            <text x="38" y="9" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">N</text>
+                            <text x="70" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">E</text>
+                            <text x="38" y="74" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">S</text>
+                            <text x="6" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">W</text>
+                            <!-- Dynamic Turn Angle Vector -->
+                            <line id="tft-needle" x1="38" y1="38" x2="38" y2="16" stroke="#e8d810" stroke-width="2.2" stroke-linecap="round"/>
+                            <circle cx="38" cy="38" r="3" fill="#084820"/>
+                        </svg>
+
+                        <div class="tft-line-260"></div>
+
+                        <!-- Caddie Recommendation Panel (y: 267..315) -->
+                        <div class="tft-caddie-panel">
+                            <div class="tft-caddie-title">CADDIE RECOMMENDATION</div>
+                            <div class="tft-caddie-turn" id="tft-turn">ON TARGET 3 DEG</div>
+                            <div class="tft-caddie-club" id="tft-club">7-IRON</div>
+                        </div>
                     </div>
 
-                    <!-- Tactile Hardware Buttons -->
+                    <!-- Physical Tactile Buttons (D5, A3, D4) -->
                     <div class="tactile-buttons">
-                        <button class="hw-btn" onclick="simPrevHole()" title="Previous Hole">H-</button>
-                        <button class="hw-btn pin-btn" onclick="simCyclePin()" title="Cycle Front / Center / Back">PIN</button>
-                        <button class="hw-btn" onclick="simNextHole()" title="Next Hole">H+</button>
+                        <button class="hw-btn" onclick="simHoleDown()" title="Pin D5: Hole Down">H-<span>D5</span></button>
+                        <button class="hw-btn sync-btn" onclick="simRefresh()" title="Pin A3: Force Sync">SYNC<span>A3</span></button>
+                        <button class="hw-btn" onclick="simHoleUp()" title="Pin D4: Hole Up">H+<span>D4</span></button>
                     </div>
                 </div>
 
-                <!-- Simulator Technical Explanation -->
-                <div>
-                    <h3 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.75rem;">Deterministic UI & Low-Latency Refresh</h3>
-                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
-                        Because driving a $240 \times 320$ 16-bit RGB565 display over SPI on an 8-bit ATmega328P can introduce visible screen tearing if the entire frame is cleared every loop, the firmware uses <strong>dirty-rectangle partial redraws</strong>.
-                    </p>
+                <!-- Simulator Controls & Firmware Behavior -->
+                <div class="sim-controls-panel">
+                    <div class="heading-slider-box">
+                        <div class="heading-slider-header">
+                            <strong style="color: var(--accent);"><i class="fa-regular fa-compass"></i> Simulate Magnetometer Heading</strong>
+                            <span style="font-family: 'Fira Code', monospace; color: var(--text-main);" id="slider-hdg-readout">315°</span>
+                        </div>
+                        <input type="range" min="0" max="359" value="315" id="hdg-slider" oninput="simSetHeading(this.value)">
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">Drag to rotate the QMC5883P compass heading relative to the pin bearing (`turnAngle = targetBearing - heading`)[cite: 7].</p>
+                    </div>
+
+                    <h3 style="font-size: 1.05rem; color: var(--text-main);">How the Firmware Renders This Frame</h3>
                     <ul class="design-list">
-                        <li><strong>Selective Region Updates:</strong> Only the central yardage digits and active target bounding box are overwritten when new NMEA `$GPGGA` sentences arrive at $1\text{ Hz}$.</li>
-                        <li><strong>Hardware Debounced State Machine:</strong> Tactile switches trigger state transitions with a $50\text{ ms}$ non-blocking `millis()` lockout timer—preventing missed inputs without halting serial GPS parsing.</li>
-                        <li><strong>High-Contrast Daylight Palette:</strong> Pure black (`0x0000`) background paired with high-luminance white, cyan, and amber typography ensures readability in direct outdoor sunlight.</li>
+                        <li><strong>All 18 Holes Embedded:</strong> Uses the exact 18-hole WGS84 coordinate array (`courseHoles[18]`) from your firmware, defaulting to <strong>Hole 12 (Par 3)</strong> at startup[cite: 7].</li>
+                        <li><strong>Dynamic Vector Navigation:</strong> Computes great-circle distance (`calculateDistanceYards`) and initial forward azimuth (`calculateTargetBearing`) to rotate the compass needle and output `TURN LEFT`, `ON TARGET` ($\pm 8^\circ$), or `TURN RIGHT`[cite: 7].</li>
+                        <li><strong>Automated Club Caddie:</strong> Evaluates `getClubRecommendation(yards)` across 10 distance brackets—from `DRIVER / 3-WOOD` ($>220\text{ yds}$) down to `LOB WEDGE / PUTT` ($\le 60\text{ yds}$)[cite: 7].</li>
+                        <li><strong>Flicker-Free Dirty-Rectangle Redraws:</strong> Only clears and repaints the dynamic numeric bounding boxes (`fillRect` over `COLOR_BG`) rather than clearing the entire $240 \times 320$ display buffer[cite: 7].</li>
                     </ul>
                 </div>
             </div>
@@ -873,63 +1104,63 @@
 
         <!-- Section 2: System Architecture & Bus Topology -->
         <div class="section">
-            <h2><i class="fa-solid fa-diagram-project"></i> System Architecture & Power Topology</h2>
-            <p style="color: var(--text-muted);">Signal routing and voltage domain isolation across the embedded hardware stack.</p>
+            <h2><i class="fa-solid fa-diagram-project"></i> System Architecture & Pinout Topology</h2>
+            <p style="color: var(--text-muted);">Hardware interfaces, pin assignments, and sensor fusion pipelines across the Arduino Nano architecture[cite: 7].</p>
 
             <div class="block-diagram">
                 <div class="diag-col">
-                    <div class="diag-col-title"><i class="fa-solid fa-bolt"></i> Power & Input Stage</div>
+                    <div class="diag-col-title"><i class="fa-solid fa-bolt"></i> Power & User Inputs</div>
                     <div class="diag-node">
                         <strong>3.7V 1200mAh Li-Ion + TP4056</strong>
-                        USB-C charging BMS with over-discharge cutoff and boost regulation.
-                        <span class="diag-bus">5.0V Main / 3.3V LDO</span>
+                        USB-C charging BMS with over-discharge protection and boost regulation.
+                        <span class="diag-bus">5.0V Main / 3.3V Logic</span>
                     </div>
                     <div class="diag-node">
-                        <strong>3x Tactile Push Switches</strong>
-                        Hardware pull-ups with RC debounce networks for hole & pin selection.
-                        <span class="diag-bus">GPIO Digital Inputs</span>
+                        <strong>3x Tactile Switches (`INPUT_PULLUP`)</strong>
+                        Hole Up (`D4`), Hole Down (`D5`), and Sync Refresh (`A3`) with $40\text{ ms}$ debounce[cite: 7].
+                        <span class="diag-bus">D4 / D5 / A3 GPIO</span>
                     </div>
                 </div>
 
                 <div class="diag-col">
                     <div class="diag-col-title"><i class="fa-solid fa-microchip"></i> Core Processing</div>
                     <div class="diag-node">
-                        <strong>ATmega328P (16 MHz)</strong>
-                        Parses NMEA streams, reads Flash `PROGMEM` lookup tables, and executes Haversine trig math.
-                        <span class="diag-bus">32KB Flash / 2KB SRAM</span>
+                        <strong>Arduino Nano (ATmega328P)</strong>
+                        Executes spherical trig (`atan2`, `asin`), hard-iron calibration, and UI state updates[cite: 7].
+                        <span class="diag-bus">16 MHz AVR Core</span>
                     </div>
                     <div class="diag-node">
-                        <strong>Level-Shifting Network</strong>
-                        Resistive voltage dividers stepping 5V MCU signals down to 3.3V display logic.
-                        <span class="diag-bus">5V &rarr; 3.3V Protection</span>
+                        <strong>QMC5883P 3-Axis Magnetometer</strong>
+                        Continuous $50\text{ Hz}$ ODR ($\pm 8\text{G}$ range) with calibrated hard-iron offsets[cite: 7].
+                        <span class="diag-bus">I2C Bus (SDA A4 / SCL A5)</span>
                     </div>
                 </div>
 
                 <div class="diag-col">
-                    <div class="diag-col-title"><i class="fa-solid fa-satellite"></i> Telemetry & Output</div>
+                    <div class="diag-col-title"><i class="fa-solid fa-satellite"></i> GNSS & TFT Display</div>
                     <div class="diag-node">
-                        <strong>GNSS / GPS Receiver Module</strong>
-                        Ceramic patch antenna streaming real-time WGS84 coordinates and HDOP fix quality.
-                        <span class="diag-bus">UART 9600 Baud (RX/TX)</span>
+                        <strong>UART GNSS Receiver (`TinyGPSPlus`)</strong>
+                        Streams NMEA location & satellite count (`getGPSBars` 1–4 signal bars)[cite: 7].
+                        <span class="diag-bus">SoftwareSerial (RX D2 / TX D3)</span>
                     </div>
                     <div class="diag-node">
                         <strong>2.0" ST7789V IPS TFT LCD</strong>
-                        $240 \times 320$ 16-bit color panel rendering live yardage and satellite telemetry.
-                        <span class="diag-bus">4-Wire Hardware SPI</span>
+                        16-bit RGB565 display with level-shifted SPI lines and PWM backlight control[cite: 7].
+                        <span class="diag-bus">CS D10 / DC D7 / RST D8 / BL D9</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Section 3: Interactive Engineering Deep-Dive (Code, PCB, CAD) -->
+        <!-- Section 3: Interactive Engineering Deep-Dive (Full Code, PCB, CAD) -->
         <div class="section">
             <h2><i class="fa-solid fa-layer-group"></i> Engineering Deep-Dive: Firmware, PCB & CAD</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Explore the three core technical pillars developed to bring the device from concept to working prototype.</p>
+            <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Inspect the complete production C++ firmware alongside the PCB layout and SolidWorks mechanical packaging workflow.</p>
 
             <!-- Tab Controls -->
             <div class="eng-tabs">
                 <button class="eng-tab-btn active" onclick="switchEngTab('tab-code', this)">
-                    <i class="fa-solid fa-code"></i> Embedded C++ Firmware
+                    <i class="fa-solid fa-code"></i> Full Embedded C++ Code
                 </button>
                 <button class="eng-tab-btn" onclick="switchEngTab('tab-pcb', this)">
                     <i class="fa-solid fa-microchip"></i> Schematic & PCB Design
@@ -939,45 +1170,524 @@
                 </button>
             </div>
 
-            <!-- Panel 1: Embedded C++ Code -->
+            <!-- Panel 1: Complete Embedded C++ Code -->
             <div id="tab-code" class="eng-panel active">
                 <p style="color: var(--text-muted); font-size: 0.95rem;">
-                    Written in Embedded C++ (VS Code + PlatformIO / Arduino toolchain). To operate reliably within the ATmega328P's $2\text{ KB}$ SRAM limit, course green coordinates are stored in non-volatile Flash (`PROGMEM`), and great-circle yardage is computed via the spherical Haversine formula:
+                    Complete Arduino C++ source code driving the ST7789V TFT display, `TinyGPSPlus` NMEA parser, `Adafruit_QMC5883P` calibrated compass, spherical Haversine distance/bearing equations, and caddie club selector[cite: 7].
                 </p>
-                <div style="margin: 0.75rem 0; color: var(--text-main); font-size: 0.95rem;">
-                    $$d = 2R \arcsin\left(\sqrt{\sin^2\left(\frac{\Delta\phi}{2}\right) + \cos(\phi_1)\cos(\phi_2)\sin^2\left(\frac{\Delta\lambda}{2}\right)}\right)$$
-                </div>
 
                 <div class="code-window">
                     <div class="code-header">
-                        <span>rangefinder_core.cpp — Haversine & PROGMEM Lookup</span>
-                        <span>C++ / AVR</span>
+                        <span><i class="fa-solid fa-file-code"></i> GolfRangefinder.ino — Full Production Firmware (365 Lines)</span>
+                        <button class="copy-code-btn" id="copy-btn" onclick="copyFirmwareCode()">
+                            <i class="fa-regular fa-copy"></i> Copy Code
+                        </button>
                     </div>
-                    <pre><code><span class="code-keyword">#include</span> &lt;avr/pgmspace.h&gt;
-<span class="code-keyword">#include</span> &lt;math.h&gt;
+                    <pre><code id="firmware-source">#include &lt;Adafruit_GFX.h&gt;
+#include &lt;Adafruit_ST7789.h&gt;
+#include &lt;SPI.h&gt;
+#include &lt;Wire.h&gt;
+#include &lt;SoftwareSerial.h&gt;
+#include &lt;TinyGPSPlus.h&gt;
+#include &lt;Adafruit_QMC5883P.h&gt;
+#include &lt;math.h&gt;
 
-<span class="code-comment">// Store green coordinates (Front, Center, Back) in Flash to preserve 2KB SRAM</span>
-<span class="code-keyword">struct</span> <span class="code-type">GreenCoords</span> { <span class="code-type">float</span> lat; <span class="code-type">float</span> lon; };
-<span class="code-keyword">const</span> <span class="code-type">GreenCoords</span> courseData[<span class="code-number">18</span>][<span class="code-number">3</span>] PROGMEM = {
-    {{<span class="code-number">54.01042f</span>, -<span class="code-number">2.78512f</span>}, {<span class="code-number">54.01055f</span>, -<span class="code-number">2.78501f</span>}, {<span class="code-number">54.01068f</span>, -<span class="code-number">2.78489f</span>}},
-    <span class="code-comment">// ... remaining 17 holes indexed in Flash</span>
+#include &lt;Fonts/Picopixel.h&gt;
+#include &lt;Fonts/FreeSans9pt7b.h&gt;
+#include &lt;Fonts/FreeSansBold9pt7b.h&gt;
+#include &lt;Fonts/FreeSansBold12pt7b.h&gt;
+#include &lt;Fonts/FreeSansBold24pt7b.h&gt;
+
+// ---------- BUTTON PINS ----------
+#define BTN_HOLE_UP   4
+#define BTN_HOLE_DOWN 5
+#define BTN_REFRESH   A3
+
+// ---------- DISPLAY PINS ----------
+#define TFT_CS        10
+#define TFT_RST        8
+#define TFT_DC         7
+#define TFT_BACKLIGHT  9
+
+// ---------- GPS PINS ----------
+#define GPS_RX 2   // GPS TX -&gt; Nano D2
+#define GPS_TX 3   // Optional: Nano D3 -&gt; GPS RX
+
+// ---------- COMPASS CALIBRATION & DECLINATION ----------
+const float X_OFFSET = -1282.5;
+const float Y_OFFSET = -283.0;
+const float Z_OFFSET =  1157.5;
+const float MAGNETIC_DECLINATION_DEG = 0.0; // Adjust for your region if needed
+
+// ---------- MASTERS THEME ----------
+#define COLOR_BG           0x0122
+#define COLOR_HEADER       0x0243
+#define COLOR_RICHER_GOLD  0xEEC2
+#define COLOR_WARM_RED     0xCC04
+#define COLOR_GRIDLINE     0x0A44
+#define COLOR_TEXT_MUTED   0xBEF8
+#define COLOR_PANEL_BG     0x01C3
+
+// ---------- HOLE DATA STRUCTURE ----------
+struct HoleData {
+  double lat;
+  double lon;
+  int par;
 };
 
-<span class="code-comment">// Compute real-time yardage using spherical Haversine formulation</span>
-<span class="code-type">uint16_t</span> calculateYards(<span class="code-type">float</span> lat1, <span class="code-type">float</span> lon1, <span class="code-type">uint8_t</span> hole, <span class="code-type">uint8_t</span> pinPos) {
-    <span class="code-type">GreenCoords</span> target;
-    memcpy_P(&amp;target, &amp;courseData[hole][pinPos], <span class="code-keyword">sizeof</span>(<span class="code-type">GreenCoords</span>));
+// 18-Hole Coordinates
+HoleData courseHoles[18] = {
+  {54.044854, -2.803088, 4}, // Hole 1
+  {54.045041, -2.803078, 4}, // Hole 2
+  {54.045191, -2.803395, 3}, // Hole 3
+  {54.044964, -2.803854, 5}, // Hole 4
+  {54.044392, -2.803148, 4}, // Hole 5
+  {54.043930, -2.803945, 4}, // Hole 6
+  {54.043171, -2.803174, 3}, // Hole 7
+  {54.043545, -2.802070, 5}, // Hole 8
+  {54.043189, -2.804043, 4}, // Hole 9
+  {54.045239, -2.801687, 4}, // Hole 10
+  {54.046266, -2.801508, 4}, // Hole 11
+  {54.048097, -2.806541, 3}, // Hole 12
+  {54.044841, -2.805492, 5}, // Hole 13
+  {54.044874, -2.803439, 4}, // Hole 14
+  {54.044594, -2.802670, 5}, // Hole 15
+  {54.045257, -2.802696, 3}, // Hole 16
+  {54.045562, -2.803126, 4}, // Hole 17
+  {54.046074, -2.799906, 4}  // Hole 18
+};
 
-    <span class="code-keyword">const</span> <span class="code-type">float</span> R_YARDS = <span class="code-number">6967410.0f</span>; <span class="code-comment">// Earth mean radius in yards</span>
-    <span class="code-type">float</span> dLat = radians(target.lat - lat1);
-    <span class="code-type">float</span> dLon = radians(target.lon - lon1);
+int currentHole = 12; // Start at Hole 12
+const char *COURSE_NAME = "AUGUSTA NATIONAL";
 
-    <span class="code-type">float</span> a = sin(dLat * <span class="code-number">0.5f</span>) * sin(dLat * <span class="code-number">0.5f</span>) +
-              cos(radians(lat1)) * cos(radians(target.lat)) *
-              sin(dLon * <span class="code-number">0.5f</span>) * sin(dLon * <span class="code-number">0.5f</span>);
+// ---------- HARDWARE OBJECTS ----------
+Adafruit_ST7789 tft = Adafruit_ST7789(TFT_CS, TFT_DC, TFT_RST);
+SoftwareSerial gpsSerial(GPS_RX, GPS_TX);
+TinyGPSPlus gps;
+Adafruit_QMC5883P compass;
 
-    <span class="code-type">float</span> c = <span class="code-number">2.0f</span> * atan2(sqrt(a), sqrt(<span class="code-number">1.0f</span> - a));
-    <span class="code-keyword">return</span> (<span class="code-type">uint16_t</span>)round(R_YARDS * c);
+// ---------- GLOBAL VARIABLES ----------
+float heading = 0.0;
+bool compassOK = false;
+
+double distanceToTargetYards = 0.0;
+double targetBearing = 0.0;
+double turnAngle = 0.0;
+bool navigationValid = false;
+
+// Button Tracking States
+bool lastHoleUpState   = HIGH;
+bool lastHoleDownState = HIGH;
+bool lastRefreshState  = HIGH;
+
+// ---------- MATH HELPERS ----------
+double degToRad(double degrees) { return degrees * PI / 180.0; }
+double radToDeg(double radians) { return radians * 180.0 / PI; }
+
+double normaliseDegrees(double degrees) {
+  while (degrees &lt; 0) degrees += 360.0;
+  while (degrees &gt;= 360.0) degrees -= 360.0;
+  return degrees;
+}
+
+double calculateDistanceYards(double lat1, double lon1, double lat2, double lon2) {
+  const double earthRadiusMetres = 6371000.0;
+
+  double dLat = degToRad(lat2 - lat1);
+  double dLon = degToRad(lon2 - lon1);
+
+  double a = sin(dLat / 2) * sin(dLat / 2) +
+             cos(degToRad(lat1)) * cos(degToRad(lat2)) *
+             sin(dLon / 2) * sin(dLon / 2);
+
+  double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+  double distanceMetres = earthRadiusMetres * c;
+
+  return distanceMetres / 0.9144;
+}
+
+double calculateTargetBearing(double lat1, double lon1, double lat2, double lon2) {
+  double longitudeDifference = degToRad(lon2 - lon1);
+
+  double y = sin(longitudeDifference) * cos(degToRad(lat2));
+  double x = cos(degToRad(lat1)) * sin(degToRad(lat2)) -
+             sin(degToRad(lat1)) * cos(degToRad(lat2)) *
+             cos(longitudeDifference);
+
+  return normaliseDegrees(radToDeg(atan2(y, x)));
+}
+
+const char *turnDirection() {
+  if (fabs(turnAngle) &lt; 8) return "ON TARGET";
+  if (turnAngle &gt; 0) return "TURN RIGHT";
+  return "TURN LEFT";
+}
+
+int getGPSBars() {
+  if (!gps.satellites.isValid()) return 0;
+  int satellites = gps.satellites.value();
+
+  if (satellites &lt;= 3) return 1;
+  if (satellites &lt;= 6) return 2;
+  if (satellites &lt;= 9) return 3;
+  return 4;
+}
+
+// ---------- CLUB RECOMMENDATION LOGIC ----------
+const char* getClubRecommendation(double yards) {
+  if (yards &gt; 220) return "DRIVER / 3-WOOD";
+  if (yards &gt; 195) return "4-HYBRID / 4-IRON";
+  if (yards &gt; 180) return "5-IRON";
+  if (yards &gt; 165) return "6-IRON";
+  if (yards &gt; 150) return "7-IRON";
+  if (yards &gt; 135) return "8-IRON";
+  if (yards &gt; 120) return "9-IRON";
+  if (yards &gt; 100) return "PITCHING WEDGE";
+  if (yards &gt; 60)  return "GAP / SAND WEDGE";
+  return "LOB WEDGE / PUTT";
+}
+
+// ---------- NAVIGATION & DRAWING ----------
+void updateNavigation() {
+  if (!gps.location.isValid() || !compassOK) {
+    navigationValid = false;
+    return;
+  }
+
+  double currentLat = gps.location.lat();
+  double currentLon = gps.location.lng();
+
+  double targetLat = courseHoles[currentHole - 1].lat;
+  double targetLon = courseHoles[currentHole - 1].lon;
+
+  distanceToTargetYards = calculateDistanceYards(currentLat, currentLon, targetLat, targetLon);
+  targetBearing         = calculateTargetBearing(currentLat, currentLon, targetLat, targetLon);
+
+  turnAngle = targetBearing - heading;
+
+  if (turnAngle &gt; 180)  turnAngle -= 360;
+  if (turnAngle &lt; -180) turnAngle += 360;
+
+  navigationValid = true;
+}
+
+void drawStaticLayout() {
+  tft.fillRect(0, 0, 240, 55, COLOR_HEADER);
+
+  tft.setFont(&amp;FreeSansBold9pt7b);
+  tft.setTextColor(COLOR_RICHER_GOLD);
+  tft.setCursor(10, 24);
+  tft.print(COURSE_NAME);
+
+  tft.setFont(&amp;FreeSans9pt7b);
+  tft.setTextColor(ST77XX_WHITE);
+  tft.setCursor(10, 48);
+  tft.print("HOLE ");
+  tft.print(currentHole);
+  tft.print("   |   PAR ");
+  tft.print(courseHoles[currentHole - 1].par);
+
+  tft.drawFastHLine(0, 125, 240, COLOR_GRIDLINE);
+
+  tft.setFont(&amp;Picopixel);
+  tft.setTextColor(COLOR_WARM_RED);
+  tft.setCursor(15, 136);
+  tft.print("TARGET BRG");
+
+  tft.setTextColor(COLOR_RICHER_GOLD);
+  tft.setCursor(130, 136);
+  tft.print("YOUR HDG");
+
+  tft.drawFastHLine(0, 175, 240, COLOR_GRIDLINE);
+
+  tft.setTextColor(COLOR_TEXT_MUTED);
+  tft.setCursor(15, 188);
+  tft.print("TO FIXED TARGET");
+
+  tft.drawFastHLine(0, 260, 240, COLOR_GRIDLINE);
+
+  tft.fillRect(10, 267, 220, 48, COLOR_PANEL_BG);
+  tft.drawRect(10, 267, 220, 48, COLOR_HEADER);
+
+  tft.setTextColor(COLOR_RICHER_GOLD);
+  tft.setCursor(20, 278);
+  tft.print("CADDIE RECOMMENDATION");
+}
+
+void updateYardageData() {
+  tft.fillRect(5, 60, 145, 55, COLOR_BG);
+  tft.fillRect(15, 142, 85, 30, COLOR_BG);
+  tft.fillRect(130, 142, 85, 30, COLOR_BG);
+
+  // Distance
+  tft.setFont(&amp;FreeSansBold24pt7b);
+  tft.setTextColor(ST77XX_WHITE);
+  tft.setCursor(5, 105);
+
+  if (navigationValid) {
+    tft.print((int)round(distanceToTargetYards));
+  } else {
+    tft.print("---");
+  }
+
+  tft.setFont(&amp;FreeSans9pt7b);
+  tft.setTextColor(COLOR_RICHER_GOLD);
+  tft.setCursor(122, 97);
+  tft.print("YDS");
+
+  // Flag Graphic
+  int flagX = 185;
+  int flagY = 60;
+
+  tft.drawFastVLine(flagX, flagY, 45, ST77XX_WHITE);
+  tft.fillRect(flagX - 5, flagY + 43, 11, 2, ST77XX_WHITE);
+  tft.fillTriangle(
+    flagX + 1, flagY,
+    flagX + 16, flagY + 5,
+    flagX + 1, flagY + 11,
+    COLOR_RICHER_GOLD
+  );
+
+  // Target bearing
+  tft.setFont(&amp;FreeSansBold12pt7b);
+  tft.setTextColor(ST77XX_WHITE);
+  tft.setCursor(15, 162);
+
+  if (navigationValid) {
+    tft.print((int)round(targetBearing));
+  } else {
+    tft.print("---");
+  }
+
+  // Heading
+  tft.setCursor(130, 162);
+  if (compassOK) {
+    tft.print((int)round(heading));
+  } else {
+    tft.print("---");
+  }
+}
+
+void updateHardwareStatus() {
+  tft.fillRect(15, 282, 210, 30, COLOR_PANEL_BG);
+  tft.fillRect(187, 30, 50, 20, COLOR_HEADER);
+
+  if (navigationValid) {
+    tft.setFont(&amp;Picopixel);
+    tft.setTextColor(COLOR_TEXT_MUTED);
+    tft.setCursor(20, 292);
+    tft.print(turnDirection());
+    tft.print(" ");
+    tft.print((int)round(fabs(turnAngle)));
+    tft.print(" DEG");
+
+    tft.setFont(&amp;FreeSansBold9pt7b);
+    tft.setTextColor(ST77XX_WHITE);
+    tft.setCursor(20, 308);
+    tft.print(getClubRecommendation(distanceToTargetYards));
+  } else {
+    tft.setFont(&amp;FreeSansBold9pt7b);
+    tft.setTextColor(COLOR_RICHER_GOLD);
+    tft.setCursor(20, 302);
+    tft.print("WAITING FOR GPS...");
+  }
+
+  int gpsBars = getGPSBars();
+  int startX = 187;
+  int startY = 46;
+
+  for (int i = 0; i &lt; 4; i++) {
+    int barHeight = (i + 1) * 3;
+    int barX = startX + (i * 4);
+    int barY = startY - barHeight;
+
+    if (i &lt; gpsBars) {
+      tft.fillRect(barX, barY, 2, barHeight, COLOR_RICHER_GOLD);
+    } else {
+      tft.fillRect(barX, barY, 2, barHeight, COLOR_GRIDLINE);
+    }
+  }
+
+  tft.setFont(&amp;Picopixel);
+  tft.setTextColor(ST77XX_WHITE);
+  tft.setCursor(209, 44);
+  tft.print("GPS");
+}
+
+void drawCompassLine() {
+  int centerX = 120;
+  int centerY = 220;
+  int dialRadius = 25;
+  int lineLength = 22;
+  int labelRadius = 32;
+
+  tft.fillRect(centerX - 38, centerY - 38, 76, 76, COLOR_BG);
+  tft.drawCircle(centerX, centerY, dialRadius, COLOR_GRIDLINE);
+
+  tft.setFont(&amp;Picopixel);
+  tft.setTextColor(COLOR_TEXT_MUTED);
+
+  tft.setCursor(centerX - 2, centerY - labelRadius + 2); tft.print("N");
+  tft.setCursor(centerX + labelRadius - 2, centerY + 2); tft.print("E");
+  tft.setCursor(centerX - 2, centerY + labelRadius + 2); tft.print("S");
+  tft.setCursor(centerX - labelRadius - 2, centerY + 2); tft.print("W");
+
+  if (!navigationValid) return;
+
+  float angle = degToRad(turnAngle - 90.0);
+  int edgeX = centerX + lineLength * cos(angle);
+  int edgeY = centerY + lineLength * sin(angle);
+
+  tft.drawLine(centerX, centerY, edgeX, edgeY, COLOR_RICHER_GOLD);
+  tft.drawLine(centerX + 1, centerY, edgeX + 1, edgeY, COLOR_RICHER_GOLD);
+  tft.drawLine(centerX, centerY + 1, edgeX, edgeY + 1, COLOR_RICHER_GOLD);
+
+  tft.fillCircle(centerX, centerY, 3, COLOR_GRIDLINE);
+}
+
+void printToConsole() {
+  Serial.println();
+  Serial.print("----- HOLE ");
+  Serial.print(currentHole);
+  Serial.println(" -----");
+
+  Serial.print("Heading: ");
+  Serial.println(heading, 1);
+
+  if (navigationValid) {
+    Serial.print("Distance: ");
+    Serial.print(distanceToTargetYards, 1);
+    Serial.println(" yards");
+
+    Serial.print("Target bearing: ");
+    Serial.println(targetBearing, 1);
+
+    Serial.print("Instruction: ");
+    Serial.print(turnDirection());
+    Serial.print(" ");
+    Serial.print(fabs(turnAngle), 1);
+    Serial.println(" degrees");
+
+    Serial.print("Recommended Club: ");
+    Serial.println(getClubRecommendation(distanceToTargetYards));
+  } else {
+    Serial.println("Waiting for GPS fix");
+  }
+}
+
+void showRefreshIndicator() {
+  tft.fillRoundRect(140, 8, 40, 16, 3, COLOR_RICHER_GOLD);
+  tft.setFont(&amp;Picopixel);
+  tft.setTextColor(COLOR_HEADER);
+  tft.setCursor(144, 19);
+  tft.print("SYNC");
+
+  delay(120);
+
+  tft.fillRect(140, 8, 40, 16, COLOR_HEADER);
+}
+
+void updateEverything() {
+  updateNavigation();
+  updateYardageData();
+  updateHardwareStatus();
+  drawCompassLine();
+  printToConsole();
+}
+
+// ---------- SETUP & LOOP ----------
+void setup() {
+  Serial.begin(9600);
+
+  pinMode(BTN_HOLE_UP, INPUT_PULLUP);
+  pinMode(BTN_HOLE_DOWN, INPUT_PULLUP);
+  pinMode(BTN_REFRESH, INPUT_PULLUP);
+
+  pinMode(TFT_BACKLIGHT, OUTPUT);
+  digitalWrite(TFT_BACKLIGHT, HIGH);
+
+  tft.init(240, 320);
+  tft.setRotation(0);
+  tft.fillScreen(COLOR_BG);
+
+  gpsSerial.begin(9600);
+  Wire.begin();
+
+  if (compass.begin()) {
+    compass.setMode(QMC5883P_MODE_CONTINUOUS);
+    compass.setODR(QMC5883P_ODR_50HZ);
+    compass.setRange(QMC5883P_RANGE_8G);
+    compassOK = true;
+  }
+
+  drawStaticLayout();
+  updateEverything();
+}
+
+void loop() {
+  // 1. Process incoming GPS data continuously
+  while (gpsSerial.available()) {
+    gps.encode(gpsSerial.read());
+  }
+
+  // 2. Read calibrated and aligned compass sensor
+  if (compassOK &amp;&amp; compass.isDataReady()) {
+    int16_t rawX, rawY, rawZ;
+    if (compass.getRawMagnetic(&amp;rawX, &amp;rawY, &amp;rawZ)) {
+      // Apply hard-iron offset calibration
+      float x = (float)rawX - X_OFFSET;
+      float y = (float)rawY - Y_OFFSET;
+      float z = (float)rawZ - Z_OFFSET;
+
+      // Calculate base angle
+      float tempHeading = atan2(y, x) * 180.0 / PI;
+
+      // Apply +90 deg alignment shift &amp; declination
+      tempHeading += 90.0;
+      tempHeading += MAGNETIC_DECLINATION_DEG;
+
+      // Flip East and West across N-S axis
+      tempHeading = 360.0 - tempHeading;
+
+      // Keep within 0 to 359 degrees
+      heading = normaliseDegrees(tempHeading);
+    }
+  }
+
+  // 3. Read Buttons
+  bool currentHoleUp   = digitalRead(BTN_HOLE_UP);
+  bool currentHoleDown = digitalRead(BTN_HOLE_DOWN);
+  bool currentRefresh  = digitalRead(BTN_REFRESH);
+
+  if (lastHoleUpState == HIGH &amp;&amp; currentHoleUp == LOW) {
+    currentHole++;
+    if (currentHole &gt; 18) currentHole = 1;
+
+    drawStaticLayout();
+    showRefreshIndicator();
+    updateEverything();
+    delay(40);
+  }
+
+  if (lastHoleDownState == HIGH &amp;&amp; currentHoleDown == LOW) {
+    currentHole--;
+    if (currentHole &lt; 1) currentHole = 18;
+
+    drawStaticLayout();
+    showRefreshIndicator();
+    updateEverything();
+    delay(40);
+  }
+
+  if (lastRefreshState == HIGH &amp;&amp; currentRefresh == LOW) {
+    showRefreshIndicator();
+    updateEverything();
+    delay(40);
+  }
+
+  lastHoleUpState   = currentHoleUp;
+  lastHoleDownState = currentHoleDown;
+  lastRefreshState  = currentRefresh;
 }</code></pre>
                 </div>
             </div>
@@ -988,10 +1698,10 @@
                     <div>
                         <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.75rem;">Circuit Architecture & Layout Strategy</h3>
                         <ul class="design-list">
-                            <li><strong>Schematic Capture & Routing:</strong> Transitioned the point-to-point perfboard prototype into a unified 2-layer PCB layout (KiCad / EasyEDA) with dedicated ground planes to minimize high-frequency SPI noise coupling into the GNSS RF front-end.</li>
-                            <li><strong>Mixed-Voltage Level Shifting:</strong> Integrated resistive voltage dividers and 3.3V regulation to safely interface the 5V ATmega328P logic outputs with the 3.3V ST7789V TFT controller.</li>
-                            <li><strong>Power Distribution & BMS:</strong> Routed wide power traces ($20\text{ mil}$) for the TP4056 Li-Ion charger, physical slide power switch, and decoupling capacitors ($100\text{ nF}$ ceramic + $10\text{ }\mu\text{F}$ bulk) adjacent to IC power pins.</li>
-                            <li><strong>Hardware Debouncing:</strong> Added RC filtering and pull-up networks on the tactile user push-buttons for clean state transitions on the course.</li>
+                            <li><strong>Multi-Bus Sensor Integration:</strong> Routed dedicated traces for 4-wire hardware SPI (`CS D10`, `DC D7`, `RST D8`), I2C magnetometer telemetry (`QMC5883P` at $50\text{ Hz}$), and `SoftwareSerial` UART (`D2/D3` at $9600\text{ baud}$)[cite: 7].</li>
+                            <li><strong>Hard-Iron Magnetic Isolation:</strong> Kept high-current backlight (`D9`) and power traces away from the QMC5883P sensor package, paired with firmware hard-iron offset calibration ($X = -1282.5, Y = -283.0, Z = +1157.5$)[cite: 7].</li>
+                            <li><strong>Mixed-Voltage Level Shifting:</strong> Integrated resistive voltage dividers to safely step 5V ATmega328P SPI signals down to 3.3V logic for the ST7789V display controller.</li>
+                            <li><strong>Power Distribution & BMS:</strong> Routed wide power traces ($20\text{ mil}$) for the TP4056 Li-Ion charger, physical power switch, and decoupling capacitors ($100\text{ nF}$ ceramic + $10\text{ }\mu\text{F}$ bulk) adjacent to IC power pins.</li>
                         </ul>
                     </div>
                     <div class="media-card">
@@ -1001,7 +1711,7 @@
                         </div>
                         <div class="media-info">
                             <h3>2-Layer PCB Layout & Ground Pour</h3>
-                            <p>Component placement isolating the GNSS ceramic patch antenna from switching display traces.</p>
+                            <p>Component placement isolating the GNSS patch antenna and QMC5883P compass from switching SPI traces.</p>
                         </div>
                     </div>
                 </div>
@@ -1013,9 +1723,9 @@
                     <div>
                         <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.75rem;">SolidWorks Parametric Packaging</h3>
                         <ul class="design-list">
-                            <li><strong>Internal Tolerance Stack-Up:</strong> Modeled exact 3D step assemblies of the ST7789V LCD bezel, USB-C charging port cutout, tactile switch plungers, and Li-Ion pouch cell clearance.</li>
+                            <li><strong>Internal Tolerance Stack-Up:</strong> Modeled exact 3D step assemblies of the 2.0" ST7789V LCD bezel, USB-C charging port cutout, three tactile push-button plungers (`D4`, `D5`, `A3`), and Li-Ion pouch cell clearance[cite: 7].</li>
                             <li><strong>Heat-Set Brass Threaded Inserts:</strong> Designed dedicated cylindrical bosses sized for M2.5 knurled brass inserts installed at $210^\circ\text{C}$, enabling repeated disassembly without stripping printed threads.</li>
-                            <li><strong>Antenna & Display Ergonomics:</strong> Positioned the GNSS module directly beneath the top housing wall with an unobstructed sky view while angling the 2.0" screen for glare-free outdoor reading.</li>
+                            <li><strong>Compass & GNSS Alignment:</strong> Indexed the QMC5883P PCB mounting bosses orthogonally to the housing centerline (matched to the firmware's $+90^\circ$ alignment shift) with an unobstructed top sky view for the GNSS antenna[cite: 7].</li>
                             <li><strong>Print Orientation & DFM:</strong> Engineered split-shell mating lips with $0.25\text{ mm}$ radial clearance for support-free FDM printing in PLA.</li>
                         </ul>
                     </div>
@@ -1026,7 +1736,7 @@
                         </div>
                         <div class="media-info">
                             <h3>SolidWorks Clamshell Assembly</h3>
-                            <p>Exploded view detailing PCB mounting standoffs, button actuators, and brass insert bosses.</p>
+                            <p>Exploded view detailing PCB mounting standoffs, tactile button actuators, and brass insert bosses.</p>
                         </div>
                     </div>
                 </div>
@@ -1049,32 +1759,38 @@
                 <tbody>
                     <tr>
                         <td><strong>ST7789V 2.0" IPS LCD</strong></td>
-                        <td>Backlight 80% brightness + active SPI updates</td>
+                        <td>Backlight `D9` HIGH + active SPI partial redraws[cite: 7]</td>
                         <td>$48\text{ mA}$</td>
-                        <td>$44.9\%$</td>
+                        <td>$43.2\%$</td>
                     </tr>
                     <tr>
                         <td><strong>GNSS / GPS Receiver</strong></td>
-                        <td>Continuous $1\text{ Hz}$ tracking (9+ satellites locked)</td>
+                        <td>Continuous $9600\text{ baud}$ NMEA tracking (9+ satellites)[cite: 7]</td>
                         <td>$36\text{ mA}$</td>
-                        <td>$33.6\%$</td>
+                        <td>$32.4\%$</td>
                     </tr>
                     <tr>
                         <td><strong>ATmega328P MCU</strong></td>
-                        <td>$16\text{ MHz}$ active processing + Haversine math</td>
+                        <td>$16\text{ MHz}$ active processing + Haversine trig math[cite: 7]</td>
                         <td>$18\text{ mA}$</td>
-                        <td>$16.8\%$</td>
+                        <td>$16.2\%$</td>
+                    </tr>
+                    <tr>
+                        <td><strong>QMC5883P Compass</strong></td>
+                        <td>Continuous mode at $50\text{ Hz}$ ODR ($\pm 8\text{G}$ range)[cite: 7]</td>
+                        <td>$4\text{ mA}$</td>
+                        <td>$3.6\%$</td>
                     </tr>
                     <tr>
                         <td><strong>Boost Converter & Quiescent</strong></td>
-                        <td>Voltage regulation & pull-up network losses</td>
+                        <td>Voltage regulation & `INPUT_PULLUP` losses[cite: 7]</td>
                         <td>$5\text{ mA}$</td>
-                        <td>$4.7\%$</td>
+                        <td>$4.5\%$</td>
                     </tr>
                     <tr style="background-color: rgba(56, 189, 248, 0.08);">
                         <td><strong>Total System Draw</strong></td>
-                        <td><strong>Estimated Runtime: $(1200 \times 0.85) / 107 \approx 9.5\text{ Hours}$</strong></td>
-                        <td><strong>$107\text{ mA}$</strong></td>
+                        <td><strong>Estimated Runtime: $(1200 \times 0.85) / 111 \approx 9.2\text{ Hours}$</strong></td>
+                        <td><strong>$111\text{ mA}$</strong></td>
                         <td><strong>$100\%$</strong></td>
                     </tr>
                 </tbody>
@@ -1091,9 +1807,10 @@
                     <h3><i class="fa-solid fa-terminal"></i> Embedded Software & IDEs</h3>
                     <div class="skill-pill-group">
                         <span class="skill-pill">Embedded C++</span>
-                        <span class="skill-pill">VS Code + PlatformIO</span>
-                        <span class="skill-pill">Arduino IDE</span>
-                        <span class="skill-pill">AVR PROGMEM Optimization</span>
+                        <span class="skill-pill">Arduino IDE / VS Code</span>
+                        <span class="skill-pill">Adafruit_GFX / ST7789</span>
+                        <span class="skill-pill">TinyGPSPlus</span>
+                        <span class="skill-pill">Adafruit_QMC5883P</span>
                         <span class="skill-pill">Git / GitHub</span>
                     </div>
                 </div>
@@ -1104,9 +1821,9 @@
                         <span class="skill-pill">KiCad / EasyEDA</span>
                         <span class="skill-pill">Schematic Capture</span>
                         <span class="skill-pill">2-Layer PCB Routing</span>
-                        <span class="skill-pill">SPI & UART Buses</span>
+                        <span class="skill-pill">SPI, I2C & UART Buses</span>
+                        <span class="skill-pill">Hard-Iron Calibration</span>
                         <span class="skill-pill">Li-Ion BMS (TP4056)</span>
-                        <span class="skill-pill">Perfboard Soldering</span>
                     </div>
                 </div>
 
@@ -1125,9 +1842,9 @@
                     <h3><i class="fa-solid fa-wave-square"></i> Bench Testing & Validation</h3>
                     <div class="skill-pill-group">
                         <span class="skill-pill">Digital Oscilloscope</span>
-                        <span class="skill-pill">SPI Signal Verification</span>
-                        <span class="skill-pill">NMEA Telemetry Parsing</span>
-                        <span class="skill-pill">Multimeter Diagnostics</span>
+                        <span class="skill-pill">SPI & I2C Logic Probing</span>
+                        <span class="skill-pill">Magnetometer Calibration</span>
+                        <span class="skill-pill">Serial Telemetry Debug</span>
                         <span class="skill-pill">Current Draw Profiling</span>
                     </div>
                 </div>
@@ -1139,8 +1856,8 @@
             <h2><i class="fa-solid fa-lightbulb"></i> Key Engineering Takeaways</h2>
             <div class="learned-grid">
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-memory"></i> <span>SRAM Optimization on ATmega328P</span></h3>
-                    <p>Constrained dynamic memory ($2\text{ KB}$ SRAM) required storing course coordinate lookup tables in `PROGMEM` flash memory and avoiding dynamic `String` heap fragmentation during SPI screen refreshes.</p>
+                    <h3><i class="fa-solid fa-compass"></i> <span>Magnetometer Hard-Iron Calibration</span></h3>
+                    <p>Eliminated heading distortion caused by nearby steel battery casings and PCB traces by applying 3-axis hard-iron offsets ($X = -1282.5, Y = -283.0, Z = +1157.5$) and $+90^\circ$ frame alignment[cite: 7].</p>
                 </div>
 
                 <div class="learned-card">
@@ -1154,18 +1871,18 @@
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-satellite"></i> <span>NMEA Parsing & Cold-Start Filtering</span></h3>
-                    <p>Implemented dilution-of-precision (HDOP) filtering in firmware to prevent erratic yardage jumps while the GNSS receiver acquires initial satellite lock.</p>
+                    <h3><i class="fa-solid fa-gauge-high"></i> <span>Flicker-Free Partial SPI Redraws</span></h3>
+                    <p>Avoided full-screen clearing on the $240 \times 320$ display by repainting only the dynamic yardage, bearing, and compass dial bounding boxes each update cycle[cite: 7].</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-gauge-high"></i> <span>Partial Redraw SPI Frame Pacing</span></h3>
-                    <p>Eliminated visible display flicker by updating only modified numeric bounding boxes over hardware SPI rather than clearing the full $240 \times 320$ pixel buffer each cycle.</p>
+                    <h3><i class="fa-solid fa-satellite"></i> <span>Non-Blocking NMEA Stream Parsing</span></h3>
+                    <p>Continuously polled `gpsSerial.available()` in the main `loop()` so incoming $9600\text{ baud}$ NMEA sentences are never dropped during $50\text{ Hz}$ I2C compass reads or button polling[cite: 7].</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-wifi"></i> <span>GNSS RF Ground-Plane Isolation</span></h3>
-                    <p>Maintained a copper keep-out zone beneath the ceramic GNSS patch antenna during PCB layout to prevent ground-plane detuning and preserve satellite acquisition sensitivity.</p>
+                    <h3><i class="fa-solid fa-wifi"></i> <span>GNSS & Compass PCB Keep-Out Zones</span></h3>
+                    <p>Maintained copper keep-out regions beneath the ceramic GNSS patch antenna and isolated switching SPI lines from the QMC5883P magnetometer during PCB layout.</p>
                 </div>
             </div>
         </div>
@@ -1195,52 +1912,151 @@
         clickedBtn.classList.add('active');
     }
 
-    // Interactive Handheld LCD Simulator Data
-    const simHoles = [
-        { num: "01", par: 4, f: 142, c: 154, b: 167, coords: "54.01055°N, 002.78501°W // HDOP 0.9" },
-        { num: "02", par: 3, f: 168, c: 179, b: 191, coords: "54.01218°N, 002.78340°W // HDOP 0.8" },
-        { num: "03", par: 5, f: 215, c: 228, b: 242, coords: "54.01490°N, 002.78112°W // HDOP 0.9" },
-        { num: "04", par: 4, f: 118, c: 129, b: 141, coords: "54.01382°N, 002.77905°W // HDOP 1.0" },
-        { num: "05", par: 4, f: 184, c: 196, b: 209, coords: "54.01140°N, 002.77822°W // HDOP 0.8" }
+    // Copy Full Firmware Code to Clipboard
+    function copyFirmwareCode() {
+        const codeText = document.getElementById('firmware-source').innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+            const btn = document.getElementById('copy-btn');
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Code';
+            }, 2000);
+        });
+    }
+
+    // Exact 18-Hole Data from GolfCode.txt
+    const courseHoles = [
+        { lat: 54.044854, lon: -2.803088, par: 4 }, // Hole 1
+        { lat: 54.045041, lon: -2.803078, par: 4 }, // Hole 2
+        { lat: 54.045191, lon: -2.803395, par: 3 }, // Hole 3
+        { lat: 54.044964, lon: -2.803854, par: 5 }, // Hole 4
+        { lat: 54.044392, lon: -2.803148, par: 4 }, // Hole 5
+        { lat: 54.043930, lon: -2.803945, par: 4 }, // Hole 6
+        { lat: 54.043171, lon: -2.803174, par: 3 }, // Hole 7
+        { lat: 54.043545, lon: -2.802070, par: 5 }, // Hole 8
+        { lat: 54.043189, lon: -2.804043, par: 4 }, // Hole 9
+        { lat: 54.045239, lon: -2.801687, par: 4 }, // Hole 10
+        { lat: 54.046266, lon: -2.801508, par: 4 }, // Hole 11
+        { lat: 54.048097, lon: -2.806541, par: 3 }, // Hole 12
+        { lat: 54.044841, lon: -2.805492, par: 5 }, // Hole 13
+        { lat: 54.044874, lon: -2.803439, par: 4 }, // Hole 14
+        { lat: 54.044594, lon: -2.802670, par: 5 }, // Hole 15
+        { lat: 54.045257, lon: -2.802696, par: 3 }, // Hole 16
+        { lat: 54.045562, lon: -2.803126, par: 4 }, // Hole 17
+        { lat: 54.046074, lon: -2.799906, par: 4 }  // Hole 18
     ];
-    const pinModes = ["FRONT", "CENTER", "BACK"];
-    let simHoleIdx = 0;
-    let simPinIdx = 1; // Default to CENTER
+
+    // Simulated Player Tee/Fairway Position (~155 yds SE of Hole 12)
+    const simPlayerLat = 54.047210;
+    const simPlayerLon = -2.804950;
+
+    let simCurrentHole = 12; // Matches int currentHole = 12; in C++
+    let simHeading = 315;
+
+    function degToRad(deg) { return deg * Math.PI / 180.0; }
+    function radToDeg(rad) { return rad * 180.0 / Math.PI; }
+    function normaliseDegrees(deg) {
+        while (deg < 0) deg += 360.0;
+        while (deg >= 360.0) deg -= 360.0;
+        return deg;
+    }
+
+    function calculateDistanceYards(lat1, lon1, lat2, lon2) {
+        const R = 6371000.0;
+        const dLat = degToRad(lat2 - lat1);
+        const dLon = degToRad(lon2 - lon1);
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(degToRad(lat1)) * Math.cos(degToRad(lat2)) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return (R * c) / 0.9144;
+    }
+
+    function calculateTargetBearing(lat1, lon1, lat2, lon2) {
+        const dLon = degToRad(lon2 - lon1);
+        const y = Math.sin(dLon) * Math.cos(degToRad(lat2));
+        const x = Math.cos(degToRad(lat1)) * Math.sin(degToRad(lat2)) -
+                  Math.sin(degToRad(lat1)) * Math.cos(degToRad(lat2)) * Math.cos(dLon);
+        return normaliseDegrees(radToDeg(Math.atan2(y, x)));
+    }
+
+    function getClubRecommendation(yards) {
+        if (yards > 220) return "DRIVER / 3-WOOD";
+        if (yards > 195) return "4-HYBRID / 4-IRON";
+        if (yards > 180) return "5-IRON";
+        if (yards > 165) return "6-IRON";
+        if (yards > 150) return "7-IRON";
+        if (yards > 135) return "8-IRON";
+        if (yards > 120) return "9-IRON";
+        if (yards > 100) return "PITCHING WEDGE";
+        if (yards > 60)  return "GAP / SAND WEDGE";
+        return "LOB WEDGE / PUTT";
+    }
 
     function updateSimulator() {
-        const h = simHoles[simHoleIdx];
-        document.getElementById('sim-hole').textContent = `HOLE ${h.num}`;
-        document.getElementById('sim-par').textContent = `PAR ${h.par}`;
-        document.getElementById('sim-front').textContent = h.f;
-        document.getElementById('sim-center').textContent = h.c;
-        document.getElementById('sim-back').textContent = h.b;
-        document.getElementById('sim-coords').textContent = h.coords;
+        const target = courseHoles[simCurrentHole - 1];
+        const distYds = Math.round(calculateDistanceYards(simPlayerLat, simPlayerLon, target.lat, target.lon));
+        const brg = Math.round(calculateTargetBearing(simPlayerLat, simPlayerLon, target.lat, target.lon));
 
-        const mode = pinModes[simPinIdx];
-        document.getElementById('sim-target-label').textContent = `${mode} GREEN`;
-        
-        const mainVal = mode === "FRONT" ? h.f : (mode === "CENTER" ? h.c : h.b);
-        document.getElementById('sim-main-yards').textContent = mainVal;
+        let turnAngle = brg - simHeading;
+        if (turnAngle > 180) turnAngle -= 360;
+        if (turnAngle < -180) turnAngle += 360;
 
-        document.getElementById('box-front').classList.toggle('selected', mode === "FRONT");
-        document.getElementById('box-center').classList.toggle('selected', mode === "CENTER");
-        document.getElementById('box-back').classList.toggle('selected', mode === "BACK");
+        let turnDir = "ON TARGET";
+        if (Math.abs(turnAngle) >= 8) {
+            turnDir = turnAngle > 0 ? "TURN RIGHT" : "TURN LEFT";
+        }
+
+        // Update Header & Readouts
+        document.getElementById('tft-hole-par').textContent = `HOLE ${simCurrentHole}   |   PAR ${target.par}`;
+        document.getElementById('tft-yds').textContent = distYds;
+        document.getElementById('tft-brg').textContent = brg;
+        document.getElementById('tft-hdg').textContent = simHeading;
+        document.getElementById('tft-turn').textContent = `${turnDir} ${Math.round(Math.abs(turnAngle))} DEG`;
+        document.getElementById('tft-club').textContent = getClubRecommendation(distYds);
+
+        // Rotate Compass Needle (matches drawCompassLine)
+        const angleRad = degToRad(turnAngle - 90.0);
+        const edgeX = 38 + 22 * Math.cos(angleRad);
+        const edgeY = 38 + 22 * Math.sin(angleRad);
+        const needle = document.getElementById('tft-needle');
+        needle.setAttribute('x2', edgeX.toFixed(1));
+        needle.setAttribute('y2', edgeY.toFixed(1));
     }
 
-    function simNextHole() {
-        simHoleIdx = (simHoleIdx + 1) % simHoles.length;
+    function showSyncBadge() {
+        const badge = document.getElementById('tft-sync');
+        badge.classList.add('visible');
+        setTimeout(() => badge.classList.remove('visible'), 180);
+    }
+
+    function simHoleUp() {
+        simCurrentHole++;
+        if (simCurrentHole > 18) simCurrentHole = 1;
+        showSyncBadge();
         updateSimulator();
     }
 
-    function simPrevHole() {
-        simHoleIdx = (simHoleIdx - 1 + simHoles.length) % simHoles.length;
+    function simHoleDown() {
+        simCurrentHole--;
+        if (simCurrentHole < 1) simCurrentHole = 18;
+        showSyncBadge();
         updateSimulator();
     }
 
-    function simCyclePin() {
-        simPinIdx = (simPinIdx + 1) % pinModes.length;
+    function simRefresh() {
+        showSyncBadge();
         updateSimulator();
     }
+
+    function simSetHeading(val) {
+        simHeading = parseInt(val);
+        document.getElementById('slider-hdg-readout').textContent = `${simHeading}°`;
+        updateSimulator();
+    }
+
+    // Initialize Simulator on Hole 12
+    updateSimulator();
     </script>
 
 </body>
