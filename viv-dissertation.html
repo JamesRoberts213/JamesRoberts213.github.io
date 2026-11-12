@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VIV Energy Extraction | MEng Dissertation & Viva</title>
+    
+    <!-- Favicon / Tab Icon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -248,7 +252,7 @@
             color: var(--text-muted);
         }
 
-        /* Learned Grid */
+        /* Learned Grid (6 Items) */
         .learned-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -263,16 +267,22 @@
             padding: 1.25rem;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
         }
 
         .learned-card h3 {
             font-size: 1rem;
             color: var(--accent);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.65rem;
             display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            align-items: flex-start;
+            gap: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .learned-card h3 i {
+            margin-top: 0.2rem;
+            flex-shrink: 0;
         }
 
         .learned-card p {
@@ -540,37 +550,37 @@
             </div>
         </div>
 
-        <!-- Section 4: What I Learnt (6 Insights) -->
+        <!-- Section 4: What I Learnt (6 Engineering Insights) -->
         <div class="section">
             <h2><i class="fa-solid fa-lightbulb"></i> Critical Engineering Insights</h2>
             <div class="learned-grid">
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-chart-line"></i> CFD vs. Empirical Lock-in Discrepancies</h3>
+                    <h3><i class="fa-solid fa-chart-line"></i> <span>CFD vs. Empirical Lock-in Discrepancies</span></h3>
                     <p>Quantified how physical support rigidity and structural damping shift the true lock-in envelope relative to idealized 2D Fluent numerical models, proving the necessity of empirical boundary calibration.</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-wave-square"></i> Strain Gauge DAQ Signal Conditioning</h3>
+                    <h3><i class="fa-solid fa-wave-square"></i> <span>Strain Gauge DAQ Signal Conditioning</span></h3>
                     <p>Configured half-bridge Wheatstone bridge circuits ($GF = 2.08$) and dynamic signal filtering to isolate micro-strain mechanical deflections from ambient wind tunnel motor noise.</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-layer-group"></i> Hybrid Subtractive/Additive Manufacturing</h3>
+                    <h3><i class="fa-solid fa-layer-group"></i> <span>Hybrid Subtractive/Additive Manufacturing</span></h3>
                     <p>Optimized the stiffness-to-mass ratio by combining CNC waterjet-cut carbon steel flexure elements with FDM 3D-printed aerodynamic shell profiles.</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-comments"></i> Academic Defense & Data Synthesis</h3>
+                    <h3><i class="fa-solid fa-comments"></i> <span>Academic Defense & Data Synthesis</span></h3>
                     <p>Distilled multi-variable CFD datasets, structural frequency equations, and experimental strain records into a concise, defense-ready 15-minute viva presentation.</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-mesh-radial"></i> Near-Wall Grid Sensitivity ($y^+ \approx 1.13$)</h3>
+                    <h3><i class="fa-solid fa-border-all"></i> <span>Near-Wall Grid Sensitivity ($y^+ \approx 1.13$)</span></h3>
                     <p>Evaluated the critical impact of boundary layer inflation layer resolution on correctly predicting pressure-driven separation points under transient $k-\omega$ SST formulations.</p>
                 </div>
 
                 <div class="learned-card">
-                    <h3><i class="fa-solid fa-microchip"></i> ULP Energy Conversion Trade-Offs</h3>
+                    <h3><i class="fa-solid fa-microchip"></i> <span>ULP Energy Conversion Trade-Offs</span></h3>
                     <p>Demonstrated that broadening the structural resonant lock-in bandwidth yields superior operational reliability for remote sensor nodes compared to chasing narrow peak power output.</p>
                 </div>
             </div>
