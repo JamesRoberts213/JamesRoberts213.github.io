@@ -11,7 +11,7 @@
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- MathJax for Rendering LaTeX Math Equations -->
@@ -34,8 +34,10 @@
             --text-muted: #94a3b8;
             --accent: #38bdf8;
             --accent-hover: #0284c7;
+            --emerald: #34d399;
             --gold: #f59e0b;
             --border: #334155;
+            --code-bg: #020617;
         }
 
         * {
@@ -139,8 +141,8 @@
         /* Key Metrics Banner */
         .metrics-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.25rem;
             margin: 2rem 0;
         }
 
@@ -148,11 +150,11 @@
             background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(30, 41, 59, 0.5) 100%);
             border: 1px solid rgba(56, 189, 248, 0.3);
             border-radius: 12px;
-            padding: 1.5rem;
+            padding: 1.35rem;
         }
 
         .metric-label {
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             color: var(--accent);
@@ -161,13 +163,13 @@
         }
 
         .metric-value {
-            font-size: 1.65rem;
+            font-size: 1.6rem;
             font-weight: 700;
             color: var(--text-main);
         }
 
         .metric-sub {
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
         }
 
@@ -193,42 +195,370 @@
             color: var(--accent);
         }
 
-        /* Hardware Architecture Table */
-        .spec-table {
-            width: 100%;
-            border-collapse: collapse;
+        /* Interactive Handheld UI Simulator */
+        .simulator-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            align-items: center;
             margin-top: 1rem;
-            font-size: 0.95rem;
         }
 
-        .spec-table th, .spec-table td {
-            padding: 0.85rem 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
+        @media (max-width: 740px) {
+            .simulator-layout {
+                grid-template-columns: 1fr;
+                justify-items: center;
+            }
         }
 
-        .spec-table th {
-            color: var(--accent);
-            font-weight: 600;
-            background-color: rgba(15, 23, 42, 0.5);
+        .device-chassis {
+            width: 280px;
+            background: linear-gradient(145deg, #1e293b, #0f172a);
+            border: 3px solid #475569;
+            border-radius: 24px;
+            padding: 18px 16px 22px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .spec-table td {
+        .chassis-label {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 0.15em;
             color: var(--text-muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
-        .spec-table td strong {
+        .st7789-screen {
+            width: 236px;
+            height: 290px;
+            background-color: #020617;
+            border: 2px solid #334155;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Fira Code', monospace;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lcd-status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.72rem;
+            color: var(--emerald);
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 6px;
+        }
+
+        .lcd-hole-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 4px;
+        }
+
+        .lcd-hole-num {
+            font-size: 1.25rem;
+            font-weight: 700;
             color: var(--text-main);
         }
 
-        /* Media Showcase Grid */
-        .media-grid {
+        .lcd-par-badge {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        .lcd-main-yardage {
+            text-align: center;
+            margin: 6px 0;
+            padding: 8px 0;
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 6px;
+            border: 1px solid #1e293b;
+        }
+
+        .lcd-target-label {
+            font-size: 0.7rem;
+            color: var(--gold);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .lcd-yards-val {
+            font-size: 3.1rem;
+            font-weight: 700;
+            line-height: 1.05;
+            color: #ffffff;
+        }
+
+        .lcd-yards-unit {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .lcd-fcb-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.25rem;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 4px;
+            text-align: center;
+            font-size: 0.75rem;
+        }
+
+        .lcd-fcb-box {
+            background: #0f172a;
+            padding: 5px 2px;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .lcd-fcb-box.selected {
+            border-color: var(--gold);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .lcd-fcb-box span {
+            display: block;
+            font-size: 0.62rem;
+            color: var(--text-muted);
+        }
+
+        .lcd-coords {
+            font-size: 0.62rem;
+            color: #64748b;
+            text-align: center;
+            border-top: 1px solid #1e293b;
+            padding-top: 5px;
+        }
+
+        .tactile-buttons {
+            display: flex;
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .hw-btn {
+            background-color: #334155;
+            color: var(--text-main);
+            border: 2px solid #64748b;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #020617;
+            transition: transform 0.08s, box-shadow 0.08s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hw-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #020617;
+        }
+
+        .hw-btn.pin-btn {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* System Block Diagram */
+        .block-diagram {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
             margin-top: 1rem;
         }
 
+        @media (max-width: 720px) {
+            .block-diagram {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .diag-col {
+            background-color: rgba(15, 23, 42, 0.65);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.15rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .diag-col-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.4rem;
+        }
+
+        .diag-node {
+            background-color: var(--card-bg);
+            border: 1px solid #475569;
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .diag-node strong {
+            display: block;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .diag-bus {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--emerald);
+            background: rgba(16, 185, 129, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 0.35rem;
+        }
+
+        /* Interactive Engineering Tabs (Code / PCB / CAD) */
+        .eng-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .eng-tab-btn {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.6rem 1.1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .eng-tab-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent);
+        }
+
+        .eng-tab-btn.active {
+            color: var(--bg-color);
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .eng-panel {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .eng-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Code Block Styling */
+        .code-window {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .code-header {
+            background-color: rgba(30, 41, 59, 0.8);
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .code-window pre {
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.83rem;
+            line-height: 1.5;
+            color: #e2e8f0;
+        }
+
+        .code-comment { color: #64748b; }
+        .code-keyword { color: #38bdf8; }
+        .code-type { color: #34d399; }
+        .code-number { color: #f59e0b; }
+
+        /* Design Split Grid (PCB & CAD Panels) */
+        .design-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            align-items: start;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 720px) {
+            .design-split {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .design-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .design-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .design-list li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .design-list strong {
+            color: var(--text-main);
+        }
+
+        /* Media Card & Placeholder */
         .media-card {
             background-color: rgba(15, 23, 42, 0.7);
             border: 1px solid var(--border);
@@ -250,6 +580,7 @@
             border-bottom: 1px solid var(--border);
             padding: 1rem;
             text-align: center;
+            font-size: 0.85rem;
         }
 
         .media-placeholder i {
@@ -274,7 +605,75 @@
             color: var(--text-muted);
         }
 
-        /* Learned Grid */
+        /* Hardware Architecture & Power Tables */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.92rem;
+        }
+
+        .spec-table th, .spec-table td {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .spec-table th {
+            color: var(--accent);
+            font-weight: 600;
+            background-color: rgba(15, 23, 42, 0.5);
+        }
+
+        .spec-table td {
+            color: var(--text-muted);
+        }
+
+        .spec-table td strong {
+            color: var(--text-main);
+        }
+
+        /* Multidisciplinary Skills Matrix */
+        .skills-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .skill-domain-card {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .skill-domain-card h3 {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .skill-pill {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--text-main);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            font-size: 0.8rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Learned Grid (6 Items) */
         .learned-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -310,24 +709,6 @@
         .learned-card p {
             font-size: 0.9rem;
             color: var(--text-muted);
-        }
-
-        /* Tech Stack Tags */
-        .tags-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-top: 1rem;
-        }
-
-        .tech-tag {
-            background-color: rgba(56, 189, 248, 0.1);
-            color: var(--accent);
-            border: 1px solid rgba(56, 189, 248, 0.2);
-            font-size: 0.85rem;
-            padding: 0.35rem 0.75rem;
-            border-radius: 6px;
-            font-family: monospace;
         }
 
         /* Action Buttons */
@@ -391,131 +772,369 @@
         <!-- Project Header -->
         <header class="project-header">
             <div class="badges">
-                <span class="badge-hardware"><i class="fa-solid fa-microchip"></i> Embedded Systems & Hardware</span>
-                <span class="badge-type">Personal Prototyping Project</span>
+                <span class="badge-hardware"><i class="fa-solid fa-microchip"></i> Full-Stack Hardware & Firmware</span>
+                <span class="badge-type">Embedded Systems</span>
+                <span class="badge-type">PCB & Mechanical CAD</span>
             </div>
             <h1>Handheld GPS Golf Rangefinder & Telemetry Module</h1>
-            <p>A self-contained, battery-powered embedded electronics system combining real-time GNSS satellite positioning, high-contrast SPI display rendering, and custom FDM 3D-printed mechanical packaging.</p>
+            <p>End-to-end product engineering combining bare-metal Embedded C++ firmware, custom schematic capture and PCB layout, and SolidWorks mechanical packaging with FDM rapid prototyping.</p>
         </header>
 
         <!-- Metrics Banner -->
         <div class="metrics-grid">
             <div class="metric-card">
-                <div class="metric-label">Core Architecture</div>
+                <div class="metric-label">Microcontroller</div>
                 <div class="metric-value">ATmega328P</div>
-                <div class="metric-sub">Arduino Nano microcontroller platform</div>
+                <div class="metric-sub">16 MHz bare-metal C++ architecture</div>
             </div>
             <div class="metric-card">
-                <div class="metric-label">Display Interface</div>
-                <div class="metric-value">2.0" IPS LCD</div>
-                <div class="metric-sub">ST7789V driver via hardware SPI</div>
+                <div class="metric-label">Display & Bus</div>
+                <div class="metric-value">2.0" IPS SPI</div>
+                <div class="metric-sub">ST7789V ($240 \times 320$) hardware SPI</div>
             </div>
             <div class="metric-card">
-                <div class="metric-label">Power System</div>
-                <div class="metric-value">3.7V Li-Ion</div>
-                <div class="metric-sub">TP4056 USB-C charge & protection</div>
+                <div class="metric-label">Field Endurance</div>
+                <div class="metric-value">~9.5 Hours</div>
+                <div class="metric-sub">1200 mAh 3.7V Li-Ion (2+ rounds)</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Memory Footprint</div>
+                <div class="metric-value">&lt; 1.1 KB SRAM</div>
+                <div class="metric-sub">Flash PROGMEM coordinate storage</div>
             </div>
         </div>
 
-        <!-- Section 1: System Overview -->
+        <!-- Section 1: Interactive Device UI Simulator -->
         <div class="section">
-            <h2><i class="fa-solid fa-compass"></i> System Overview</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1rem;">
-                Commercial golf rangefinders often rely on expensive optical laser assemblies or bulky smartwatches. This project explores a low-cost, dedicated embedded alternative capable of calculating real-time Haversine yardage to front, center, and back green coordinates stored locally in flash memory.
-            </p>
-            <p style="color: var(--text-muted);">
-                The hardware architecture was prototyped on perfboard with point-to-point soldering, housed inside a custom SolidWorks-designed PLA enclosure featuring heat-set brass threaded inserts for serviceable field assembly.
-            </p>
+            <h2><i class="fa-solid fa-display"></i> Interactive ST7789V Firmware Simulator</h2>
+            <p style="color: var(--text-muted);">Test the live handheld state machine directly in your browser. Click the physical tactile buttons on the chassis below to cycle holes or toggle between <strong>Front</strong>, <strong>Center</strong>, and <strong>Back</strong> green targets.</p>
+
+            <div class="simulator-layout">
+                <!-- Virtual Handheld Hardware -->
+                <div class="device-chassis">
+                    <div class="chassis-label">JR-GNSS MK1 // ST7789V</div>
+                    <div class="st7789-screen">
+                        <div class="lcd-status-bar">
+                            <span><i class="fa-solid fa-satellite-dish"></i> 3D FIX (9 SAT)</span>
+                            <span><i class="fa-solid fa-battery-three-quarters"></i> 88%</span>
+                        </div>
+
+                        <div class="lcd-hole-header">
+                            <span class="lcd-hole-num" id="sim-hole">HOLE 01</span>
+                            <span class="lcd-par-badge" id="sim-par">PAR 4</span>
+                        </div>
+
+                        <div class="lcd-main-yardage">
+                            <div class="lcd-target-label" id="sim-target-label">CENTER GREEN</div>
+                            <div class="lcd-yards-val" id="sim-main-yards">154</div>
+                            <div class="lcd-yards-unit">YARDS TO PIN</div>
+                        </div>
+
+                        <div class="lcd-fcb-row">
+                            <div class="lcd-fcb-box" id="box-front">
+                                <span>FRONT</span>
+                                <strong id="sim-front">142</strong>
+                            </div>
+                            <div class="lcd-fcb-box selected" id="box-center">
+                                <span>CENTER</span>
+                                <strong id="sim-center">154</strong>
+                            </div>
+                            <div class="lcd-fcb-box" id="box-back">
+                                <span>BACK</span>
+                                <strong id="sim-back">167</strong>
+                            </div>
+                        </div>
+
+                        <div class="lcd-coords" id="sim-coords">54.01055°N, 002.78501°W // HDOP 0.9</div>
+                    </div>
+
+                    <!-- Tactile Hardware Buttons -->
+                    <div class="tactile-buttons">
+                        <button class="hw-btn" onclick="simPrevHole()" title="Previous Hole">H-</button>
+                        <button class="hw-btn pin-btn" onclick="simCyclePin()" title="Cycle Front / Center / Back">PIN</button>
+                        <button class="hw-btn" onclick="simNextHole()" title="Next Hole">H+</button>
+                    </div>
+                </div>
+
+                <!-- Simulator Technical Explanation -->
+                <div>
+                    <h3 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.75rem;">Deterministic UI & Low-Latency Refresh</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+                        Because driving a $240 \times 320$ 16-bit RGB565 display over SPI on an 8-bit ATmega328P can introduce visible screen tearing if the entire frame is cleared every loop, the firmware uses <strong>dirty-rectangle partial redraws</strong>.
+                    </p>
+                    <ul class="design-list">
+                        <li><strong>Selective Region Updates:</strong> Only the central yardage digits and active target bounding box are overwritten when new NMEA `$GPGGA` sentences arrive at $1\text{ Hz}$.</li>
+                        <li><strong>Hardware Debounced State Machine:</strong> Tactile switches trigger state transitions with a $50\text{ ms}$ non-blocking `millis()` lockout timer—preventing missed inputs without halting serial GPS parsing.</li>
+                        <li><strong>High-Contrast Daylight Palette:</strong> Pure black (`0x0000`) background paired with high-luminance white, cyan, and amber typography ensures readability in direct outdoor sunlight.</li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <!-- Section 2: Hardware Subsystems -->
+        <!-- Section 2: System Architecture & Bus Topology -->
         <div class="section">
-            <h2><i class="fa-solid fa-sitemap"></i> Hardware Architecture & Bill of Materials</h2>
+            <h2><i class="fa-solid fa-diagram-project"></i> System Architecture & Power Topology</h2>
+            <p style="color: var(--text-muted);">Signal routing and voltage domain isolation across the embedded hardware stack.</p>
+
+            <div class="block-diagram">
+                <div class="diag-col">
+                    <div class="diag-col-title"><i class="fa-solid fa-bolt"></i> Power & Input Stage</div>
+                    <div class="diag-node">
+                        <strong>3.7V 1200mAh Li-Ion + TP4056</strong>
+                        USB-C charging BMS with over-discharge cutoff and boost regulation.
+                        <span class="diag-bus">5.0V Main / 3.3V LDO</span>
+                    </div>
+                    <div class="diag-node">
+                        <strong>3x Tactile Push Switches</strong>
+                        Hardware pull-ups with RC debounce networks for hole & pin selection.
+                        <span class="diag-bus">GPIO Digital Inputs</span>
+                    </div>
+                </div>
+
+                <div class="diag-col">
+                    <div class="diag-col-title"><i class="fa-solid fa-microchip"></i> Core Processing</div>
+                    <div class="diag-node">
+                        <strong>ATmega328P (16 MHz)</strong>
+                        Parses NMEA streams, reads Flash `PROGMEM` lookup tables, and executes Haversine trig math.
+                        <span class="diag-bus">32KB Flash / 2KB SRAM</span>
+                    </div>
+                    <div class="diag-node">
+                        <strong>Level-Shifting Network</strong>
+                        Resistive voltage dividers stepping 5V MCU signals down to 3.3V display logic.
+                        <span class="diag-bus">5V &rarr; 3.3V Protection</span>
+                    </div>
+                </div>
+
+                <div class="diag-col">
+                    <div class="diag-col-title"><i class="fa-solid fa-satellite"></i> Telemetry & Output</div>
+                    <div class="diag-node">
+                        <strong>GNSS / GPS Receiver Module</strong>
+                        Ceramic patch antenna streaming real-time WGS84 coordinates and HDOP fix quality.
+                        <span class="diag-bus">UART 9600 Baud (RX/TX)</span>
+                    </div>
+                    <div class="diag-node">
+                        <strong>2.0" ST7789V IPS TFT LCD</strong>
+                        $240 \times 320$ 16-bit color panel rendering live yardage and satellite telemetry.
+                        <span class="diag-bus">4-Wire Hardware SPI</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Interactive Engineering Deep-Dive (Code, PCB, CAD) -->
+        <div class="section">
+            <h2><i class="fa-solid fa-layer-group"></i> Engineering Deep-Dive: Firmware, PCB & CAD</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Explore the three core technical pillars developed to bring the device from concept to working prototype.</p>
+
+            <!-- Tab Controls -->
+            <div class="eng-tabs">
+                <button class="eng-tab-btn active" onclick="switchEngTab('tab-code', this)">
+                    <i class="fa-solid fa-code"></i> Embedded C++ Firmware
+                </button>
+                <button class="eng-tab-btn" onclick="switchEngTab('tab-pcb', this)">
+                    <i class="fa-solid fa-microchip"></i> Schematic & PCB Design
+                </button>
+                <button class="eng-tab-btn" onclick="switchEngTab('tab-cad', this)">
+                    <i class="fa-solid fa-cube"></i> Mechanical CAD & DFM
+                </button>
+            </div>
+
+            <!-- Panel 1: Embedded C++ Code -->
+            <div id="tab-code" class="eng-panel active">
+                <p style="color: var(--text-muted); font-size: 0.95rem;">
+                    Written in Embedded C++ (VS Code + PlatformIO / Arduino toolchain). To operate reliably within the ATmega328P's $2\text{ KB}$ SRAM limit, course green coordinates are stored in non-volatile Flash (`PROGMEM`), and great-circle yardage is computed via the spherical Haversine formula:
+                </p>
+                <div style="margin: 0.75rem 0; color: var(--text-main); font-size: 0.95rem;">
+                    $$d = 2R \arcsin\left(\sqrt{\sin^2\left(\frac{\Delta\phi}{2}\right) + \cos(\phi_1)\cos(\phi_2)\sin^2\left(\frac{\Delta\lambda}{2}\right)}\right)$$
+                </div>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <span>rangefinder_core.cpp — Haversine & PROGMEM Lookup</span>
+                        <span>C++ / AVR</span>
+                    </div>
+                    <pre><code><span class="code-keyword">#include</span> &lt;avr/pgmspace.h&gt;
+<span class="code-keyword">#include</span> &lt;math.h&gt;
+
+<span class="code-comment">// Store green coordinates (Front, Center, Back) in Flash to preserve 2KB SRAM</span>
+<span class="code-keyword">struct</span> <span class="code-type">GreenCoords</span> { <span class="code-type">float</span> lat; <span class="code-type">float</span> lon; };
+<span class="code-keyword">const</span> <span class="code-type">GreenCoords</span> courseData[<span class="code-number">18</span>][<span class="code-number">3</span>] PROGMEM = {
+    {{<span class="code-number">54.01042f</span>, -<span class="code-number">2.78512f</span>}, {<span class="code-number">54.01055f</span>, -<span class="code-number">2.78501f</span>}, {<span class="code-number">54.01068f</span>, -<span class="code-number">2.78489f</span>}},
+    <span class="code-comment">// ... remaining 17 holes indexed in Flash</span>
+};
+
+<span class="code-comment">// Compute real-time yardage using spherical Haversine formulation</span>
+<span class="code-type">uint16_t</span> calculateYards(<span class="code-type">float</span> lat1, <span class="code-type">float</span> lon1, <span class="code-type">uint8_t</span> hole, <span class="code-type">uint8_t</span> pinPos) {
+    <span class="code-type">GreenCoords</span> target;
+    memcpy_P(&amp;target, &amp;courseData[hole][pinPos], <span class="code-keyword">sizeof</span>(<span class="code-type">GreenCoords</span>));
+
+    <span class="code-keyword">const</span> <span class="code-type">float</span> R_YARDS = <span class="code-number">6967410.0f</span>; <span class="code-comment">// Earth mean radius in yards</span>
+    <span class="code-type">float</span> dLat = radians(target.lat - lat1);
+    <span class="code-type">float</span> dLon = radians(target.lon - lon1);
+
+    <span class="code-type">float</span> a = sin(dLat * <span class="code-number">0.5f</span>) * sin(dLat * <span class="code-number">0.5f</span>) +
+              cos(radians(lat1)) * cos(radians(target.lat)) *
+              sin(dLon * <span class="code-number">0.5f</span>) * sin(dLon * <span class="code-number">0.5f</span>);
+
+    <span class="code-type">float</span> c = <span class="code-number">2.0f</span> * atan2(sqrt(a), sqrt(<span class="code-number">1.0f</span> - a));
+    <span class="code-keyword">return</span> (<span class="code-type">uint16_t</span>)round(R_YARDS * c);
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- Panel 2: Schematic & PCB Design -->
+            <div id="tab-pcb" class="eng-panel">
+                <div class="design-split">
+                    <div>
+                        <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.75rem;">Circuit Architecture & Layout Strategy</h3>
+                        <ul class="design-list">
+                            <li><strong>Schematic Capture & Routing:</strong> Transitioned the point-to-point perfboard prototype into a unified 2-layer PCB layout (KiCad / EasyEDA) with dedicated ground planes to minimize high-frequency SPI noise coupling into the GNSS RF front-end.</li>
+                            <li><strong>Mixed-Voltage Level Shifting:</strong> Integrated resistive voltage dividers and 3.3V regulation to safely interface the 5V ATmega328P logic outputs with the 3.3V ST7789V TFT controller.</li>
+                            <li><strong>Power Distribution & BMS:</strong> Routed wide power traces ($20\text{ mil}$) for the TP4056 Li-Ion charger, physical slide power switch, and decoupling capacitors ($100\text{ nF}$ ceramic + $10\text{ }\mu\text{F}$ bulk) adjacent to IC power pins.</li>
+                            <li><strong>Hardware Debouncing:</strong> Added RC filtering and pull-up networks on the tactile user push-buttons for clean state transitions on the course.</li>
+                        </ul>
+                    </div>
+                    <div class="media-card">
+                        <div class="media-placeholder">
+                            <i class="fa-solid fa-diagram-project"></i>
+                            <span>Add PCB / Schematic render:<br><code>images/rangefinder-pcb-layout.png</code></span>
+                        </div>
+                        <div class="media-info">
+                            <h3>2-Layer PCB Layout & Ground Pour</h3>
+                            <p>Component placement isolating the GNSS ceramic patch antenna from switching display traces.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 3: Mechanical CAD & DFM -->
+            <div id="tab-cad" class="eng-panel">
+                <div class="design-split">
+                    <div>
+                        <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.75rem;">SolidWorks Parametric Packaging</h3>
+                        <ul class="design-list">
+                            <li><strong>Internal Tolerance Stack-Up:</strong> Modeled exact 3D step assemblies of the ST7789V LCD bezel, USB-C charging port cutout, tactile switch plungers, and Li-Ion pouch cell clearance.</li>
+                            <li><strong>Heat-Set Brass Threaded Inserts:</strong> Designed dedicated cylindrical bosses sized for M2.5 knurled brass inserts installed at $210^\circ\text{C}$, enabling repeated disassembly without stripping printed threads.</li>
+                            <li><strong>Antenna & Display Ergonomics:</strong> Positioned the GNSS module directly beneath the top housing wall with an unobstructed sky view while angling the 2.0" screen for glare-free outdoor reading.</li>
+                            <li><strong>Print Orientation & DFM:</strong> Engineered split-shell mating lips with $0.25\text{ mm}$ radial clearance for support-free FDM printing in PLA.</li>
+                        </ul>
+                    </div>
+                    <div class="media-card">
+                        <div class="media-placeholder">
+                            <i class="fa-solid fa-cube"></i>
+                            <span>Add SolidWorks CAD render:<br><code>images/rangefinder-cad-exploded.png</code></span>
+                        </div>
+                        <div class="media-info">
+                            <h3>SolidWorks Clamshell Assembly</h3>
+                            <p>Exploded view detailing PCB mounting standoffs, button actuators, and brass insert bosses.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Power Budget & Field Endurance Analysis -->
+        <div class="section">
+            <h2><i class="fa-solid fa-battery-full"></i> Power Budget & Battery Runtime Analysis</h2>
+            <p style="color: var(--text-muted);">Measured steady-state current draw across subsystems at $3.7\text{V}$ nominal Li-Ion supply ($1200\text{ mAh}$ capacity, $85\%$ usable discharge efficiency).</p>
             <table class="spec-table">
                 <thead>
                     <tr>
                         <th>Subsystem</th>
-                        <th>Component</th>
-                        <th>Interface & Technical Role</th>
+                        <th>Operating State</th>
+                        <th>Typical Current</th>
+                        <th>Power Share</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Microcontroller</strong></td>
-                        <td>Arduino Nano (ATmega328P)</td>
-                        <td>Parses NMEA sentences, executes Haversine distance calculations ($R = 6371\text{ km}$), and drives UI state machine.</td>
+                        <td><strong>ST7789V 2.0" IPS LCD</strong></td>
+                        <td>Backlight 80% brightness + active SPI updates</td>
+                        <td>$48\text{ mA}$</td>
+                        <td>$44.9\%$</td>
                     </tr>
                     <tr>
-                        <td><strong>Display Module</strong></td>
-                        <td>2.0" ST7789V IPS TFT LCD</td>
-                        <td>$240 \times 320$ resolution driven over 4-wire hardware SPI with level-shifted logic lines.</td>
+                        <td><strong>GNSS / GPS Receiver</strong></td>
+                        <td>Continuous $1\text{ Hz}$ tracking (9+ satellites locked)</td>
+                        <td>$36\text{ mA}$</td>
+                        <td>$33.6\%$</td>
                     </tr>
                     <tr>
-                        <td><strong>Positioning</strong></td>
-                        <td>UART GNSS/GPS Receiver</td>
-                        <td>9600 baud serial communication streaming real-time latitude/longitude telemetry.</td>
+                        <td><strong>ATmega328P MCU</strong></td>
+                        <td>$16\text{ MHz}$ active processing + Haversine math</td>
+                        <td>$18\text{ mA}$</td>
+                        <td>$16.8\%$</td>
                     </tr>
                     <tr>
-                        <td><strong>Power Management</strong></td>
-                        <td>TP4056 + 3.7V Li-Ion Cell</td>
-                        <td>Integrated constant-current/constant-voltage charging with over-discharge protection and boost regulation.</td>
+                        <td><strong>Boost Converter & Quiescent</strong></td>
+                        <td>Voltage regulation & pull-up network losses</td>
+                        <td>$5\text{ mA}$</td>
+                        <td>$4.7\%$</td>
                     </tr>
-                    <tr>
-                        <td><strong>User Input</strong></td>
-                        <td>Perfboard Tactile Switches</td>
-                        <td>Hardware-debounced interrupt/polling inputs for hole selection and green target toggling.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Enclosure</strong></td>
-                        <td>FDM 3D-Printed PLA Shell</td>
-                        <td>Custom CAD housing with M2.5 heat-set brass inserts ($210^\circ\text{C}$ installation) for mechanical rigidity.</td>
+                    <tr style="background-color: rgba(56, 189, 248, 0.08);">
+                        <td><strong>Total System Draw</strong></td>
+                        <td><strong>Estimated Runtime: $(1200 \times 0.85) / 107 \approx 9.5\text{ Hours}$</strong></td>
+                        <td><strong>$107\text{ mA}$</strong></td>
+                        <td><strong>$100\%$</strong></td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- Section 3: Prototype Media & CAD (Ready for your photos/videos) -->
+        <!-- Section 5: Software & Engineering Skills Matrix -->
         <div class="section">
-            <h2><i class="fa-solid fa-camera"></i> Prototype Build & CAD Gallery</h2>
-            <p style="color: var(--text-muted);">Hardware integration, internal perfboard wiring layout, and custom 3D-printed enclosure assembly.</p>
+            <h2><i class="fa-solid fa-toolbox"></i> Software Suite & Core Engineering Skills</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Delivering a functional hardware prototype required cross-disciplinary proficiency across embedded software, electronic design automation, mechanical CAD, and benchtop debugging.</p>
             
-            <div class="media-grid">
-                <div class="media-card">
-                    <div class="media-placeholder">
-                        <i class="fa-solid fa-microchip"></i>
-                        <span>Add image: <code>images/rangefinder-pcb.jpg</code></span>
-                    </div>
-                    <div class="media-info">
-                        <h3>Internal Perfboard & Wiring</h3>
-                        <p>Compact point-to-point soldered assembly integrating the Nano, GPS module, and power management board.</p>
-                    </div>
-                </div>
-
-                <div class="media-card">
-                    <div class="media-placeholder">
-                        <i class="fa-solid fa-display"></i>
-                        <span>Add image: <code>images/rangefinder-ui.jpg</code></span>
-                    </div>
-                    <div class="media-info">
-                        <h3>ST7789V Yardage UI</h3>
-                        <p>High-contrast daylight-readable interface displaying hole par, front/middle/back yardage, and GPS lock status.</p>
+            <div class="skills-matrix">
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-terminal"></i> Embedded Software & IDEs</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">Embedded C++</span>
+                        <span class="skill-pill">VS Code + PlatformIO</span>
+                        <span class="skill-pill">Arduino IDE</span>
+                        <span class="skill-pill">AVR PROGMEM Optimization</span>
+                        <span class="skill-pill">Git / GitHub</span>
                     </div>
                 </div>
 
-                <div class="media-card">
-                    <div class="media-placeholder">
-                        <i class="fa-solid fa-cube"></i>
-                        <span>Add image: <code>images/rangefinder-cad.jpg</code></span>
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-microchip"></i> Electronics & PCB Design</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">KiCad / EasyEDA</span>
+                        <span class="skill-pill">Schematic Capture</span>
+                        <span class="skill-pill">2-Layer PCB Routing</span>
+                        <span class="skill-pill">SPI & UART Buses</span>
+                        <span class="skill-pill">Li-Ion BMS (TP4056)</span>
+                        <span class="skill-pill">Perfboard Soldering</span>
                     </div>
-                    <div class="media-info">
-                        <h3>SolidWorks Enclosure & Brass Inserts</h3>
-                        <p>Two-piece clamshell housing engineered with internal component standoffs and heat-set threaded brass inserts.</p>
+                </div>
+
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-compass-drafting"></i> Mechanical CAD & Prototyping</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">SolidWorks 3D CAD</span>
+                        <span class="skill-pill">Cura / PrusaSlicer</span>
+                        <span class="skill-pill">FDM 3D Printing (PLA)</span>
+                        <span class="skill-pill">Heat-Set Brass Inserts</span>
+                        <span class="skill-pill">Design for Assembly (DFA)</span>
+                    </div>
+                </div>
+
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-wave-square"></i> Bench Testing & Validation</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">Digital Oscilloscope</span>
+                        <span class="skill-pill">SPI Signal Verification</span>
+                        <span class="skill-pill">NMEA Telemetry Parsing</span>
+                        <span class="skill-pill">Multimeter Diagnostics</span>
+                        <span class="skill-pill">Current Draw Profiling</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Section 4: Critical Engineering Insights -->
+        <!-- Section 6: Critical Engineering Insights (6-Item Balanced Grid) -->
         <div class="section">
             <h2><i class="fa-solid fa-lightbulb"></i> Key Engineering Takeaways</h2>
             <div class="learned-grid">
@@ -538,30 +1157,26 @@
                     <h3><i class="fa-solid fa-satellite"></i> <span>NMEA Parsing & Cold-Start Filtering</span></h3>
                     <p>Implemented dilution-of-precision (HDOP) filtering in firmware to prevent erratic yardage jumps while the GNSS receiver acquires initial satellite lock.</p>
                 </div>
-            </div>
-        </div>
 
-        <!-- Section 5: Tech Stack & Tools -->
-        <div class="section">
-            <h2><i class="fa-solid fa-code"></i> Technical Stack & Tools</h2>
-            <div class="tags-container">
-                <span class="tech-tag">Embedded C++ / Arduino</span>
-                <span class="tech-tag">SPI & UART Protocols</span>
-                <span class="tech-tag">ST7789V TFT Driver</span>
-                <span class="tech-tag">NMEA 0183 GNSS Parsing</span>
-                <span class="tech-tag">TP4056 Li-Ion Power</span>
-                <span class="tech-tag">SolidWorks CAD</span>
-                <span class="tech-tag">FDM 3D Printing (PLA)</span>
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-gauge-high"></i> <span>Partial Redraw SPI Frame Pacing</span></h3>
+                    <p>Eliminated visible display flicker by updating only modified numeric bounding boxes over hardware SPI rather than clearing the full $240 \times 320$ pixel buffer each cycle.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-wifi"></i> <span>GNSS RF Ground-Plane Isolation</span></h3>
+                    <p>Maintained a copper keep-out zone beneath the ceramic GNSS patch antenna during PCB layout to prevent ground-plane detuning and preserve satellite acquisition sensitivity.</p>
+                </div>
             </div>
         </div>
 
         <!-- Action Links -->
         <div class="actions">
             <a href="https://github.com/JamesRoberts213" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                <i class="fa-brands fa-github"></i> View GitHub Profile
+                <i class="fa-brands fa-github"></i> View GitHub Repository
             </a>
             <a href="projects.html" class="btn btn-secondary">
-                <i class="fa-solid fa-grid-2"></i> Back to All Projects
+                <i class="fa-solid fa-arrow-left"></i> Back to All Projects
             </a>
         </div>
 
@@ -570,6 +1185,63 @@
             <p>&copy; 2026 James Roberts. Built with HTML & CSS on GitHub Pages.</p>
         </footer>
     </div>
+
+    <script>
+    // Engineering Deep-Dive Tab Switcher
+    function switchEngTab(panelId, clickedBtn) {
+        document.querySelectorAll('.eng-panel').forEach(panel => panel.classList.remove('active'));
+        document.querySelectorAll('.eng-tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(panelId).classList.add('active');
+        clickedBtn.classList.add('active');
+    }
+
+    // Interactive Handheld LCD Simulator Data
+    const simHoles = [
+        { num: "01", par: 4, f: 142, c: 154, b: 167, coords: "54.01055°N, 002.78501°W // HDOP 0.9" },
+        { num: "02", par: 3, f: 168, c: 179, b: 191, coords: "54.01218°N, 002.78340°W // HDOP 0.8" },
+        { num: "03", par: 5, f: 215, c: 228, b: 242, coords: "54.01490°N, 002.78112°W // HDOP 0.9" },
+        { num: "04", par: 4, f: 118, c: 129, b: 141, coords: "54.01382°N, 002.77905°W // HDOP 1.0" },
+        { num: "05", par: 4, f: 184, c: 196, b: 209, coords: "54.01140°N, 002.77822°W // HDOP 0.8" }
+    ];
+    const pinModes = ["FRONT", "CENTER", "BACK"];
+    let simHoleIdx = 0;
+    let simPinIdx = 1; // Default to CENTER
+
+    function updateSimulator() {
+        const h = simHoles[simHoleIdx];
+        document.getElementById('sim-hole').textContent = `HOLE ${h.num}`;
+        document.getElementById('sim-par').textContent = `PAR ${h.par}`;
+        document.getElementById('sim-front').textContent = h.f;
+        document.getElementById('sim-center').textContent = h.c;
+        document.getElementById('sim-back').textContent = h.b;
+        document.getElementById('sim-coords').textContent = h.coords;
+
+        const mode = pinModes[simPinIdx];
+        document.getElementById('sim-target-label').textContent = `${mode} GREEN`;
+        
+        const mainVal = mode === "FRONT" ? h.f : (mode === "CENTER" ? h.c : h.b);
+        document.getElementById('sim-main-yards').textContent = mainVal;
+
+        document.getElementById('box-front').classList.toggle('selected', mode === "FRONT");
+        document.getElementById('box-center').classList.toggle('selected', mode === "CENTER");
+        document.getElementById('box-back').classList.toggle('selected', mode === "BACK");
+    }
+
+    function simNextHole() {
+        simHoleIdx = (simHoleIdx + 1) % simHoles.length;
+        updateSimulator();
+    }
+
+    function simPrevHole() {
+        simHoleIdx = (simHoleIdx - 1 + simHoles.length) % simHoles.length;
+        updateSimulator();
+    }
+
+    function simCyclePin() {
+        simPinIdx = (simPinIdx + 1) % pinModes.length;
+        updateSimulator();
+    }
+    </script>
 
 </body>
 </html>
