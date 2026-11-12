@@ -2105,7 +2105,7 @@ void loop() {
         const y = Math.sin(dLon) * Math.cos(degToRad(lat2));
         const x = Math.cos(degToRad(lat1)) * Math.sin(degToRad(lat2)) -
                   Math.sin(degToRad(lat1)) * Math.cos(degToRad(lat2)) * Math.cos(dLon);
-        return normaliseDegrees(radToDeg(atan2(y, x)));
+        return normaliseDegrees(radToDeg(Math.atan2(y, x)));
     }
 
     function getClubRecommendation(yards) {
