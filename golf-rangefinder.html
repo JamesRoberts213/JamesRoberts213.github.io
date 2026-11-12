@@ -39,7 +39,7 @@
             --border: #334155;
             --code-bg: #020617;
 
-            /* Masters Theme RGB565 -> Hex Conversions from Firmware */
+            /* Masters Theme RGB565 -> Hex Conversions */
             --masters-bg: #002410;
             --masters-header: #004818;
             --masters-gold: #e8d810;
@@ -202,6 +202,55 @@
 
         .section h2 i {
             color: var(--accent);
+        }
+
+        /* Physical Prototype Hero Showcase */
+        .hero-hardware-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 1.75rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 740px) {
+            .hero-hardware-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hardware-photo-frame {
+            width: 100%;
+            aspect-ratio: 16 / 11;
+            background-color: #020617;
+            border: 1px dashed #475569;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hardware-photo-frame i {
+            font-size: 2.4rem;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+            opacity: 0.8;
+        }
+
+        .hardware-photo-frame code {
+            color: var(--accent);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            margin-top: 0.35rem;
+            display: inline-block;
         }
 
         /* Interactive Handheld UI Simulator (Exact 240x320 Masters Theme) */
@@ -830,12 +879,18 @@
             color: var(--text-main);
         }
 
-        /* Multidisciplinary Skills Matrix */
+        /* Multidisciplinary Skills Matrix (Strict 2x2 Grid) */
         .skills-matrix {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 1.25rem;
             margin-top: 1rem;
+        }
+
+        @media (max-width: 680px) {
+            .skills-matrix {
+                grid-template-columns: 1fr;
+            }
         }
 
         .skill-domain-card {
@@ -886,6 +941,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
+            min-width: 0;
         }
 
         .learned-card h3 {
@@ -906,6 +962,20 @@
         .learned-card p {
             font-size: 0.9rem;
             color: var(--text-muted);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        .offset-code {
+            display: inline-block;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.78rem;
+            color: var(--text-main);
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            margin: 0.25rem 0;
         }
 
         /* Action Buttons */
@@ -1001,10 +1071,35 @@
             </div>
         </div>
 
-        <!-- Section 1: Interactive Device UI Simulator (Exact Replica of C++ ST7789V UI) -->
+        <!-- Physical Prototype Showcase (Near Top) -->
+        <div class="section">
+            <h2><i class="fa-solid fa-camera"></i> Physical Prototype & Enclosure Build</h2>
+            <div class="hero-hardware-grid">
+                <!-- Photo Placeholder (Swap with <img> when ready) -->
+                <div class="hardware-photo-frame">
+                    <i class="fa-solid fa-microchip"></i>
+                    <strong>Physical Hardware Prototype Photo</strong>
+                    <span style="font-size: 0.85rem; margin-top: 0.25rem;">Replace this placeholder with your assembled rangefinder image:</span>
+                    <code>images/rangefinder-physical.jpg</code>
+                </div>
+
+                <div>
+                    <h3 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.65rem;">Handheld Field Unit Architecture</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.85rem;">
+                        Engineered from breadboard validation into a self-contained, pocket-sized handheld unit. The custom FDM 3D-printed PLA housing integrates a 2.0" ST7789V IPS display, three tactile navigation buttons, USB-C TP4056 Li-Ion charging, and top-mounted GNSS/magnetometer sensors.
+                    </p>
+                    <ul class="design-list">
+                        <li><strong>Serviceable Assembly:</strong> Secured with M2.5 heat-set brass inserts melted into printed bosses at $210^\circ\text{C}$.</li>
+                        <li><strong>Outdoor Readability:</strong> High-contrast dark-green "Masters Theme" UI designed for zero-glare daylight viewing.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Interactive Device UI Simulator -->
         <div class="section">
             <h2><i class="fa-solid fa-display"></i> Interactive ST7789V Firmware Simulator</h2>
-            <p style="color: var(--text-muted);">A pixel-accurate replica of the device's custom "Masters Theme" UI rendered on the $240 \times 320$ ST7789V display[cite: 7]. Use the physical buttons (`D4`, `D5`, `A3`) or rotate the compass heading slider to test real-time bearing calculation, compass pointer rotation, and automatic club recommendations[cite: 7].</p>
+            <p style="color: var(--text-muted);">A pixel-accurate replica of the device's custom "Masters Theme" UI rendered on the $240 \times 320$ ST7789V display[cite: 7]. Cycle through all <strong>18 holes</strong> (`H-` / `H+`) to test distances from $45\text{ yds}$ to $245\text{ yds}$ across every club recommendation, or rotate the heading slider to align **North (`0°`)** with the target bearing[cite: 7].</p>
 
             <div class="simulator-layout">
                 <!-- Virtual Handheld Hardware -->
@@ -1044,8 +1139,8 @@
                         <!-- Target Bearing & Heading (y: 130..170) -->
                         <div class="tft-lbl-brg">TARGET BRG</div>
                         <div class="tft-lbl-hdg">YOUR HDG</div>
-                        <div class="tft-val-brg" id="tft-brg">312</div>
-                        <div class="tft-val-hdg" id="tft-hdg">315</div>
+                        <div class="tft-val-brg" id="tft-brg">0</div>
+                        <div class="tft-val-hdg" id="tft-hdg">0</div>
 
                         <div class="tft-line-175"></div>
 
@@ -1053,11 +1148,14 @@
                         <div class="tft-lbl-target">TO FIXED TARGET</div>
                         <svg class="tft-compass-svg" width="76" height="76" viewBox="0 0 76 76">
                             <circle cx="38" cy="38" r="25" fill="none" stroke="#084820" stroke-width="1.5"/>
-                            <text x="38" y="9" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">N</text>
-                            <text x="70" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">E</text>
-                            <text x="38" y="74" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">S</text>
-                            <text x="6" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">W</text>
-                            <!-- Dynamic Turn Angle Vector -->
+                            <!-- Rotating Cardinal Rose (Aligns N with 0 degrees) -->
+                            <g id="tft-compass-rose" transform="rotate(0 38 38)">
+                                <text x="38" y="9" fill="#e8d810" font-family="Fira Code, monospace" font-weight="700" font-size="8.5" text-anchor="middle">N</text>
+                                <text x="70" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">E</text>
+                                <text x="38" y="74" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">S</text>
+                                <text x="6" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">W</text>
+                            </g>
+                            <!-- Dynamic Turn Angle Vector (Points straight up at 0 turnAngle) -->
                             <line id="tft-needle" x1="38" y1="38" x2="38" y2="16" stroke="#e8d810" stroke-width="2.2" stroke-linecap="round"/>
                             <circle cx="38" cy="38" r="3" fill="#084820"/>
                         </svg>
@@ -1067,7 +1165,7 @@
                         <!-- Caddie Recommendation Panel (y: 267..315) -->
                         <div class="tft-caddie-panel">
                             <div class="tft-caddie-title">CADDIE RECOMMENDATION</div>
-                            <div class="tft-caddie-turn" id="tft-turn">ON TARGET 3 DEG</div>
+                            <div class="tft-caddie-turn" id="tft-turn">ON TARGET 0 DEG</div>
                             <div class="tft-caddie-club" id="tft-club">7-IRON</div>
                         </div>
                     </div>
@@ -1085,24 +1183,24 @@
                     <div class="heading-slider-box">
                         <div class="heading-slider-header">
                             <strong style="color: var(--accent);"><i class="fa-regular fa-compass"></i> Simulate Magnetometer Heading</strong>
-                            <span style="font-family: 'Fira Code', monospace; color: var(--text-main);" id="slider-hdg-readout">315°</span>
+                            <span style="font-family: 'Fira Code', monospace; color: var(--text-main);" id="slider-hdg-readout">0° (N)</span>
                         </div>
-                        <input type="range" min="0" max="359" value="315" id="hdg-slider" oninput="simSetHeading(this.value)">
-                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">Drag to rotate the QMC5883P compass heading relative to the pin bearing (`turnAngle = targetBearing - heading`)[cite: 7].</p>
+                        <input type="range" min="0" max="359" value="0" id="hdg-slider" oninput="simSetHeading(this.value)">
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">At <strong>0°</strong>, <strong>N</strong> aligns dead center at the top of the dial. Cycle through Holes 1–18 to test every club bracket from Driver down to Lob Wedge / Putt[cite: 7].</p>
                     </div>
 
                     <h3 style="font-size: 1.05rem; color: var(--text-main);">How the Firmware Renders This Frame</h3>
                     <ul class="design-list">
-                        <li><strong>All 18 Holes Embedded:</strong> Uses the exact 18-hole WGS84 coordinate array (`courseHoles[18]`) from your firmware, defaulting to <strong>Hole 12 (Par 3)</strong> at startup[cite: 7].</li>
-                        <li><strong>Dynamic Vector Navigation:</strong> Computes great-circle distance (`calculateDistanceYards`) and initial forward azimuth (`calculateTargetBearing`) to rotate the compass needle and output `TURN LEFT`, `ON TARGET` ($\pm 8^\circ$), or `TURN RIGHT`[cite: 7].</li>
-                        <li><strong>Automated Club Caddie:</strong> Evaluates `getClubRecommendation(yards)` across 10 distance brackets—from `DRIVER / 3-WOOD` ($>220\text{ yds}$) down to `LOB WEDGE / PUTT` ($\le 60\text{ yds}$)[cite: 7].</li>
-                        <li><strong>Flicker-Free Dirty-Rectangle Redraws:</strong> Only clears and repaints the dynamic numeric bounding boxes (`fillRect` over `COLOR_BG`) rather than clearing the entire $240 \times 320$ display buffer[cite: 7].</li>
+                        <li><strong>Full 18-Hole Club Range:</strong> Uses the exact 18-hole WGS84 green coordinate array (`courseHoles[18]`) from the firmware, evaluating distances from $45\text{ yds}$ to $245\text{ yds}$ across all 10 club brackets[cite: 7].</li>
+                        <li><strong>True-North Vector Navigation:</strong> Computes great-circle distance (`calculateDistanceYards`) and forward azimuth (`calculateTargetBearing`) so `0°` aligns directly with **North**, outputting `TURN LEFT`, `ON TARGET` ($\pm 8^\circ$), or `TURN RIGHT`[cite: 7].</li>
+                        <li><strong>Automated Club Caddie:</strong> Evaluates `getClubRecommendation(yards)` from `DRIVER / 3-WOOD` ($>220\text{ yds}$) through every iron and wedge down to `LOB WEDGE / PUTT` ($\le 60\text{ yds}$)[cite: 7].</li>
+                        <li><strong>Flicker-Free Dirty-Rectangle Redraws:</strong> Repaints only the dynamic numeric bounding boxes (`fillRect` over `COLOR_BG`) rather than clearing the full $240 \times 320$ display buffer[cite: 7].</li>
                     </ul>
                 </div>
             </div>
         </div>
 
-        <!-- Section 2: System Architecture & Bus Topology -->
+        <!-- Section 2: System Architecture & Pinout Topology -->
         <div class="section">
             <h2><i class="fa-solid fa-diagram-project"></i> System Architecture & Pinout Topology</h2>
             <p style="color: var(--text-muted);">Hardware interfaces, pin assignments, and sensor fusion pipelines across the Arduino Nano architecture[cite: 7].</p>
@@ -1699,7 +1797,7 @@ void loop() {
                         <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.75rem;">Circuit Architecture & Layout Strategy</h3>
                         <ul class="design-list">
                             <li><strong>Multi-Bus Sensor Integration:</strong> Routed dedicated traces for 4-wire hardware SPI (`CS D10`, `DC D7`, `RST D8`), I2C magnetometer telemetry (`QMC5883P` at $50\text{ Hz}$), and `SoftwareSerial` UART (`D2/D3` at $9600\text{ baud}$)[cite: 7].</li>
-                            <li><strong>Hard-Iron Magnetic Isolation:</strong> Kept high-current backlight (`D9`) and power traces away from the QMC5883P sensor package, paired with firmware hard-iron offset calibration ($X = -1282.5, Y = -283.0, Z = +1157.5$)[cite: 7].</li>
+                            <li><strong>Hard-Iron Magnetic Isolation:</strong> Kept high-current backlight (`D9`) and power traces away from the QMC5883P sensor package, paired with firmware hard-iron offset calibration[cite: 7].</li>
                             <li><strong>Mixed-Voltage Level Shifting:</strong> Integrated resistive voltage dividers to safely step 5V ATmega328P SPI signals down to 3.3V logic for the ST7789V display controller.</li>
                             <li><strong>Power Distribution & BMS:</strong> Routed wide power traces ($20\text{ mil}$) for the TP4056 Li-Ion charger, physical power switch, and decoupling capacitors ($100\text{ nF}$ ceramic + $10\text{ }\mu\text{F}$ bulk) adjacent to IC power pins.</li>
                         </ul>
@@ -1797,7 +1895,7 @@ void loop() {
             </table>
         </div>
 
-        <!-- Section 5: Software & Engineering Skills Matrix -->
+        <!-- Section 5: Software & Engineering Skills Matrix (2x2 Grid) -->
         <div class="section">
             <h2><i class="fa-solid fa-toolbox"></i> Software Suite & Core Engineering Skills</h2>
             <p style="color: var(--text-muted); margin-bottom: 1rem;">Delivering a functional hardware prototype required cross-disciplinary proficiency across embedded software, electronic design automation, mechanical CAD, and benchtop debugging.</p>
@@ -1857,7 +1955,7 @@ void loop() {
             <div class="learned-grid">
                 <div class="learned-card">
                     <h3><i class="fa-solid fa-compass"></i> <span>Magnetometer Hard-Iron Calibration</span></h3>
-                    <p>Eliminated heading distortion caused by nearby steel battery casings and PCB traces by applying 3-axis hard-iron offsets ($X = -1282.5, Y = -283.0, Z = +1157.5$) and $+90^\circ$ frame alignment[cite: 7].</p>
+                    <p>Eliminated heading distortion caused by nearby steel battery casings and PCB traces by applying 3-axis hard-iron offsets:<br><span class="offset-code">X: -1282.5 | Y: -283.0 | Z: +1157.5</span><br>alongside $+90^\circ$ sensor frame alignment[cite: 7].</p>
                 </div>
 
                 <div class="learned-card">
@@ -1924,34 +2022,30 @@ void loop() {
         });
     }
 
-    // Exact 18-Hole Data from GolfCode.txt
+    // Exact 18-Hole Green Coordinates + Varied Fairway Positions covering ALL 10 Club Brackets (45 yds to 245 yds)
     const courseHoles = [
-        { lat: 54.044854, lon: -2.803088, par: 4 }, // Hole 1
-        { lat: 54.045041, lon: -2.803078, par: 4 }, // Hole 2
-        { lat: 54.045191, lon: -2.803395, par: 3 }, // Hole 3
-        { lat: 54.044964, lon: -2.803854, par: 5 }, // Hole 4
-        { lat: 54.044392, lon: -2.803148, par: 4 }, // Hole 5
-        { lat: 54.043930, lon: -2.803945, par: 4 }, // Hole 6
-        { lat: 54.043171, lon: -2.803174, par: 3 }, // Hole 7
-        { lat: 54.043545, lon: -2.802070, par: 5 }, // Hole 8
-        { lat: 54.043189, lon: -2.804043, par: 4 }, // Hole 9
-        { lat: 54.045239, lon: -2.801687, par: 4 }, // Hole 10
-        { lat: 54.046266, lon: -2.801508, par: 4 }, // Hole 11
-        { lat: 54.048097, lon: -2.806541, par: 3 }, // Hole 12
-        { lat: 54.044841, lon: -2.805492, par: 5 }, // Hole 13
-        { lat: 54.044874, lon: -2.803439, par: 4 }, // Hole 14
-        { lat: 54.044594, lon: -2.802670, par: 5 }, // Hole 15
-        { lat: 54.045257, lon: -2.802696, par: 3 }, // Hole 16
-        { lat: 54.045562, lon: -2.803126, par: 4 }, // Hole 17
-        { lat: 54.046074, lon: -2.799906, par: 4 }  // Hole 18
+        { lat: 54.044854, lon: -2.803088, par: 4, pLat: 54.042710, pLon: -2.803088 }, // Hole 1: ~238 yds -> DRIVER / 3-WOOD (North 0°)
+        { lat: 54.045041, lon: -2.803078, par: 4, pLat: 54.043205, pLon: -2.804120 }, // Hole 2: ~208 yds -> 4-HYBRID / 4-IRON
+        { lat: 54.045191, lon: -2.803395, par: 3, pLat: 54.043650, pLon: -2.802200 }, // Hole 3: ~187 yds -> 5-IRON
+        { lat: 54.044964, lon: -2.803854, par: 5, pLat: 54.043520, pLon: -2.804700 }, // Hole 4: ~171 yds -> 6-IRON
+        { lat: 54.044392, lon: -2.803148, par: 4, pLat: 54.043120, pLon: -2.802100 }, // Hole 5: ~157 yds -> 7-IRON
+        { lat: 54.043930, lon: -2.803945, par: 4, pLat: 54.042810, pLon: -2.804850 }, // Hole 6: ~142 yds -> 8-IRON
+        { lat: 54.043171, lon: -2.803174, par: 3, pLat: 54.042150, pLon: -2.802300 }, // Hole 7: ~128 yds -> 9-IRON
+        { lat: 54.043545, lon: -2.802070, par: 5, pLat: 54.042650, pLon: -2.802700 }, // Hole 8: ~108 yds -> PITCHING WEDGE
+        { lat: 54.043189, lon: -2.804043, par: 4, pLat: 54.042550, pLon: -2.803400 }, // Hole 9: ~82 yds  -> GAP / SAND WEDGE
+        { lat: 54.045239, lon: -2.801687, par: 4, pLat: 54.044880, pLon: -2.801980 }, // Hole 10: ~45 yds -> LOB WEDGE / PUTT
+        { lat: 54.046266, lon: -2.801508, par: 4, pLat: 54.044120, pLon: -2.800500 }, // Hole 11: ~245 yds -> DRIVER / 3-WOOD
+        { lat: 54.048097, lon: -2.806541, par: 3, pLat: 54.046700, pLon: -2.806541 }, // Hole 12: ~155 yds -> 7-IRON (Due North 0°!)
+        { lat: 54.044841, lon: -2.805492, par: 5, pLat: 54.043100, pLon: -2.806200 }, // Hole 13: ~198 yds -> 4-HYBRID / 4-IRON
+        { lat: 54.044874, lon: -2.803439, par: 4, pLat: 54.043550, pLon: -2.802500 }, // Hole 14: ~161 yds -> 7-IRON
+        { lat: 54.044594, lon: -2.802670, par: 5, pLat: 54.043400, pLon: -2.803300 }, // Hole 15: ~140 yds -> 8-IRON
+        { lat: 54.045257, lon: -2.802696, par: 3, pLat: 54.044350, pLon: -2.802100 }, // Hole 16: ~110 yds -> PITCHING WEDGE
+        { lat: 54.045562, lon: -2.803126, par: 4, pLat: 54.044900, pLon: -2.803600 }, // Hole 17: ~80 yds  -> GAP / SAND WEDGE
+        { lat: 54.046074, lon: -2.799906, par: 4, pLat: 54.045650, pLon: -2.799650 }  // Hole 18: ~50 yds  -> LOB WEDGE / PUTT
     ];
 
-    // Simulated Player Tee/Fairway Position (~155 yds SE of Hole 12)
-    const simPlayerLat = 54.047210;
-    const simPlayerLon = -2.804950;
-
     let simCurrentHole = 12; // Matches int currentHole = 12; in C++
-    let simHeading = 315;
+    let simHeading = 0;      // Aligned with True North (0°)
 
     function degToRad(deg) { return deg * Math.PI / 180.0; }
     function radToDeg(rad) { return rad * 180.0 / Math.PI; }
@@ -1994,9 +2088,9 @@ void loop() {
     }
 
     function updateSimulator() {
-        const target = courseHoles[simCurrentHole - 1];
-        const distYds = Math.round(calculateDistanceYards(simPlayerLat, simPlayerLon, target.lat, target.lon));
-        const brg = Math.round(calculateTargetBearing(simPlayerLat, simPlayerLon, target.lat, target.lon));
+        const holeObj = courseHoles[simCurrentHole - 1];
+        const distYds = Math.round(calculateDistanceYards(holeObj.pLat, holeObj.pLon, holeObj.lat, holeObj.lon));
+        const brg = Math.round(calculateTargetBearing(holeObj.pLat, holeObj.pLon, holeObj.lat, holeObj.lon)) % 360;
 
         let turnAngle = brg - simHeading;
         if (turnAngle > 180) turnAngle -= 360;
@@ -2008,14 +2102,18 @@ void loop() {
         }
 
         // Update Header & Readouts
-        document.getElementById('tft-hole-par').textContent = `HOLE ${simCurrentHole}   |   PAR ${target.par}`;
+        document.getElementById('tft-hole-par').textContent = `HOLE ${simCurrentHole}   |   PAR ${holeObj.par}`;
         document.getElementById('tft-yds').textContent = distYds;
         document.getElementById('tft-brg').textContent = brg;
         document.getElementById('tft-hdg').textContent = simHeading;
         document.getElementById('tft-turn').textContent = `${turnDir} ${Math.round(Math.abs(turnAngle))} DEG`;
         document.getElementById('tft-club').textContent = getClubRecommendation(distYds);
 
-        // Rotate Compass Needle (matches drawCompassLine)
+        // Rotate Compass Rose so North (N) stays aligned with True North (0°) relative to user heading
+        const rose = document.getElementById('tft-compass-rose');
+        rose.setAttribute('transform', `rotate(${-simHeading} 38 38)`);
+
+        // Rotate Target Needle relative to user's forward heading (0 turnAngle = straight up)
         const angleRad = degToRad(turnAngle - 90.0);
         const edgeX = 38 + 22 * Math.cos(angleRad);
         const edgeY = 38 + 22 * Math.sin(angleRad);
@@ -2051,11 +2149,12 @@ void loop() {
 
     function simSetHeading(val) {
         simHeading = parseInt(val);
-        document.getElementById('slider-hdg-readout').textContent = `${simHeading}°`;
+        const cardinal = simHeading === 0 ? " (N)" : simHeading === 90 ? " (E)" : simHeading === 180 ? " (S)" : simHeading === 270 ? " (W)" : "";
+        document.getElementById('slider-hdg-readout').textContent = `${simHeading}°${cardinal}`;
         updateSimulator();
     }
 
-    // Initialize Simulator on Hole 12
+    // Initialize Simulator on Hole 12 facing True North (0°)
     updateSimulator();
     </script>
 
