@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Golf Rangefinder | James Roberts</title>
+    
+    <!-- Favicon / Tab Icon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MathJax for Rendering LaTeX Math Equations -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --gold: #f59e0b;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 0 1.5rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .back-btn {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .back-btn:hover {
+            color: var(--accent);
+        }
+
+        /* Header Badges & Title */
+        .project-header {
+            padding: 3rem 0 2rem;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .badge-hardware {
+            background-color: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-type {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+        }
+
+        .project-header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        .project-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Key Metrics Banner */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(30, 41, 59, 0.5) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.65rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .metric-sub {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Content Sections */
+        .section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            font-size: 1.35rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section h2 i {
+            color: var(--accent);
+        }
+
+        /* Hardware Architecture Table */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.95rem;
+        }
+
+        .spec-table th, .spec-table td {
+            padding: 0.85rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .spec-table th {
+            color: var(--accent);
+            font-weight: 600;
+            background-color: rgba(15, 23, 42, 0.5);
+        }
+
+        .spec-table td {
+            color: var(--text-muted);
+        }
+
+        .spec-table td strong {
+            color: var(--text-main);
+        }
+
+        /* Media Showcase Grid */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .media-card {
+            background-color: rgba(15, 23, 42, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .media-placeholder {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background-color: #020617;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .media-placeholder i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            opacity: 0.7;
+        }
+
+        .media-info {
+            padding: 1rem;
+        }
+
+        .media-info h3 {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .media-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Learned Grid */
+        .learned-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .learned-card {
+            background-color: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .learned-card h3 {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .learned-card h3 i {
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .learned-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Tech Stack Tags */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1rem;
+        }
+
+        .tech-tag {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            font-size: 0.85rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-family: monospace;
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Navigation Bar -->
+        <nav>
+            <a href="index.html" class="logo">James Roberts</a>
+            <a href="projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> All Projects</a>
+        </nav>
+
+        <!-- Project Header -->
+        <header class="project-header">
+            <div class="badges">
+                <span class="badge-hardware"><i class="fa-solid fa-microchip"></i> Embedded Systems & Hardware</span>
+                <span class="badge-type">Personal Prototyping Project</span>
+            </div>
+            <h1>Handheld GPS Golf Rangefinder & Telemetry Module</h1>
+            <p>A self-contained, battery-powered embedded electronics system combining real-time GNSS satellite positioning, high-contrast SPI display rendering, and custom FDM 3D-printed mechanical packaging.</p>
+        </header>
+
+        <!-- Metrics Banner -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Core Architecture</div>
+                <div class="metric-value">ATmega328P</div>
+                <div class="metric-sub">Arduino Nano microcontroller platform</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Display Interface</div>
+                <div class="metric-value">2.0" IPS LCD</div>
+                <div class="metric-sub">ST7789V driver via hardware SPI</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Power System</div>
+                <div class="metric-value">3.7V Li-Ion</div>
+                <div class="metric-sub">TP4056 USB-C charge & protection</div>
+            </div>
+        </div>
+
+        <!-- Section 1: System Overview -->
+        <div class="section">
+            <h2><i class="fa-solid fa-compass"></i> System Overview</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">
+                Commercial golf rangefinders often rely on expensive optical laser assemblies or bulky smartwatches. This project explores a low-cost, dedicated embedded alternative capable of calculating real-time Haversine yardage to front, center, and back green coordinates stored locally in flash memory.
+            </p>
+            <p style="color: var(--text-muted);">
+                The hardware architecture was prototyped on perfboard with point-to-point soldering, housed inside a custom SolidWorks-designed PLA enclosure featuring heat-set brass threaded inserts for serviceable field assembly.
+            </p>
+        </div>
+
+        <!-- Section 2: Hardware Subsystems -->
+        <div class="section">
+            <h2><i class="fa-solid fa-sitemap"></i> Hardware Architecture & Bill of Materials</h2>
+            <table class="spec-table">
+                <thead>
+                    <tr>
+                        <th>Subsystem</th>
+                        <th>Component</th>
+                        <th>Interface & Technical Role</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Microcontroller</strong></td>
+                        <td>Arduino Nano (ATmega328P)</td>
+                        <td>Parses NMEA sentences, executes Haversine distance calculations ($R = 6371\text{ km}$), and drives UI state machine.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Display Module</strong></td>
+                        <td>2.0" ST7789V IPS TFT LCD</td>
+                        <td>$240 \times 320$ resolution driven over 4-wire hardware SPI with level-shifted logic lines.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Positioning</strong></td>
+                        <td>UART GNSS/GPS Receiver</td>
+                        <td>9600 baud serial communication streaming real-time latitude/longitude telemetry.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Power Management</strong></td>
+                        <td>TP4056 + 3.7V Li-Ion Cell</td>
+                        <td>Integrated constant-current/constant-voltage charging with over-discharge protection and boost regulation.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>User Input</strong></td>
+                        <td>Perfboard Tactile Switches</td>
+                        <td>Hardware-debounced interrupt/polling inputs for hole selection and green target toggling.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Enclosure</strong></td>
+                        <td>FDM 3D-Printed PLA Shell</td>
+                        <td>Custom CAD housing with M2.5 heat-set brass inserts ($210^\circ\text{C}$ installation) for mechanical rigidity.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 3: Prototype Media & CAD (Ready for your photos/videos) -->
+        <div class="section">
+            <h2><i class="fa-solid fa-camera"></i> Prototype Build & CAD Gallery</h2>
+            <p style="color: var(--text-muted);">Hardware integration, internal perfboard wiring layout, and custom 3D-printed enclosure assembly.</p>
+            
+            <div class="media-grid">
+                <div class="media-card">
+                    <div class="media-placeholder">
+                        <i class="fa-solid fa-microchip"></i>
+                        <span>Add image: <code>images/rangefinder-pcb.jpg</code></span>
+                    </div>
+                    <div class="media-info">
+                        <h3>Internal Perfboard & Wiring</h3>
+                        <p>Compact point-to-point soldered assembly integrating the Nano, GPS module, and power management board.</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-placeholder">
+                        <i class="fa-solid fa-display"></i>
+                        <span>Add image: <code>images/rangefinder-ui.jpg</code></span>
+                    </div>
+                    <div class="media-info">
+                        <h3>ST7789V Yardage UI</h3>
+                        <p>High-contrast daylight-readable interface displaying hole par, front/middle/back yardage, and GPS lock status.</p>
+                    </div>
+                </div>
+
+                <div class="media-card">
+                    <div class="media-placeholder">
+                        <i class="fa-solid fa-cube"></i>
+                        <span>Add image: <code>images/rangefinder-cad.jpg</code></span>
+                    </div>
+                    <div class="media-info">
+                        <h3>SolidWorks Enclosure & Brass Inserts</h3>
+                        <p>Two-piece clamshell housing engineered with internal component standoffs and heat-set threaded brass inserts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Critical Engineering Insights -->
+        <div class="section">
+            <h2><i class="fa-solid fa-lightbulb"></i> Key Engineering Takeaways</h2>
+            <div class="learned-grid">
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-memory"></i> <span>SRAM Optimization on ATmega328P</span></h3>
+                    <p>Constrained dynamic memory ($2\text{ KB}$ SRAM) required storing course coordinate lookup tables in `PROGMEM` flash memory and avoiding dynamic `String` heap fragmentation during SPI screen refreshes.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-bolt"></i> <span>3.3V / 5V Logic Level Shifting</span></h3>
+                    <p>Protected the 3.3V ST7789V display controller from 5V Arduino logic levels using resistive voltage dividers on the SPI clock and data lines to ensure long-term signal integrity.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-screwdriver-wrench"></i> <span>Design for Assembly (DFA) in FDM</span></h3>
+                    <p>Learned how wall thickness around bosses affects melt flow when installing heat-set brass inserts at $210^\circ\text{C}$, preventing exterior surface bulging on thin PLA walls.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-satellite"></i> <span>NMEA Parsing & Cold-Start Filtering</span></h3>
+                    <p>Implemented dilution-of-precision (HDOP) filtering in firmware to prevent erratic yardage jumps while the GNSS receiver acquires initial satellite lock.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Tech Stack & Tools -->
+        <div class="section">
+            <h2><i class="fa-solid fa-code"></i> Technical Stack & Tools</h2>
+            <div class="tags-container">
+                <span class="tech-tag">Embedded C++ / Arduino</span>
+                <span class="tech-tag">SPI & UART Protocols</span>
+                <span class="tech-tag">ST7789V TFT Driver</span>
+                <span class="tech-tag">NMEA 0183 GNSS Parsing</span>
+                <span class="tech-tag">TP4056 Li-Ion Power</span>
+                <span class="tech-tag">SolidWorks CAD</span>
+                <span class="tech-tag">FDM 3D Printing (PLA)</span>
+            </div>
+        </div>
+
+        <!-- Action Links -->
+        <div class="actions">
+            <a href="https://github.com/JamesRoberts213" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                <i class="fa-brands fa-github"></i> View GitHub Profile
+            </a>
+            <a href="projects.html" class="btn btn-secondary">
+                <i class="fa-solid fa-grid-2"></i> Back to All Projects
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 James Roberts. Built with HTML & CSS on GitHub Pages.</p>
+        </footer>
+    </div>
+
+</body>
+</html>

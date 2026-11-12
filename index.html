@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>James Roberts | Portfolio</title>
+
+    <!-- Favicon / Tab Icon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
     <!-- Google Fonts & MathJax -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -126,7 +130,6 @@
             overflow: hidden;
             position: relative;
             padding: 1rem 0;
-            /* Soft edge masks for smooth entry/exit */
             mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
             -webkit-mask-image: linear-gradient(to right, transparent 0%, black 5%, black 95%, transparent 100%);
         }
@@ -330,10 +333,25 @@
                         <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">Read Case Study &rarr;</div>
                     </a>
 
-                    <!-- Card 2: ANC System -->
-                    <a href="projects.html" class="card-item starred">
+                    <!-- Card 2: Embedded Golf Rangefinder -->
+                    <a href="golf-rangefinder.html" class="card-item starred">
                         <div>
-                            <span class="star-badge"><i class="fa-solid fa-star"></i> Signal Processing</span>
+                            <span class="star-badge"><i class="fa-solid fa-microchip"></i> Embedded Hardware</span>
+                            <h3>Handheld GPS Golf Rangefinder</h3>
+                            <p>Arduino Nano display module integrating an ST7789V LCD, GNSS receiver, and TP4056 Li-ion charger.</p>
+                            <div class="tags">
+                                <span class="tag">C++</span>
+                                <span class="tag">Arduino</span>
+                                <span class="tag">ST7789V</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Hardware Build &rarr;</div>
+                    </a>
+
+                    <!-- Card 3: ANC System -->
+                    <a href="projects.html" class="card-item">
+                        <div>
+                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-wave-square"></i> Signal Processing</span>
                             <h3>Active Noise Control (ANC) Architecture</h3>
                             <p>Evaluated FxLMS adaptive filter convergence rates, secondary path phase errors, and quiet zones.</p>
                             <div class="tags">
@@ -345,25 +363,10 @@
                         <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Analysis &rarr;</div>
                     </a>
 
-                    <!-- Card 3: Embedded Rangefinder -->
+                    <!-- Card 4: Numerical Advection Solver -->
                     <a href="projects.html" class="card-item">
                         <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-microchip"></i> Hardware System</span>
-                            <h3>Embedded Hardware Rangefinder</h3>
-                            <p>Arduino Nano display module integrating an ST7789V LCD, GPS, and TP4056 Li-ion charger.</p>
-                            <div class="tags">
-                                <span class="tag">C++</span>
-                                <span class="tag">Arduino</span>
-                                <span class="tag">ST7789V</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View System &rarr;</div>
-                    </a>
-
-                    <!-- Card 4: Numerical Advection Solver -->
-                    <a href="projects.html" class="card-item starred">
-                        <div>
-                            <span class="star-badge"><i class="fa-solid fa-star"></i> Computational Math</span>
+                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-calculator"></i> Computational Math</span>
                             <h3>Numerical Advection CFD Solver</h3>
                             <p>Finite difference scheme implementations in Python evaluating Crank-Nicolson stability bounds.</p>
                             <div class="tags">
@@ -378,7 +381,7 @@
                     <!-- Card 5: Structural Strain Analysis -->
                     <a href="projects.html" class="card-item">
                         <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-wave-square"></i> Instrumentation</span>
+                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-gauge-high"></i> Instrumentation</span>
                             <h3>Half-Bridge Strain Calibration</h3>
                             <p>Dynamic force measurement on a 2mm steel bar using Kyowa strain gauges and a P3 indicator.</p>
                             <div class="tags">
@@ -436,14 +439,13 @@
     const dotsContainer = document.getElementById('dots-container');
     
     let currentIndex = 0;
-    const maxIndex = cards.length - 3; // 6 cards total, 3 visible = max index 3
+    const maxIndex = cards.length - 3;
     let autoSlideTimer = null;
     let isDragging = false;
     let startX = 0;
     let currentTranslate = 0;
     let prevTranslate = 0;
 
-    // Build navigation dots
     for (let i = 0; i <= maxIndex; i++) {
         const dot = document.createElement('div');
         dot.className = i === 0 ? 'dot active' : 'dot';
@@ -454,14 +456,12 @@
     function updateSlider(index) {
         currentIndex = Math.max(0, Math.min(index, maxIndex));
         
-        // Calculate offset percentage dynamically
-        const cardWidth = cards[0].offsetWidth + 24; // Width + 1.5rem (24px) gap
+        const cardWidth = cards[0].offsetWidth + 24;
         currentTranslate = -currentIndex * cardWidth;
         prevTranslate = currentTranslate;
 
         track.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
 
-        // Update range slider & dots
         slider.value = currentIndex;
         const progress = (currentIndex / maxIndex) * 100;
         document.documentElement.style.setProperty('--slider-progress', `${progress}%`);
@@ -473,7 +473,6 @@
 
     slider.oninput = (e) => updateSlider(parseInt(e.target.value));
 
-    // Touch & Mouse Drag Handling
     track.addEventListener('mousedown', dragStart);
     track.addEventListener('touchstart', dragStart);
     track.addEventListener('mouseup', dragEnd);
@@ -492,10 +491,11 @@
         if (!isDragging) return;
         const currentPosition = getPositionX(e);
         const diff = currentPosition - startX;
-        track.style.transform = `translate3d(${prevTranslate + diff}px, 0, 0)`;
+        currentTranslate = prevTranslate + diff;
+        track.style.transform = `translate3d(${currentTranslate}px, 0, 0)`;
     }
 
-    function dragEnd(e) {
+    function dragEnd() {
         if (!isDragging) return;
         isDragging = false;
         track.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
