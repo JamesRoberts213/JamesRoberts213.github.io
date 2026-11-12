@@ -710,9 +710,9 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Full Source Code Window */
+        /* Full Source Code Window + Arduino IDE Syntax Highlighting */
         .code-window {
-            background-color: var(--code-bg);
+            background-color: #0b111e;
             border: 1px solid var(--border);
             border-radius: 8px;
             overflow: hidden;
@@ -720,23 +720,23 @@
         }
 
         .code-header {
-            background-color: rgba(30, 41, 59, 0.9);
+            background-color: #006468;
             padding: 0.65rem 1rem;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid #004f52;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-family: 'Fira Code', monospace;
             font-size: 0.8rem;
-            color: var(--text-muted);
+            color: #ffffff;
             gap: 1rem;
             flex-wrap: wrap;
         }
 
         .copy-code-btn {
-            background-color: rgba(56, 189, 248, 0.15);
-            color: var(--accent);
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.35);
             padding: 0.3rem 0.7rem;
             border-radius: 5px;
             font-family: 'Inter', sans-serif;
@@ -750,8 +750,8 @@
         }
 
         .copy-code-btn:hover {
-            background-color: var(--accent);
-            color: var(--bg-color);
+            background-color: #ffffff;
+            color: #006468;
         }
 
         .code-window pre {
@@ -760,9 +760,19 @@
             overflow: auto;
             font-family: 'Fira Code', monospace;
             font-size: 0.8rem;
-            line-height: 1.5;
+            line-height: 1.55;
             color: #e2e8f0;
         }
+
+        /* Arduino IDE Syntax Token Colors */
+        .ino-preproc { color: #728e00; font-weight: 600; }
+        .ino-type    { color: #00979d; font-weight: 600; }
+        .ino-keyword { color: #728e00; font-weight: 600; }
+        .ino-func    { color: #d35400; font-weight: 500; }
+        .ino-const   { color: #00979d; }
+        .ino-string  { color: #38bdf8; }
+        .ino-number  { color: #f59e0b; }
+        .ino-comment { color: #64748b; font-style: italic; }
 
         /* Design Split Grid (PCB & CAD Panels) */
         .design-split {
@@ -1099,7 +1109,7 @@
         <!-- Section 1: Interactive Device UI Simulator -->
         <div class="section">
             <h2><i class="fa-solid fa-display"></i> Interactive ST7789V Firmware Simulator</h2>
-            <p style="color: var(--text-muted);">A pixel-accurate replica of the device's custom "Masters Theme" UI rendered on the $240 \times 320$ ST7789V display[cite: 7]. Cycle through all <strong>18 holes</strong> (`H-` / `H+`) to test distances from $45\text{ yds}$ to $245\text{ yds}$ across every club recommendation, or rotate the heading slider to align **North (`0°`)** with the target bearing[cite: 7].</p>
+            <p style="color: var(--text-muted);">A pixel-accurate replica of the device's custom "Masters Theme" UI rendered on the $240 \times 320$ ST7789V display. Cycle through all <strong>18 holes</strong> (`H-` / `H+`) to test distances from $45\text{ yds}$ to $245\text{ yds}$ across every club recommendation, or rotate the heading slider to watch the target needle respond just like the real hardware.</p>
 
             <div class="simulator-layout">
                 <!-- Virtual Handheld Hardware -->
@@ -1144,18 +1154,15 @@
 
                         <div class="tft-line-175"></div>
 
-                        <!-- Compass Dial (y: 181..255) -->
+                        <!-- Compass Dial (Fixed N/E/S/W matching drawCompassLine in C++) -->
                         <div class="tft-lbl-target">TO FIXED TARGET</div>
                         <svg class="tft-compass-svg" width="76" height="76" viewBox="0 0 76 76">
                             <circle cx="38" cy="38" r="25" fill="none" stroke="#084820" stroke-width="1.5"/>
-                            <!-- Rotating Cardinal Rose (Aligns N with 0 degrees) -->
-                            <g id="tft-compass-rose" transform="rotate(0 38 38)">
-                                <text x="38" y="9" fill="#e8d810" font-family="Fira Code, monospace" font-weight="700" font-size="8.5" text-anchor="middle">N</text>
-                                <text x="70" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">E</text>
-                                <text x="38" y="74" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">S</text>
-                                <text x="6" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">W</text>
-                            </g>
-                            <!-- Dynamic Turn Angle Vector (Points straight up at 0 turnAngle) -->
+                            <text x="38" y="9" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">N</text>
+                            <text x="70" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">E</text>
+                            <text x="38" y="74" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">S</text>
+                            <text x="6" y="41" fill="#b8dcb8" font-family="Fira Code, monospace" font-size="8" text-anchor="middle">W</text>
+                            <!-- Dynamic Turn Angle Vector -->
                             <line id="tft-needle" x1="38" y1="38" x2="38" y2="16" stroke="#e8d810" stroke-width="2.2" stroke-linecap="round"/>
                             <circle cx="38" cy="38" r="3" fill="#084820"/>
                         </svg>
@@ -1183,18 +1190,18 @@
                     <div class="heading-slider-box">
                         <div class="heading-slider-header">
                             <strong style="color: var(--accent);"><i class="fa-regular fa-compass"></i> Simulate Magnetometer Heading</strong>
-                            <span style="font-family: 'Fira Code', monospace; color: var(--text-main);" id="slider-hdg-readout">0° (N)</span>
+                            <span style="font-family: 'Fira Code', monospace; color: var(--text-main);" id="slider-hdg-readout">0°</span>
                         </div>
                         <input type="range" min="0" max="359" value="0" id="hdg-slider" oninput="simSetHeading(this.value)">
-                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">At <strong>0°</strong>, <strong>N</strong> aligns dead center at the top of the dial. Cycle through Holes 1–18 to test every club bracket from Driver down to Lob Wedge / Putt[cite: 7].</p>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">Drag to rotate the QMC5883P compass heading relative to the target bearing (`turnAngle = targetBearing - heading`). Cycle Holes 1–18 to test all 10 club recommendations.</p>
                     </div>
 
                     <h3 style="font-size: 1.05rem; color: var(--text-main);">How the Firmware Renders This Frame</h3>
                     <ul class="design-list">
-                        <li><strong>Full 18-Hole Club Range:</strong> Uses the exact 18-hole WGS84 green coordinate array (`courseHoles[18]`) from the firmware, evaluating distances from $45\text{ yds}$ to $245\text{ yds}$ across all 10 club brackets[cite: 7].</li>
-                        <li><strong>True-North Vector Navigation:</strong> Computes great-circle distance (`calculateDistanceYards`) and forward azimuth (`calculateTargetBearing`) so `0°` aligns directly with **North**, outputting `TURN LEFT`, `ON TARGET` ($\pm 8^\circ$), or `TURN RIGHT`[cite: 7].</li>
-                        <li><strong>Automated Club Caddie:</strong> Evaluates `getClubRecommendation(yards)` from `DRIVER / 3-WOOD` ($>220\text{ yds}$) through every iron and wedge down to `LOB WEDGE / PUTT` ($\le 60\text{ yds}$)[cite: 7].</li>
-                        <li><strong>Flicker-Free Dirty-Rectangle Redraws:</strong> Repaints only the dynamic numeric bounding boxes (`fillRect` over `COLOR_BG`) rather than clearing the full $240 \times 320$ display buffer[cite: 7].</li>
+                        <li><strong>Full 18-Hole Club Range:</strong> Uses the exact 18-hole WGS84 green coordinate array (`courseHoles[18]`) from the firmware, evaluating distances from $45\text{ yds}$ to $245\text{ yds}$ across all 10 club brackets.</li>
+                        <li><strong>Dynamic Vector Navigation:</strong> Computes great-circle distance (`calculateDistanceYards`) and forward azimuth (`calculateTargetBearing`) to rotate the gold needle relative to your forward heading, outputting `TURN LEFT`, `ON TARGET` ($\pm 8^\circ$), or `TURN RIGHT`.</li>
+                        <li><strong>Automated Club Caddie:</strong> Evaluates `getClubRecommendation(yards)` from `DRIVER / 3-WOOD` ($>220\text{ yds}$) through every iron and wedge down to `LOB WEDGE / PUTT` ($\le 60\text{ yds}$).</li>
+                        <li><strong>Flicker-Free Dirty-Rectangle Redraws:</strong> Repaints only the dynamic numeric bounding boxes (`fillRect` over `COLOR_BG`) rather than clearing the full $240 \times 320$ display buffer.</li>
                     </ul>
                 </div>
             </div>
@@ -1203,7 +1210,7 @@
         <!-- Section 2: System Architecture & Pinout Topology -->
         <div class="section">
             <h2><i class="fa-solid fa-diagram-project"></i> System Architecture & Pinout Topology</h2>
-            <p style="color: var(--text-muted);">Hardware interfaces, pin assignments, and sensor fusion pipelines across the Arduino Nano architecture[cite: 7].</p>
+            <p style="color: var(--text-muted);">Hardware interfaces, pin assignments, and sensor fusion pipelines across the Arduino Nano architecture.</p>
 
             <div class="block-diagram">
                 <div class="diag-col">
@@ -1215,7 +1222,7 @@
                     </div>
                     <div class="diag-node">
                         <strong>3x Tactile Switches (`INPUT_PULLUP`)</strong>
-                        Hole Up (`D4`), Hole Down (`D5`), and Sync Refresh (`A3`) with $40\text{ ms}$ debounce[cite: 7].
+                        Hole Up (`D4`), Hole Down (`D5`), and Sync Refresh (`A3`) with $40\text{ ms}$ debounce.
                         <span class="diag-bus">D4 / D5 / A3 GPIO</span>
                     </div>
                 </div>
@@ -1224,12 +1231,12 @@
                     <div class="diag-col-title"><i class="fa-solid fa-microchip"></i> Core Processing</div>
                     <div class="diag-node">
                         <strong>Arduino Nano (ATmega328P)</strong>
-                        Executes spherical trig (`atan2`, `asin`), hard-iron calibration, and UI state updates[cite: 7].
+                        Executes spherical trig (`atan2`, `asin`), hard-iron calibration, and UI state updates.
                         <span class="diag-bus">16 MHz AVR Core</span>
                     </div>
                     <div class="diag-node">
                         <strong>QMC5883P 3-Axis Magnetometer</strong>
-                        Continuous $50\text{ Hz}$ ODR ($\pm 8\text{G}$ range) with calibrated hard-iron offsets[cite: 7].
+                        Continuous $50\text{ Hz}$ ODR ($\pm 8\text{G}$ range) with calibrated hard-iron offsets.
                         <span class="diag-bus">I2C Bus (SDA A4 / SCL A5)</span>
                     </div>
                 </div>
@@ -1238,12 +1245,12 @@
                     <div class="diag-col-title"><i class="fa-solid fa-satellite"></i> GNSS & TFT Display</div>
                     <div class="diag-node">
                         <strong>UART GNSS Receiver (`TinyGPSPlus`)</strong>
-                        Streams NMEA location & satellite count (`getGPSBars` 1–4 signal bars)[cite: 7].
+                        Streams NMEA location & satellite count (`getGPSBars` 1–4 signal bars).
                         <span class="diag-bus">SoftwareSerial (RX D2 / TX D3)</span>
                     </div>
                     <div class="diag-node">
                         <strong>2.0" ST7789V IPS TFT LCD</strong>
-                        16-bit RGB565 display with level-shifted SPI lines and PWM backlight control[cite: 7].
+                        16-bit RGB565 display with level-shifted SPI lines and PWM backlight control.
                         <span class="diag-bus">CS D10 / DC D7 / RST D8 / BL D9</span>
                     </div>
                 </div>
@@ -1268,15 +1275,15 @@
                 </button>
             </div>
 
-            <!-- Panel 1: Complete Embedded C++ Code -->
+            <!-- Panel 1: Complete Embedded C++ Code (Arduino IDE Highlighted) -->
             <div id="tab-code" class="eng-panel active">
                 <p style="color: var(--text-muted); font-size: 0.95rem;">
-                    Complete Arduino C++ source code driving the ST7789V TFT display, `TinyGPSPlus` NMEA parser, `Adafruit_QMC5883P` calibrated compass, spherical Haversine distance/bearing equations, and caddie club selector[cite: 7].
+                    Complete Arduino C++ source code driving the ST7789V TFT display, `TinyGPSPlus` NMEA parser, `Adafruit_QMC5883P` calibrated compass, spherical Haversine distance/bearing equations, and caddie club selector.
                 </p>
 
                 <div class="code-window">
                     <div class="code-header">
-                        <span><i class="fa-solid fa-file-code"></i> GolfRangefinder.ino — Full Production Firmware (365 Lines)</span>
+                        <span><i class="fa-solid fa-file-code"></i> GolfRangefinder.ino — Arduino IDE Source (365 Lines)</span>
                         <button class="copy-code-btn" id="copy-btn" onclick="copyFirmwareCode()">
                             <i class="fa-regular fa-copy"></i> Copy Code
                         </button>
@@ -1796,8 +1803,8 @@ void loop() {
                     <div>
                         <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.75rem;">Circuit Architecture & Layout Strategy</h3>
                         <ul class="design-list">
-                            <li><strong>Multi-Bus Sensor Integration:</strong> Routed dedicated traces for 4-wire hardware SPI (`CS D10`, `DC D7`, `RST D8`), I2C magnetometer telemetry (`QMC5883P` at $50\text{ Hz}$), and `SoftwareSerial` UART (`D2/D3` at $9600\text{ baud}$)[cite: 7].</li>
-                            <li><strong>Hard-Iron Magnetic Isolation:</strong> Kept high-current backlight (`D9`) and power traces away from the QMC5883P sensor package, paired with firmware hard-iron offset calibration[cite: 7].</li>
+                            <li><strong>Multi-Bus Sensor Integration:</strong> Routed dedicated traces for 4-wire hardware SPI (`CS D10`, `DC D7`, `RST D8`), I2C magnetometer telemetry (`QMC5883P` at $50\text{ Hz}$), and `SoftwareSerial` UART (`D2/D3` at $9600\text{ baud}$).</li>
+                            <li><strong>Hard-Iron Magnetic Isolation:</strong> Kept high-current backlight (`D9`) and power traces away from the QMC5883P sensor package, paired with firmware hard-iron offset calibration.</li>
                             <li><strong>Mixed-Voltage Level Shifting:</strong> Integrated resistive voltage dividers to safely step 5V ATmega328P SPI signals down to 3.3V logic for the ST7789V display controller.</li>
                             <li><strong>Power Distribution & BMS:</strong> Routed wide power traces ($20\text{ mil}$) for the TP4056 Li-Ion charger, physical power switch, and decoupling capacitors ($100\text{ nF}$ ceramic + $10\text{ }\mu\text{F}$ bulk) adjacent to IC power pins.</li>
                         </ul>
@@ -1821,9 +1828,9 @@ void loop() {
                     <div>
                         <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.75rem;">SolidWorks Parametric Packaging</h3>
                         <ul class="design-list">
-                            <li><strong>Internal Tolerance Stack-Up:</strong> Modeled exact 3D step assemblies of the 2.0" ST7789V LCD bezel, USB-C charging port cutout, three tactile push-button plungers (`D4`, `D5`, `A3`), and Li-Ion pouch cell clearance[cite: 7].</li>
+                            <li><strong>Internal Tolerance Stack-Up:</strong> Modeled exact 3D step assemblies of the 2.0" ST7789V LCD bezel, USB-C charging port cutout, three tactile push-button plungers (`D4`, `D5`, `A3`), and Li-Ion pouch cell clearance.</li>
                             <li><strong>Heat-Set Brass Threaded Inserts:</strong> Designed dedicated cylindrical bosses sized for M2.5 knurled brass inserts installed at $210^\circ\text{C}$, enabling repeated disassembly without stripping printed threads.</li>
-                            <li><strong>Compass & GNSS Alignment:</strong> Indexed the QMC5883P PCB mounting bosses orthogonally to the housing centerline (matched to the firmware's $+90^\circ$ alignment shift) with an unobstructed top sky view for the GNSS antenna[cite: 7].</li>
+                            <li><strong>Compass & GNSS Alignment:</strong> Indexed the QMC5883P PCB mounting bosses orthogonally to the housing centerline (matched to the firmware's $+90^\circ$ alignment shift) with an unobstructed top sky view for the GNSS antenna.</li>
                             <li><strong>Print Orientation & DFM:</strong> Engineered split-shell mating lips with $0.25\text{ mm}$ radial clearance for support-free FDM printing in PLA.</li>
                         </ul>
                     </div>
@@ -1857,31 +1864,31 @@ void loop() {
                 <tbody>
                     <tr>
                         <td><strong>ST7789V 2.0" IPS LCD</strong></td>
-                        <td>Backlight `D9` HIGH + active SPI partial redraws[cite: 7]</td>
+                        <td>Backlight `D9` HIGH + active SPI partial redraws</td>
                         <td>$48\text{ mA}$</td>
                         <td>$43.2\%$</td>
                     </tr>
                     <tr>
                         <td><strong>GNSS / GPS Receiver</strong></td>
-                        <td>Continuous $9600\text{ baud}$ NMEA tracking (9+ satellites)[cite: 7]</td>
+                        <td>Continuous $9600\text{ baud}$ NMEA tracking (9+ satellites)</td>
                         <td>$36\text{ mA}$</td>
                         <td>$32.4\%$</td>
                     </tr>
                     <tr>
                         <td><strong>ATmega328P MCU</strong></td>
-                        <td>$16\text{ MHz}$ active processing + Haversine trig math[cite: 7]</td>
+                        <td>$16\text{ MHz}$ active processing + Haversine trig math</td>
                         <td>$18\text{ mA}$</td>
                         <td>$16.2\%$</td>
                     </tr>
                     <tr>
                         <td><strong>QMC5883P Compass</strong></td>
-                        <td>Continuous mode at $50\text{ Hz}$ ODR ($\pm 8\text{G}$ range)[cite: 7]</td>
+                        <td>Continuous mode at $50\text{ Hz}$ ODR ($\pm 8\text{G}$ range)</td>
                         <td>$4\text{ mA}$</td>
                         <td>$3.6\%$</td>
                     </tr>
                     <tr>
                         <td><strong>Boost Converter & Quiescent</strong></td>
-                        <td>Voltage regulation & `INPUT_PULLUP` losses[cite: 7]</td>
+                        <td>Voltage regulation & `INPUT_PULLUP` losses</td>
                         <td>$5\text{ mA}$</td>
                         <td>$4.5\%$</td>
                     </tr>
@@ -1955,7 +1962,7 @@ void loop() {
             <div class="learned-grid">
                 <div class="learned-card">
                     <h3><i class="fa-solid fa-compass"></i> <span>Magnetometer Hard-Iron Calibration</span></h3>
-                    <p>Eliminated heading distortion caused by nearby steel battery casings and PCB traces by applying 3-axis hard-iron offsets:<br><span class="offset-code">X: -1282.5 | Y: -283.0 | Z: +1157.5</span><br>alongside $+90^\circ$ sensor frame alignment[cite: 7].</p>
+                    <p>Eliminated heading distortion caused by nearby steel battery casings and PCB traces by applying 3-axis hard-iron offsets:<br><span class="offset-code">X: -1282.5 | Y: -283.0 | Z: +1157.5</span><br>alongside $+90^\circ$ sensor frame alignment.</p>
                 </div>
 
                 <div class="learned-card">
@@ -1970,12 +1977,12 @@ void loop() {
 
                 <div class="learned-card">
                     <h3><i class="fa-solid fa-gauge-high"></i> <span>Flicker-Free Partial SPI Redraws</span></h3>
-                    <p>Avoided full-screen clearing on the $240 \times 320$ display by repainting only the dynamic yardage, bearing, and compass dial bounding boxes each update cycle[cite: 7].</p>
+                    <p>Avoided full-screen clearing on the $240 \times 320$ display by repainting only the dynamic yardage, bearing, and compass dial bounding boxes each update cycle.</p>
                 </div>
 
                 <div class="learned-card">
                     <h3><i class="fa-solid fa-satellite"></i> <span>Non-Blocking NMEA Stream Parsing</span></h3>
-                    <p>Continuously polled `gpsSerial.available()` in the main `loop()` so incoming $9600\text{ baud}$ NMEA sentences are never dropped during $50\text{ Hz}$ I2C compass reads or button polling[cite: 7].</p>
+                    <p>Continuously polled `gpsSerial.available()` in the main `loop()` so incoming $9600\text{ baud}$ NMEA sentences are never dropped during $50\text{ Hz}$ I2C compass reads or button polling.</p>
                 </div>
 
                 <div class="learned-card">
@@ -2002,6 +2009,33 @@ void loop() {
     </div>
 
     <script>
+    // Arduino IDE Syntax Highlighter for the Firmware Code Block
+    function highlightArduinoCode() {
+        const codeEl = document.getElementById('firmware-source');
+        let text = codeEl.textContent;
+
+        // Escape HTML characters
+        text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        // Single-pass tokenizer so comments & strings never collide with keywords
+        const tokenRegex = /(\/\/.*$)|("[^"\\]*(?:\\.[^"\\]*)*")|(&lt;[A-Za-z0-9_./]+&gt;)|(^\s*#[a-z]+)|\b(void|int|float|double|bool|char|const|struct)\b|\b(if|else|while|for|return)\b|\b(HIGH|LOW|INPUT_PULLUP|OUTPUT|PI|ST77XX_WHITE|QMC5883P_MODE_CONTINUOUS|QMC5883P_ODR_50HZ|QMC5883P_RANGE_8G)\b|\b(setup|loop|pinMode|digitalRead|digitalWrite|delay|begin|print|println|sin|cos|atan2|sqrt|fabs|round|init|setRotation|fillScreen|fillRect|drawFastHLine|drawFastVLine|fillTriangle|drawRect|fillRoundRect|drawCircle|drawLine|fillCircle|setFont|setTextColor|setCursor|available|encode|read|isValid|value|lat|lng|setMode|setODR|setRange|isDataReady|getRawMagnetic)\b|\b(\d+(?:\.\d+)?|0x[0-9A-Fa-f]+)\b/gm;
+
+        text = text.replace(tokenRegex, (match, comment, str, header, preproc, type, kw, constant, func, num) => {
+            if (comment)  return `<span class="ino-comment">${comment}</span>`;
+            if (str)      return `<span class="ino-string">${str}</span>`;
+            if (header)   return `<span class="ino-string">${header}</span>`;
+            if (preproc)  return `<span class="ino-preproc">${preproc}</span>`;
+            if (type)     return `<span class="ino-type">${type}</span>`;
+            if (kw)       return `<span class="ino-keyword">${kw}</span>`;
+            if (constant) return `<span class="ino-const">${constant}</span>`;
+            if (func)     return `<span class="ino-func">${func}</span>`;
+            if (num)      return `<span class="ino-number">${num}</span>`;
+            return match;
+        });
+
+        codeEl.innerHTML = text;
+    }
+
     // Engineering Deep-Dive Tab Switcher
     function switchEngTab(panelId, clickedBtn) {
         document.querySelectorAll('.eng-panel').forEach(panel => panel.classList.remove('active'));
@@ -2010,9 +2044,9 @@ void loop() {
         clickedBtn.classList.add('active');
     }
 
-    // Copy Full Firmware Code to Clipboard
+    // Copy Clean Firmware Code to Clipboard
     function copyFirmwareCode() {
-        const codeText = document.getElementById('firmware-source').innerText;
+        const codeText = document.getElementById('firmware-source').textContent;
         navigator.clipboard.writeText(codeText).then(() => {
             const btn = document.getElementById('copy-btn');
             btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
@@ -2024,7 +2058,7 @@ void loop() {
 
     // Exact 18-Hole Green Coordinates + Varied Fairway Positions covering ALL 10 Club Brackets (45 yds to 245 yds)
     const courseHoles = [
-        { lat: 54.044854, lon: -2.803088, par: 4, pLat: 54.042710, pLon: -2.803088 }, // Hole 1: ~238 yds -> DRIVER / 3-WOOD (North 0°)
+        { lat: 54.044854, lon: -2.803088, par: 4, pLat: 54.042710, pLon: -2.803088 }, // Hole 1: ~238 yds -> DRIVER / 3-WOOD
         { lat: 54.045041, lon: -2.803078, par: 4, pLat: 54.043205, pLon: -2.804120 }, // Hole 2: ~208 yds -> 4-HYBRID / 4-IRON
         { lat: 54.045191, lon: -2.803395, par: 3, pLat: 54.043650, pLon: -2.802200 }, // Hole 3: ~187 yds -> 5-IRON
         { lat: 54.044964, lon: -2.803854, par: 5, pLat: 54.043520, pLon: -2.804700 }, // Hole 4: ~171 yds -> 6-IRON
@@ -2035,7 +2069,7 @@ void loop() {
         { lat: 54.043189, lon: -2.804043, par: 4, pLat: 54.042550, pLon: -2.803400 }, // Hole 9: ~82 yds  -> GAP / SAND WEDGE
         { lat: 54.045239, lon: -2.801687, par: 4, pLat: 54.044880, pLon: -2.801980 }, // Hole 10: ~45 yds -> LOB WEDGE / PUTT
         { lat: 54.046266, lon: -2.801508, par: 4, pLat: 54.044120, pLon: -2.800500 }, // Hole 11: ~245 yds -> DRIVER / 3-WOOD
-        { lat: 54.048097, lon: -2.806541, par: 3, pLat: 54.046700, pLon: -2.806541 }, // Hole 12: ~155 yds -> 7-IRON (Due North 0°!)
+        { lat: 54.048097, lon: -2.806541, par: 3, pLat: 54.046700, pLon: -2.806541 }, // Hole 12: ~155 yds -> 7-IRON
         { lat: 54.044841, lon: -2.805492, par: 5, pLat: 54.043100, pLon: -2.806200 }, // Hole 13: ~198 yds -> 4-HYBRID / 4-IRON
         { lat: 54.044874, lon: -2.803439, par: 4, pLat: 54.043550, pLon: -2.802500 }, // Hole 14: ~161 yds -> 7-IRON
         { lat: 54.044594, lon: -2.802670, par: 5, pLat: 54.043400, pLon: -2.803300 }, // Hole 15: ~140 yds -> 8-IRON
@@ -2045,7 +2079,7 @@ void loop() {
     ];
 
     let simCurrentHole = 12; // Matches int currentHole = 12; in C++
-    let simHeading = 0;      // Aligned with True North (0°)
+    let simHeading = 0;
 
     function degToRad(deg) { return deg * Math.PI / 180.0; }
     function radToDeg(rad) { return rad * 180.0 / Math.PI; }
@@ -2071,7 +2105,7 @@ void loop() {
         const y = Math.sin(dLon) * Math.cos(degToRad(lat2));
         const x = Math.cos(degToRad(lat1)) * Math.sin(degToRad(lat2)) -
                   Math.sin(degToRad(lat1)) * Math.cos(degToRad(lat2)) * Math.cos(dLon);
-        return normaliseDegrees(radToDeg(Math.atan2(y, x)));
+        return normaliseDegrees(radToDeg(atan2(y, x)));
     }
 
     function getClubRecommendation(yards) {
@@ -2109,11 +2143,7 @@ void loop() {
         document.getElementById('tft-turn').textContent = `${turnDir} ${Math.round(Math.abs(turnAngle))} DEG`;
         document.getElementById('tft-club').textContent = getClubRecommendation(distYds);
 
-        // Rotate Compass Rose so North (N) stays aligned with True North (0°) relative to user heading
-        const rose = document.getElementById('tft-compass-rose');
-        rose.setAttribute('transform', `rotate(${-simHeading} 38 38)`);
-
-        // Rotate Target Needle relative to user's forward heading (0 turnAngle = straight up)
+        // Rotate Target Needle (Exact drawCompassLine logic from GolfCode.txt)
         const angleRad = degToRad(turnAngle - 90.0);
         const edgeX = 38 + 22 * Math.cos(angleRad);
         const edgeY = 38 + 22 * Math.sin(angleRad);
@@ -2149,12 +2179,12 @@ void loop() {
 
     function simSetHeading(val) {
         simHeading = parseInt(val);
-        const cardinal = simHeading === 0 ? " (N)" : simHeading === 90 ? " (E)" : simHeading === 180 ? " (S)" : simHeading === 270 ? " (W)" : "";
-        document.getElementById('slider-hdg-readout').textContent = `${simHeading}°${cardinal}`;
+        document.getElementById('slider-hdg-readout').textContent = `${simHeading}°`;
         updateSimulator();
     }
 
-    // Initialize Simulator on Hole 12 facing True North (0°)
+    // Initialize Simulator & Arduino IDE Syntax Highlighting
+    highlightArduinoCode();
     updateSimulator();
     </script>
 
