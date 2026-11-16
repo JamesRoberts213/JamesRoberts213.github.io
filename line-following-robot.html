@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autonomous Line-Following & Catapult Robot (ENG204) | James Roberts</title>
+    
+    <!-- Favicon / Tab Icon -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MathJax for Rendering LaTeX Math Equations -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        /* Precision Dark Engineering Palette */
+        :root {
+            --bg-color: #0b1120;
+            --card-bg: #162032;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0284c7;
+            --emerald: #10b981;
+            --violet: #c084fc;
+            --amber: #f59e0b;
+            --coral: #f472b6;
+            --border: #26354d;
+            --code-bg: #060a13;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 0 1.5rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .back-btn {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.2s;
+        }
+
+        .back-btn:hover {
+            color: var(--accent);
+        }
+
+        /* Header Badges & Title */
+        .project-header {
+            padding: 3rem 0 2rem;
+        }
+
+        .badges {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .badge-control {
+            background-color: rgba(56, 189, 248, 0.14);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-hardware {
+            background-color: rgba(16, 185, 129, 0.14);
+            color: var(--emerald);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-type {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+        }
+
+        .project-header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        .project-header p {
+            color: var(--text-muted);
+            font-size: 1.08rem;
+        }
+
+        /* Key Metrics Banner */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.25rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(22, 32, 50, 0.7) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            border-radius: 12px;
+            padding: 1.35rem;
+        }
+
+        .metric-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .metric-sub {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+
+        /* Content Sections */
+        .section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .section h2 {
+            font-size: 1.35rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section h2 i {
+            color: var(--accent);
+        }
+
+        /* Physical Robot Hero Showcase */
+        .hero-hardware-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 1.75rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 740px) {
+            .hero-hardware-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hardware-photo-frame {
+            width: 100%;
+            aspect-ratio: 16 / 11;
+            background-color: var(--code-bg);
+            border: 1px dashed #475569;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 1.5rem;
+            color: var(--text-muted);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hardware-photo-frame i {
+            font-size: 2.4rem;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+            opacity: 0.85;
+        }
+
+        .hardware-photo-frame code {
+            color: var(--accent);
+            background: rgba(56, 189, 248, 0.12);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            margin-top: 0.35rem;
+            display: inline-block;
+        }
+
+        /* Interactive Diff-Amp & Mbed Control Simulator */
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 1.75rem;
+            align-items: start;
+            margin-top: 1.25rem;
+        }
+
+        @media (max-width: 780px) {
+            .sim-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .canvas-box {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        #robot-track-canvas {
+            width: 100%;
+            height: 310px;
+            border-radius: 6px;
+            background-color: #080d19;
+            display: block;
+        }
+
+        .telemetry-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(22, 32, 50, 0.85);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.55rem 0.85rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .sim-controls-box {
+            background-color: rgba(6, 10, 19, 0.65);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.15rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+        }
+
+        .preset-row {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.35rem 0.65rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .preset-btn:hover, .preset-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background-color: rgba(56, 189, 248, 0.1);
+        }
+
+        .preset-btn.fire-btn {
+            border-color: rgba(245, 158, 11, 0.45);
+            color: var(--amber);
+        }
+
+        .preset-btn.fire-btn:hover {
+            background-color: rgba(245, 158, 11, 0.15);
+            border-color: var(--amber);
+        }
+
+        /* Diff-Amp Voltage Meter Bar */
+        .voltage-meter-wrap {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.65rem 0.75rem;
+        }
+
+        .voltage-meter-header {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.76rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .voltage-track {
+            width: 100%;
+            height: 10px;
+            background-color: #0b1120;
+            border-radius: 999px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #334155;
+        }
+
+        .voltage-target-zone {
+            position: absolute;
+            left: 44%;
+            width: 12%;
+            height: 100%;
+            background-color: rgba(16, 185, 129, 0.35);
+            border-left: 1px solid var(--emerald);
+            border-right: 1px solid var(--emerald);
+        }
+
+        .voltage-marker {
+            position: absolute;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent);
+            transition: left 0.06s linear;
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+        }
+
+        .slider-label-row span:first-child {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .slider-label-row span:last-child {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
+        }
+
+        .sim-controls-box input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .pwm-readout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+
+        .pwm-pill {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.45rem 0.65rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* System Block Diagram */
+        .block-diagram {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 720px) {
+            .block-diagram {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .diag-col {
+            background-color: rgba(6, 10, 19, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.15rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .diag-col-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.4rem;
+        }
+
+        .diag-node {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .diag-node strong {
+            display: block;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .diag-bus {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--emerald);
+            background: rgba(16, 185, 129, 0.12);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 0.35rem;
+        }
+
+        /* Interactive Engineering Tabs */
+        .eng-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .eng-tab-btn {
+            background: rgba(6, 10, 19, 0.65);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.6rem 1.1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .eng-tab-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent);
+        }
+
+        .eng-tab-btn.active {
+            color: var(--bg-color);
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .eng-panel {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .eng-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Precision Dark Code Window */
+        .code-window {
+            background-color: var(--code-bg);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .code-header {
+            background-color: #162032;
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-main);
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .copy-code-btn {
+            background-color: rgba(56, 189, 248, 0.14);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 0.3rem 0.7rem;
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .copy-code-btn:hover {
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        .code-window pre {
+            padding: 1.25rem;
+            max-height: 500px;
+            overflow: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.55;
+            color: #e2e8f0;
+        }
+
+        /* Precision Dark Syntax Token Colors */
+        .ino-preproc { color: #c084fc; font-weight: 600; }
+        .ino-type    { color: #38bdf8; font-weight: 600; }
+        .ino-keyword { color: #f472b6; font-weight: 600; }
+        .ino-func    { color: #fbbf24; font-weight: 500; }
+        .ino-const   { color: #2dd4bf; }
+        .ino-string  { color: #34d399; }
+        .ino-number  { color: #fb923c; }
+        .ino-comment { color: #64748b; font-style: italic; }
+
+        /* Design Split Grid */
+        .design-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            align-items: start;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 720px) {
+            .design-split {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .design-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .design-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .design-list li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .design-list strong {
+            color: var(--text-main);
+        }
+
+        /* Media Card & Placeholder */
+        .media-card {
+            background-color: rgba(6, 10, 19, 0.7);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .media-placeholder {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background-color: var(--code-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .media-placeholder i {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            opacity: 0.75;
+        }
+
+        .media-info {
+            padding: 1rem;
+        }
+
+        .media-info h3 {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        .media-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Spec Tables */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .spec-table th, .spec-table td {
+            padding: 0.75rem 0.95rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .spec-table th {
+            color: var(--accent);
+            font-weight: 600;
+            background-color: rgba(6, 10, 19, 0.55);
+        }
+
+        .spec-table td {
+            color: var(--text-muted);
+        }
+
+        .spec-table td strong {
+            color: var(--text-main);
+        }
+
+        /* Strict 2x2 Software & Skills Grid */
+        .skills-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 680px) {
+            .skills-matrix {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .skill-domain-card {
+            background-color: rgba(6, 10, 19, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .skill-domain-card h3 {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .skill-pill {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--text-main);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            font-size: 0.8rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Key Engineering Takeaways (6-Card Grid) */
+        .learned-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .learned-card {
+            background-color: rgba(6, 10, 19, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-width: 0;
+        }
+
+        .learned-card h3 {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .learned-card h3 i {
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .learned-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        /* Action Buttons */
+        .actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Navigation Bar -->
+        <nav>
+            <a href="index.html" class="logo">James Roberts</a>
+            <a href="projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> All Projects</a>
+        </nav>
+
+        <!-- Project Header -->
+        <header class="project-header">
+            <div class="badges">
+                <span class="badge-control"><i class="fa-solid fa-wave-square"></i> Analog Signal Conditioning & Mbed C++</span>
+                <span class="badge-hardware"><i class="fa-solid fa-robot"></i> Lancaster University ENGR204</span>
+                <span class="badge-type">Mechatronics & Projectile Launch</span>
+            </div>
+            <h1>Autonomous Line-Following & Ball-Launching Robot ("Rat Mobile")</h1>
+            <p>End-to-end mechatronic vehicle featuring a custom water-jet cut aluminum chassis, $22\text{ k}\Omega$ LDR Wheatstone bridge & $7611$ differential op-amp optical tracking, STM32 Nucleo-F303RE Mbed firmware, and dual elastic catapults ("The Rat-O-Pult").</p>
+        </header>
+
+        <!-- Metrics Banner -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Microcontroller</div>
+                <div class="metric-value">Nucleo-F303RE</div>
+                <div class="metric-sub">ARM Mbed OS C++ (`500 Hz` PWM)</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Optical Sensing</div>
+                <div class="metric-value">7611 Diff-Amp</div>
+                <div class="metric-sub">$0.1\text{ V}–3.3\text{ V}$ span ($1.56\text{ V}$ center)</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Chassis & Payload</div>
+                <div class="metric-value">Al Sheet + Dual Launch</div>
+                <div class="metric-sub">$294.5 \times 230\text{ mm}$ water-jet frame</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Final Trial Result</div>
+                <div class="metric-value">3m 50s / 2 Hits</div>
+                <div class="metric-sub">Full course & both target zones hit</div>
+            </div>
+        </div>
+
+        <!-- Physical Robot Showcase (Near Top) -->
+        <div class="section">
+            <h2><i class="fa-solid fa-camera"></i> Final Competition Build ("Rat Mobile")</h2>
+            <div class="hero-hardware-grid">
+                <div class="hardware-photo-frame">
+                    <i class="fa-solid fa-robot"></i>
+                    <strong>Final Assembled Robot Photo (Figure 1)</strong>
+                    <span style="font-size: 0.85rem; margin-top: 0.25rem;">Replace this placeholder with Figure 1 from your report:</span>
+                    <code>images/rat-mobile-final.jpg</code>
+                </div>
+
+                <div>
+                    <h3 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.65rem;">Sub-Team Architecture & Integration</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.85rem;">
+                        Developed for the ENGR204 robotics challenge at Lancaster University. Leading the <strong>Electronic Design, Assembly & Testing</strong> sub-team alongside Alexander Lonsdale, we integrated custom soldered sensor boards and motor control electronics onto a rigid aluminum chassis engineered by the Mechanical sub-team.
+                    </p>
+                    <ul class="design-list">
+                        <li><strong>Autonomous Track Navigation:</strong> Tracks a continuous course using an analog LDR differential amplifier, stopping automatically via a front-mounted micro-switch (`killswitch`) at the end wall.</li>
+                        <li><strong>Dual-Zone Projectile Delivery:</strong> Upon wall contact, a servo-actuated release triggers two independently calibrated 3D-printed catapults ("The Rat-O-Pult") into Zone 1 ($0.5\text{ m}$) and Zone 2 ($1.5\text{ m}$).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1: Interactive Diff-Amp & Mbed Steering Simulator -->
+        <div class="section">
+            <h2><i class="fa-solid fa-sliders"></i> Interactive Diff-Amp & Mbed Steering Simulator</h2>
+            <p style="color: var(--text-muted);">Simulates the exact control logic running on the Nucleo-F303RE: the $7611$ differential amplifier outputs $0.1\text{ V}–3.3\text{ V}$ centered at $1.56\text{ V}$ on the line, driving pulse-width steering intervals (`timeSleep`) until the front bumper `killswitch` triggers the dual-catapult servo.</p>
+
+            <div class="sim-grid">
+                <!-- Live Track & Catapult Canvas -->
+                <div class="canvas-box">
+                    <canvas id="robot-track-canvas" width="520" height="310"></canvas>
+                    
+                    <div class="telemetry-bar">
+                        <span style="color: var(--accent);" id="sim-volt-readout">DIFF-AMP: 1.56 V</span>
+                        <span style="color: var(--amber);" id="sim-state-readout">MODE: STRAIGHT</span>
+                        <span style="color: var(--emerald);" id="sim-timer-readout">TIME: 0.0 s</span>
+                    </div>
+                </div>
+
+                <!-- Control Parameters & Voltage Meter -->
+                <div class="sim-controls-box">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">SIMULATION CONTROLS:</div>
+                    <div class="preset-row">
+                        <button class="preset-btn active" onclick="resetSimRun(false)">Restart Course</button>
+                        <button class="preset-btn fire-btn" onclick="jumpToWallAndFire()"><i class="fa-solid fa-bullseye"></i> Test Wall & Catapults</button>
+                    </div>
+
+                    <!-- Live Diff-Amp Output Bar -->
+                    <div class="voltage-meter-wrap">
+                        <div class="voltage-meter-header">
+                            <span style="color: var(--text-muted);">7611 Op-Amp Output (`rec1`)</span>
+                            <span style="color: var(--emerald);" id="meter-volts">1.56 V (Target: 1.55–1.57V)</span>
+                        </div>
+                        <div class="voltage-track">
+                            <div class="voltage-target-zone" title="Target Deadband: 1.55V - 1.57V"></div>
+                            <div class="voltage-marker" id="voltage-marker" style="left: 47.3%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <span>Motor Duty Cycle (`basePWM`)</span>
+                            <span id="val-pwm">1.00 (100%)</span>
+                        </div>
+                        <input type="range" id="slider-pwm" min="0.50" max="1.00" step="0.05" value="1.00" oninput="updateSimParams()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <span>Cycle Pulse Interval (`timeSleep`)</span>
+                            <span id="val-sleep">5 ms</span>
+                        </div>
+                        <input type="range" id="slider-sleep" min="2" max="15" step="1" value="5" oninput="updateSimParams()">
+                    </div>
+
+                    <div class="pwm-readout-grid">
+                        <div class="pwm-pill">
+                            <span style="color: var(--text-muted);">MOTOR A (R):</span>
+                            <span style="color: var(--accent);" id="out-motA">1.00</span>
+                        </div>
+                        <div class="pwm-pill">
+                            <span style="color: var(--text-muted);">MOTOR B (L):</span>
+                            <span style="color: var(--accent);" id="out-motB">1.00</span>
+                        </div>
+                        <div class="pwm-pill">
+                            <span style="color: var(--text-muted);">KILLSWITCH (`A5`):</span>
+                            <span style="color: var(--emerald);" id="out-kill">0 (OPEN)</span>
+                        </div>
+                        <div class="pwm-pill">
+                            <span style="color: var(--text-muted);">SERVO (`D5`):</span>
+                            <span style="color: var(--amber);" id="out-servo">0.20 (ARMED)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Electronic & Mechatronic System Architecture -->
+        <div class="section">
+            <h2><i class="fa-solid fa-diagram-project"></i> Electronic & Control System Architecture</h2>
+            <p style="color: var(--text-muted);">Signal conditioning, power rail isolation, and actuation topology engineered for the STM32 Nucleo-F303RE.</p>
+
+            <div class="block-diagram">
+                <div class="diag-col">
+                    <div class="diag-col-title"><i class="fa-solid fa-eye"></i> Analog Line Sensing</div>
+                    <div class="diag-node">
+                        <strong>LDR Wheatstone Bridge ($22\text{ k}\Omega$)</strong>
+                        Dual matched LDRs balanced with $22\text{ k}\Omega$ bridge resistors inside a ray-traced foam light shield.
+                        <span class="diag-bus">5V LED Illumination Rail</span>
+                    </div>
+                    <div class="diag-node">
+                        <strong>7611 Differential Amplifier</strong>
+                        $56\text{ k}\Omega$ input / $100\text{ k}\Omega$ feedback network outputting $0.1\text{ V}–3.3\text{ V}$ ($1.56\text{ V}$ centered).
+                        <span class="diag-bus">AnalogIn A2 (3.3V Ref)</span>
+                    </div>
+                </div>
+
+                <div class="diag-col">
+                    <div class="diag-col-title"><i class="fa-solid fa-microchip"></i> Processing & Triggers</div>
+                    <div class="diag-node">
+                        <strong>STM32 Nucleo-F303RE (Mbed OS)</strong>
+                        Samples diff-amp voltage and executes pulsed differential steering loops (`timeSleep = 5 ms`).
+                        <span class="diag-bus">500 Hz PWM (0.002s Period)</span>
+                    </div>
+                    <div class="diag-node">
+                        <strong>Front Wall Micro-Switch (`killswitch`)</strong>
+                        Hardware contact switch halting drive motors upon reaching the end wall before firing.
+                        <span class="diag-bus">AnalogIn A5 Trigger</span>
+                    </div>
+                </div>
+
+                <div class="diag-col">
+                    <div class="diag-col-title"><i class="fa-solid fa-gears"></i> Drive & Catapult Actuation</div>
+                    <div class="diag-node">
+                        <strong>L298N Dual H-Bridge Motor Driver</strong>
+                        Drives geared DC wheels (`motorA_PWM D10`, `motorB_PWM D11`) from a $6\text{ V}$ lead-acid battery.
+                        <span class="diag-bus">Star Common Ground</span>
+                    </div>
+                    <div class="diag-node">
+                        <strong>Servo-Triggered Dual Catapults</strong>
+                        Bolted servo (`D5`) rotates from `0.99` to `0.2` after a $1.75\text{ s}$ settle delay to launch both balls.
+                        <span class="diag-bus">PWM D5 + 4x AA Rail</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Engineering Deep-Dive (Code, Electronics/Optics, Mechanical/Catapult) -->
+        <div class="section">
+            <h2><i class="fa-solid fa-layer-group"></i> Engineering Deep-Dive: Firmware, Electronics & Mechanical Design</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Inspect the production Mbed OS C++ firmware, the $7611$ op-amp & ray-traced light shield design, and the SolidWorks chassis & catapult selection matrix.</p>
+
+            <div class="eng-tabs">
+                <button class="eng-tab-btn active" onclick="switchEngTab('tab-code', this)">
+                    <i class="fa-solid fa-code"></i> Complete Mbed C++ Firmware
+                </button>
+                <button class="eng-tab-btn" onclick="switchEngTab('tab-elec', this)">
+                    <i class="fa-solid fa-bolt"></i> Op-Amp Circuit & Ray-Traced Shield
+                </button>
+                <button class="eng-tab-btn" onclick="switchEngTab('tab-mech', this)">
+                    <i class="fa-solid fa-cube"></i> Chassis CAD & Catapult Ballistics
+                </button>
+            </div>
+
+            <!-- Panel 1: Exact Mbed C++ Code from Figure 6.5 -->
+            <div id="tab-code" class="eng-panel active">
+                <p style="color: var(--text-muted); font-size: 0.95rem;">
+                    Production Mbed OS C++ firmware deployed on the Nucleo-F303RE for final testing week (Figure 6.5), integrating differential amplifier sampling, pulsed corner steering, wall-switch braking, and timed servo catapult release.
+                </p>
+
+                <div class="code-window">
+                    <div class="code-header">
+                        <span><i class="fa-solid fa-file-code"></i> main.cpp — STM32 Nucleo-F303RE Mbed OS Firmware</span>
+                        <button class="copy-code-btn" id="copy-btn" onclick="copyFirmwareCode()">
+                            <i class="fa-regular fa-copy"></i> Copy Code
+                        </button>
+                    </div>
+                    <pre><code id="firmware-source">#include "mbed.h"
+
+// Differential Amplifier &amp; End-Wall Killswitch Inputs
+AnalogIn analog_value(A2);
+AnalogIn killswitch(A5);
+
+int main()
+{
+    PwmOut motorA_PWM(D10); // Right side motor
+    PwmOut motorB_PWM(D11); // Left side motor
+    PwmOut servo(D5);       // Catapult release servo PWM
+
+    motorA_PWM.period(0.002f); // 500 Hz Motor PWM frequency
+    motorB_PWM.period(0.002f);
+
+    const float basePWM    = 1.0f;  // Set motor speed duty cycle
+    const float targetLow  = 1.55f; // Lower center-line voltage bound (V)
+    const float targetHigh = 1.57f; // Upper center-line voltage bound (V)
+    const int timeSleep    = 5;     // Steering pulse interval (ms)
+
+    while (1) {
+        float rec1 = analog_value.read() * 3.3f; // Read 7611 diff-amp output
+        printf("Output from difAmp: %fV\n", rec1);
+
+        int stop = killswitch.read();
+        if (stop == 1) { // Servo run command and killswitch to end track run
+            motorA_PWM.write(0);
+            motorB_PWM.write(0);
+            thread_sleep_for(1750);
+            printf("%i\n", stop);
+
+            servo.write(0.99f);
+            servo.period(0.002f);
+            thread_sleep_for(1750);
+
+            servo.write(0.2f);
+            servo.period(0.002f);
+            thread_sleep_for(1750);
+            break;
+        }
+
+        if (rec1 &gt; targetLow &amp;&amp; rec1 &lt; targetHigh) {
+            motorA_PWM.write(basePWM);
+            motorB_PWM.write(basePWM);
+        }
+        else if (rec1 &gt; targetHigh) { // Left Turn
+            motorA_PWM.write(basePWM);
+            motorB_PWM.write(0);
+        }
+        else { // Right Turn
+            motorA_PWM.write(0);
+            motorB_PWM.write(basePWM);
+        }
+
+        thread_sleep_for(timeSleep); // Pulsed steering interval
+        motorA_PWM.write(0);
+        motorB_PWM.write(0);
+    }
+}</code></pre>
+                </div>
+            </div>
+
+            <!-- Panel 2: Electronics & Optical Ray-Tracing -->
+            <div id="tab-elec" class="eng-panel">
+                <div class="design-split">
+                    <div>
+                        <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.75rem;">Analog Sensor Conditioning & Power Debugging</h3>
+                        <ul class="design-list">
+                            <li><strong>Calibrated Wheatstone Bridge & $7611$ Op-Amp:</strong> Replaced default handbook values with $22\text{ k}\Omega$ bridge resistors, $56\text{ k}\Omega$ input resistors, $100\text{ k}\Omega$ feedback, and $100\text{ }\mu\text{F}$ shunt/bypass capacitors, achieving a clean $0.1\text{ V}–3.3\text{ V}$ swing centered at $1.56\text{ V}$.</li>
+                            <li><strong>Soldered Veroboard Reliability:</strong> Transferred the breadboard prototype onto soldered stripboard with dedicated $5\text{ V}$ LED illumination rails ($100\text{ }\Omega$ current limiting) to prevent vibration-induced disconnects.</li>
+                            <li><strong>Ray-Traced Optical Light Shield:</strong> Simulated LED reflection angles in an optical ray-tracer to design an angled black foam light shield ($120 \times 32\text{ mm}$) isolating ambient room light from the LDR grooves.</li>
+                            <li><strong>Oscilloscope Grounding & Rail Fix:</strong> Diagnosed a non-responsive L298N driver via oscilloscope probing—resolving it by tying a common ground between the $6\text{ V}$ lead-acid motor battery and the $4\times\text{AA}$ Nucleo supply, and routing power cleanly rather than back-powering `E5V`.</li>
+                        </ul>
+                    </div>
+                    <div class="media-card">
+                        <div class="media-placeholder">
+                            <i class="fa-solid fa-diagram-project"></i>
+                            <span>Add Circuit Diagram / Ray-Tracing image:<br><code>images/rat-mobile-circuit-raytrace.png</code></span>
+                        </div>
+                        <div class="media-info">
+                            <h3>Wheatstone Bridge Schematic & Optical Ray-Tracing</h3>
+                            <p>Full circuit schematic (Figure 5.1) and ray-traced LED/LDR bounce geometry (Figures 3.1–3.2).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 3: Mechanical Chassis & Catapult Ballistics -->
+            <div id="tab-mech" class="eng-panel">
+                <div class="design-split">
+                    <div>
+                        <h3 style="font-size: 1.05rem; color: var(--text-main); margin-bottom: 0.75rem;">Water-Jet Chassis & "The Rat-O-Pult" Launchers</h3>
+                        <ul class="design-list">
+                            <li><strong>Water-Jet Cut Aluminum Sheet Chassis:</strong> Machined a $294.51 \times 230.00\text{ mm}$ aluminum plate with bent protective side walls, a $\varnothing 20\text{ mm}$ sensor wiring pass-through, rear caster mount, and full electrical-tape insulation layer.</li>
+                            <li><strong>Weighted Decision Matrix Selection:</strong> Evaluated 6 launcher concepts (Spring Barrel, Wind-Up Spring, Solenoid, Catapult, Elastic Barrel, Slingshot) across Ease of Build ($30\%$), Accuracy ($15\%$), Precision ($30\%$), Materials ($15\%$), and Electronics ($10\%$).</li>
+                            <li><strong>Pivoting from Piston Barrel to Elastic Catapult:</strong> Rapid prototyping revealed high friction and tight bore tolerances in the initial piston barrel design; pivoting to the 3D-printed "Rat-O-Pult" ($20\%$ infill, M8 low-friction pivot bolt, adjustable launch angle holes) enabled rapid elastic-band tuning.</li>
+                            <li><strong>MATLAB Aerodynamic Trajectory Modeling:</strong> Simulated projectile trajectories with air drag from deck height ($y = 0.2\text{ m}$) over the $0.3\text{ m}$ barrier wall into Zone 1 ($0.5\text{ m}$) and Zone 2 ($1.5\text{ m}$).</li>
+                        </ul>
+                    </div>
+                    <div class="media-card">
+                        <div class="media-placeholder">
+                            <i class="fa-solid fa-cube"></i>
+                            <span>Add SolidWorks Chassis / MATLAB Trajectory plot:<br><code>images/rat-mobile-cad-trajectory.png</code></span>
+                        </div>
+                        <div class="media-info">
+                            <h3>SolidWorks CAD & MATLAB Ballistic Trajectories</h3>
+                            <p>Water-jet chassis drawing (Figure 2.2), Rat-O-Pult side plates (Figure 4.5), and drag-compensated trajectories (Figure 4.6).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Firing Mechanism Decision Matrix & Final Trials Table -->
+        <div class="section">
+            <h2><i class="fa-solid fa-table-list"></i> Firing Mechanism Decision Matrix & Final Trial Results</h2>
+            <p style="color: var(--text-muted);">Weighted engineering trade-off matrix used to down-select the projectile launcher prior to final testing week.</p>
+            <table class="spec-table">
+                <thead>
+                    <tr>
+                        <th>Launcher Concept</th>
+                        <th>Ease of Build (30%)</th>
+                        <th>Accuracy (15%)</th>
+                        <th>Precision (30%)</th>
+                        <th>Materials (15%)</th>
+                        <th>Electronics (10%)</th>
+                        <th>Weighted Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Spring Barrel (Initial Prototype)</strong></td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>8</td>
+                        <td>5</td>
+                        <td>9</td>
+                        <td>0.750 (High bore friction)</td>
+                    </tr>
+                    <tr style="background-color: rgba(56, 189, 248, 0.08);">
+                        <td><strong>Elastic Catapult ("Rat-O-Pult")</strong></td>
+                        <td><strong>9</strong></td>
+                        <td><strong>6</strong></td>
+                        <td><strong>8</strong></td>
+                        <td><strong>4</strong></td>
+                        <td><strong>8</strong></td>
+                        <td><strong>0.740 (Selected & Deployed)</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Solenoid Firing Mechanism</strong></td>
+                        <td>6</td>
+                        <td>8</td>
+                        <td>7</td>
+                        <td>7</td>
+                        <td>3</td>
+                        <td>0.675</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Elastic Piston & Barrel</strong></td>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>6</td>
+                        <td>4</td>
+                        <td>7</td>
+                        <td>0.655</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Slingshot Design</strong></td>
+                        <td>10</td>
+                        <td>6</td>
+                        <td>3</td>
+                        <td>9</td>
+                        <td>9</td>
+                        <td>0.645</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wind-Up Spring Mechanism</strong></td>
+                        <td>4</td>
+                        <td>7</td>
+                        <td>7</td>
+                        <td>6</td>
+                        <td>2</td>
+                        <td>0.590</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 5: Software Suite & Core Engineering Skills (2x2 Grid) -->
+        <div class="section">
+            <h2><i class="fa-solid fa-toolbox"></i> Software Suite & Core Engineering Skills</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">Cross-disciplinary engineering tools applied across analog electronics, embedded firmware, CAD/CAM fabrication, and ballistic modeling.</p>
+            
+            <div class="skills-matrix">
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-terminal"></i> Embedded Firmware & Simulation</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">C++ (Mbed OS)</span>
+                        <span class="skill-pill">STM32 Nucleo-F303RE</span>
+                        <span class="skill-pill">PWM Motor & Servo Control</span>
+                        <span class="skill-pill">MATLAB Ballistics</span>
+                        <span class="skill-pill">Optical Ray-Tracing Sim</span>
+                    </div>
+                </div>
+
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-microchip"></i> Analog & Power Electronics</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">7611 Differential Op-Amp</span>
+                        <span class="skill-pill">LDR Wheatstone Bridge</span>
+                        <span class="skill-pill">L298N Dual H-Bridge</span>
+                        <span class="skill-pill">Stripboard Soldering</span>
+                        <span class="skill-pill">Common-Ground Isolation</span>
+                    </div>
+                </div>
+
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-compass-drafting"></i> Mechanical CAD & Fabrication</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">SolidWorks 3D CAD</span>
+                        <span class="skill-pill">Water-Jet Sheet Metal</span>
+                        <span class="skill-pill">Sheet Metal Bending</span>
+                        <span class="skill-pill">FDM 3D Printing (PLA)</span>
+                        <span class="skill-pill">Decision Matrix Trade-Offs</span>
+                    </div>
+                </div>
+
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-wave-square"></i> Bench Debugging & Testing</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">Digital Oscilloscope</span>
+                        <span class="skill-pill">PWM Signal Verification</span>
+                        <span class="skill-pill">Op-Amp Gain Calibration</span>
+                        <span class="skill-pill">Iterative Track Trials</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 6: Key Engineering Takeaways & Retrospective -->
+        <div class="section">
+            <h2><i class="fa-solid fa-lightbulb"></i> Key Engineering Takeaways & Retrospective</h2>
+            <div class="learned-grid">
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-bolt"></i> <span>Common Grounding & Rail Integrity</span></h3>
+                    <p>Resolved erratic L298N motor driver behavior using an oscilloscope by tying the $6\text{ V}$ lead-acid battery ground to the Nucleo's battery ground and avoiding back-powering the `E5V` pin.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-eye"></i> <span>Ray-Traced Optical Light Isolation</span></h3>
+                    <p>Using a ray-tracing simulator to optimize LED/LDR reflection angles eliminated ambient light saturation, though 3D-printing the light shield in matte black PLA would improve durability over cut foam.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-screwdriver-wrench"></i> <span>Sheet Metal Bending Sequence (DFM)</span></h3>
+                    <p>Bending the aluminum side walls after water-jetting slightly warped the floor and wheel alignment; future iterations would drill motor mounting holes post-bending.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-bullseye"></i> <span>Bolted Servo Mounts Over Adhesives</span></h3>
+                    <p>Replacing glued servo mounts with rigid bolted brackets during testing week eliminated elastic deflection under catapult tension, enabling both ping-pong balls to hit Zone 1 and Zone 2.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-gauge-high"></i> <span>Reliability-First Control Strategy</span></h3>
+                    <p>Locking in a deterministic pulsed-steering script (`3m 50s` run time) ahead of testing week guaranteed full-track reliability while freeing sub-team capacity to perfect the dual catapults.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-people-group"></i> <span>Sub-Team Parallel Integration</span></h3>
+                    <p>Dividing ownership between Electronics/Software and Mechanical/CAD allowed simultaneous stripboard assembly and 3D catapult iteration without blocking milestone deadlines.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Links -->
+        <div class="actions">
+            <a href="https://github.com/JamesRoberts213" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                <i class="fa-brands fa-github"></i> View GitHub Repository
+            </a>
+            <a href="projects.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Back to All Projects
+            </a>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 James Roberts. Built with HTML & CSS on GitHub Pages.</p>
+        </footer>
+    </div>
+
+    <script>
+    // Precision Dark Mbed C++ Syntax Highlighter
+    function highlightArduinoCode() {
+        const codeEl = document.getElementById('firmware-source');
+        let text = codeEl.textContent;
+        text = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const tokenRegex = /(\/\/.*$)|("[^"\\]*(?:\\.[^"\\]*)*")|(^\s*#[a-z]+)|\b(void|int|float|double|bool|char|const|AnalogIn|PwmOut)\b|\b(if|else|while|for|return|break)\b|\b(A2|A5|D5|D10|D11)\b|\b(main|period|read|printf|write|thread_sleep_for)\b|\b(\d+(?:\.\d+)?f?)\b/gm;
+
+        text = text.replace(tokenRegex, (match, comment, str, preproc, type, kw, constant, func, num) => {
+            if (comment)  return `<span class="ino-comment">${comment}</span>`;
+            if (str)      return `<span class="ino-string">${str}</span>`;
+            if (preproc)  return `<span class="ino-preproc">${preproc}</span>`;
+            if (type)     return `<span class="ino-type">${type}</span>`;
+            if (kw)       return `<span class="ino-keyword">${kw}</span>`;
+            if (constant) return `<span class="ino-const">${constant}</span>`;
+            if (func)     return `<span class="ino-func">${func}</span>`;
+            if (num)      return `<span class="ino-number">${num}</span>`;
+            return match;
+        });
+
+        codeEl.innerHTML = text;
+    }
+
+    function switchEngTab(panelId, clickedBtn) {
+        document.querySelectorAll('.eng-panel').forEach(panel => panel.classList.remove('active'));
+        document.querySelectorAll('.eng-tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(panelId).classList.add('active');
+        clickedBtn.classList.add('active');
+    }
+
+    function copyFirmwareCode() {
+        const codeText = document.getElementById('firmware-source').textContent;
+        navigator.clipboard.writeText(codeText).then(() => {
+            const btn = document.getElementById('copy-btn');
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy Code';
+            }, 2000);
+        });
+    }
+
+    // ---------- INTERACTIVE RAT MOBILE DIFF-AMP & CATAPULT SIMULATOR ----------
+    const canvas = document.getElementById('robot-track-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let basePWM = 1.00;
+    let timeSleep = 5;
+    let simTime = 0;
+
+    // Open competition course leading to the end barrier wall and Zone 1 & Zone 2 targets
+    const waypoints = [
+        { x: 45,  y: 255 },
+        { x: 145, y: 255 },
+        { x: 185, y: 215 },
+        { x: 185, y: 95  },
+        { x: 235, y: 60  },
+        { x: 315, y: 60  },
+        { x: 350, y: 105 },
+        { x: 350, y: 205 },
+        { x: 385, y: 235 },
+        { x: 425, y: 235 } // End wall position
+    ];
+
+    // Dense interpolated polyline for smooth optical sensor sampling
+    const trackPath = [];
+    for (let i = 0; i < waypoints.length - 1; i++) {
+        const p0 = waypoints[i];
+        const p1 = waypoints[i + 1];
+        const dist = Math.hypot(p1.x - p0.x, p1.y - p0.y);
+        const steps = Math.max(10, Math.floor(dist / 2));
+        for (let s = 0; s < steps; s++) {
+            const t = s / steps;
+            trackPath.push({
+                x: p0.x + (p1.x - p0.x) * t,
+                y: p0.y + (p1.y - p0.y) * t
+            });
+        }
+    }
+
+    let robot = {
+        x: waypoints[0].x,
+        y: waypoints[0].y,
+        angle: 0,
+        stoppedAtWall: false,
+        fireProgress: 0
+    };
+
+    let balls = [];
+
+    function updateSimParams() {
+        basePWM = parseFloat(document.getElementById('slider-pwm').value);
+        timeSleep = parseInt(document.getElementById('slider-sleep').value);
+        document.getElementById('val-pwm').textContent = `${basePWM.toFixed(2)} (${Math.round(basePWM * 100)}%)`;
+        document.getElementById('val-sleep').textContent = `${timeSleep} ms`;
+    }
+
+    function resetSimRun(atWall) {
+        simTime = 0;
+        balls = [];
+        robot.fireProgress = 0;
+        if (atWall) {
+            robot.x = 408;
+            robot.y = 235;
+            robot.angle = 0;
+            robot.stoppedAtWall = true;
+            launchPingPongBalls();
+        } else {
+            robot.x = waypoints[0].x;
+            robot.y = waypoints[0].y;
+            robot.angle = 0;
+            robot.stoppedAtWall = false;
+        }
+    }
+
+    function jumpToWallAndFire() {
+        resetSimRun(true);
+    }
+
+    function launchPingPongBalls() {
+        balls = [
+            { x: robot.x + 8, y: robot.y - 6, vx: 1.35, vy: -2.4, targetX: 462, targetY: 235, color: '#f8fafc', landed: false },
+            { x: robot.x + 8, y: robot.y + 6, vx: 2.15, vy: -3.2, targetX: 498, targetY: 235, color: '#f59e0b', landed: false }
+        ];
+    }
+
+    function stepRobot() {
+        if (robot.stoppedAtWall) {
+            robot.fireProgress = Math.min(1, robot.fireProgress + 0.03);
+            balls.forEach(b => {
+                if (!b.landed) {
+                    b.x += b.vx;
+                    b.y += b.vy;
+                    b.vy += 0.14; // Gravity
+                    if (b.x >= b.targetX) {
+                        b.x = b.targetX;
+                        b.y = b.targetY;
+                        b.landed = true;
+                    }
+                }
+            });
+
+            document.getElementById('sim-volt-readout').textContent = `DIFF-AMP: 1.56 V`;
+            document.getElementById('sim-state-readout').textContent = `MODE: FIRING CATAPULTS`;
+            document.getElementById('sim-state-readout').style.color = '#f59e0b';
+            document.getElementById('out-motA').textContent = '0.00';
+            document.getElementById('out-motB').textContent = '0.00';
+            document.getElementById('out-kill').textContent = '1 (WALL)';
+            document.getElementById('out-kill').style.color = '#f59e0b';
+            document.getElementById('out-servo').textContent = robot.fireProgress < 0.7 ? '0.99 (FIRE)' : '0.20 (DONE)';
+            return;
+        }
+
+        simTime += 0.04;
+
+        // Forward sensor head position
+        const sx = robot.x + Math.cos(robot.angle) * 18;
+        const sy = robot.y + Math.sin(robot.angle) * 18;
+
+        // Find nearest track point ahead of robot to compute signed lateral offset
+        let minDist = 99999;
+        let closestIdx = 0;
+        for (let i = 0; i < trackPath.length; i++) {
+            const d = Math.hypot(sx - trackPath[i].x, sy - trackPath[i].y);
+            if (d < minDist) {
+                minDist = d;
+                closestIdx = i;
+            }
+        }
+
+        const lookIdx = Math.min(trackPath.length - 1, closestIdx + 6);
+        const targetPt = trackPath[lookIdx];
+        const dx = targetPt.x - sx;
+        const dy = targetPt.y - sy;
+
+        // Signed cross-track error mapped to 7611 Diff-Amp voltage (1.56V center)
+        const perpX = -Math.sin(robot.angle);
+        const perpY =  Math.cos(robot.angle);
+        const lateralOffset = dx * perpX + dy * perpY;
+
+        // Map lateral offset into 0.1V - 3.3V range around 1.56V
+        const rec1 = Math.max(0.1, Math.min(3.3, 1.56 - lateralOffset * 0.035));
+
+        let motA = 0, motB = 0, modeLabel = 'STRAIGHT', modeColor = '#10b981';
+
+        if (rec1 > 1.55 && rec1 < 1.57) {
+            motA = basePWM;
+            motB = basePWM;
+            modeLabel = 'STRAIGHT';
+            modeColor = '#10b981';
+        } else if (rec1 >= 1.57) {
+            motA = basePWM;
+            motB = 0;
+            modeLabel = 'LEFT TURN';
+            modeColor = '#38bdf8';
+        } else {
+            motA = 0;
+            motB = basePWM;
+            modeLabel = 'RIGHT TURN';
+            modeColor = '#c084fc';
+        }
+
+        // Differential wheel kinematics scaled by basePWM and cycle interval
+        const pulseScale = 1.65 * (0.75 + (timeSleep / 25));
+        const vR = motA * pulseScale;
+        const vL = motB * pulseScale;
+        const v = (vR + vL) * 0.5;
+        const omega = (vL - vR) / 22.0;
+
+        robot.angle += omega;
+        robot.x += Math.cos(robot.angle) * v;
+        robot.y += Math.sin(robot.angle) * v;
+
+        // Check front wall killswitch contact (x >= 408)
+        if (robot.x >= 408 && Math.abs(robot.y - 235) < 28) {
+            robot.x = 408;
+            robot.stoppedAtWall = true;
+            launchPingPongBalls();
+        }
+
+        // Update UI Telemetry
+        const pct = ((rec1 - 0.1) / 3.2) * 100;
+        document.getElementById('voltage-marker').style.left = `${Math.max(0, Math.min(98, pct))}%`;
+        document.getElementById('meter-volts').textContent = `${rec1.toFixed(2)} V (Target: 1.55–1.57V)`;
+        document.getElementById('sim-volt-readout').textContent = `DIFF-AMP: ${rec1.toFixed(2)} V`;
+        document.getElementById('sim-state-readout').textContent = `MODE: ${modeLabel}`;
+        document.getElementById('sim-state-readout').style.color = modeColor;
+        document.getElementById('sim-timer-readout').textContent = `TIME: ${simTime.toFixed(1)} s`;
+
+        document.getElementById('out-motA').textContent = motA.toFixed(2);
+        document.getElementById('out-motB').textContent = motB.toFixed(2);
+        document.getElementById('out-kill').textContent = '0 (OPEN)';
+        document.getElementById('out-kill').style.color = '#10b981';
+        document.getElementById('out-servo').textContent = '0.20 (ARMED)';
+    }
+
+    function drawSim() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Engineering Grid
+        ctx.strokeStyle = '#131c31';
+        ctx.lineWidth = 1;
+        for (let gx = 0; gx < canvas.width; gx += 26) {
+            ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, canvas.height); ctx.stroke();
+        }
+        for (let gy = 0; gy < canvas.height; gy += 26) {
+            ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.width, gy); ctx.stroke();
+        }
+
+        // Track Surface & Black Line
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        waypoints.forEach((pt, idx) => {
+            if (idx === 0) ctx.moveTo(pt.x, pt.y);
+            else ctx.lineTo(pt.x, pt.y);
+        });
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 22;
+        ctx.stroke();
+
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Barrier Wall & Zone 1 / Zone 2 Targets
+        ctx.fillStyle = '#64748b';
+        ctx.fillRect(428, 200, 6, 70);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px Fira Code, monospace';
+        ctx.fillText('WALL', 420, 193);
+
+        // Target Zones
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(448, 215, 28, 40);
+        ctx.fillStyle = '#10b981';
+        ctx.fillText('Z1', 456, 209);
+
+        ctx.strokeStyle = '#f59e0b';
+        ctx.strokeRect(484, 215, 28, 40);
+        ctx.fillStyle = '#f59e0b';
+        ctx.fillText('Z2', 492, 209);
+
+        // Draw Rat Mobile Aluminum Chassis
+        ctx.save();
+        ctx.translate(robot.x, robot.y);
+        ctx.rotate(robot.angle);
+
+        // Wheels
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillRect(-10, -16, 13, 4);
+        ctx.fillRect(-10,  12, 13, 4);
+
+        // Bent Aluminum Sheet Chassis
+        ctx.fillStyle = '#162032';
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 1.8;
+        ctx.fillRect(-15, -13, 30, 26);
+        ctx.strokeRect(-15, -13, 30, 26);
+
+        // Dual Rat-O-Pult Arms (Blue/White)
+        ctx.fillStyle = '#38bdf8';
+        ctx.fillRect(-6, -8, 14, 5);
+        ctx.fillRect(-6,  3, 14, 5);
+
+        // Front Foam Light Shield & Micro-Switch
+        ctx.fillStyle = '#10b981';
+        ctx.fillRect(15, -6, 4, 12);
+
+        ctx.restore();
+
+        // Draw Launched Ping-Pong Balls
+        balls.forEach(b => {
+            ctx.beginPath();
+            ctx.arc(b.x, b.y, 4.5, 0, Math.PI * 2);
+            ctx.fillStyle = b.color;
+            ctx.fill();
+        });
+    }
+
+    function loop() {
+        stepRobot();
+        drawSim();
+        requestAnimationFrame(loop);
+    }
+
+    highlightArduinoCode();
+    loop();
+    </script>
+
+</body>
+</html>
