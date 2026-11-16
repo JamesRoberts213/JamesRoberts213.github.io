@@ -31,6 +31,7 @@
             --accent: #38bdf8;
             --accent-hover: #0284c7;
             --gold: #f59e0b;
+            --silver: #cbd5e1;
             --border: #334155;
             --slider-progress: 0%;
         }
@@ -152,11 +153,11 @@
             background-color: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 1.5rem;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: border-color 0.2s, transform 0.2s;
+            transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
             text-decoration: none;
             color: inherit;
             user-select: none;
@@ -179,32 +180,106 @@
             border-color: var(--accent);
         }
 
-        .card-item.starred {
-            border-color: rgba(245, 158, 11, 0.4);
+        /* Tiered Card Borders: Gold (1-4), Silver (5-8), Regular (9-12) */
+        .card-item.tier-gold {
+            border-color: rgba(245, 158, 11, 0.48);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.06);
         }
 
-        .card-item.starred:hover {
+        .card-item.tier-gold:hover {
             border-color: var(--gold);
         }
 
-        .star-badge {
+        .card-item.tier-silver {
+            border-color: rgba(203, 213, 225, 0.45);
+            box-shadow: 0 4px 18px rgba(203, 213, 225, 0.05);
+        }
+
+        .card-item.tier-silver:hover {
+            border-color: var(--silver);
+        }
+
+        /* Card Photo Slot */
+        .card-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #0b1120;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.76rem;
+            text-align: center;
+            padding: 0.75rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-thumb i {
+            font-size: 1.55rem;
+            margin-bottom: 0.35rem;
+            opacity: 0.7;
+            color: var(--accent);
+        }
+
+        .tier-gold .card-thumb i {
             color: var(--gold);
-            font-size: 0.85rem;
+        }
+
+        .tier-silver .card-thumb i {
+            color: var(--silver);
+        }
+
+        .card-thumb span {
+            font-family: monospace;
+            font-size: 0.72rem;
+            opacity: 0.85;
+        }
+
+        .card-body {
+            padding: 1.35rem 1.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+        }
+
+        .star-badge {
+            font-size: 0.82rem;
             font-weight: 600;
             display: block;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.45rem;
+            color: var(--text-muted);
+        }
+
+        .tier-gold .star-badge {
+            color: var(--gold);
+        }
+
+        .tier-silver .star-badge {
+            color: var(--silver);
         }
 
         .card-item h3 {
             margin-bottom: 0.5rem;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             color: var(--text-main);
+            line-height: 1.35;
         }
 
         .card-item p {
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 1.25rem;
+            font-size: 0.88rem;
+            margin-bottom: 1.15rem;
         }
 
         .tags {
@@ -216,8 +291,8 @@
         .tag {
             background-color: rgba(56, 189, 248, 0.1);
             color: var(--accent);
-            font-size: 0.78rem;
-            padding: 0.25rem 0.5rem;
+            font-size: 0.76rem;
+            padding: 0.22rem 0.48rem;
             border-radius: 4px;
             font-family: monospace;
         }
@@ -318,184 +393,256 @@
             <div class="slider-viewport">
                 <div class="slider-track" id="slider-track">
                     
-                    <!-- Card 1: VIV Dissertation -->
-                    <a href="viv-dissertation.html" class="card-item starred">
-                        <div>
-                            <span class="star-badge"><i class="fa-solid fa-award"></i> First-Class MEng Project</span>
-                            <h3>VIV Energy Harvesting & Aerofoil Deflection</h3>
-                            <p>Combined 2D CFD (ANSYS Fluent) and low-speed wind tunnel testing evaluating solid-state power capture.</p>
-                            <div class="tags">
-                                <span class="tag">ANSYS Fluent</span>
-                                <span class="tag">CFD</span>
-                                <span class="tag">Wind Tunnel</span>
-                            </div>
+                    <!-- 1. ANC (GOLD - Current Research) -->
+                    <a href="projects.html" class="card-item tier-gold">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-wave-square"></i>
+                            <span>images/anc-sfanc.jpg</span>
                         </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">Read Case Study &rarr;</div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-brain"></i> Current Research • ML & DSP</span>
+                                <h3>Machine Learning in Active Noise Control</h3>
+                                <p>Hybrid SFANC architecture combining a PyTorch filter-selector network with nonlinear FLANN filter banks.</p>
+                                <div class="tags">
+                                    <span class="tag">PyTorch</span>
+                                    <span class="tag">MATLAB</span>
+                                    <span class="tag">SFANC</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View ML Architecture &rarr;</div>
+                        </div>
                     </a>
 
-                    <!-- Card 2: Airbus SAF Sustainability Taxonomy (Industry Consultancy) -->
-                    <a href="projects.html" class="card-item starred">
-                        <div>
-                            <span class="star-badge"><i class="fa-solid fa-plane-departure"></i> Airbus Industry Consultancy</span>
-                            <h3>SAF Sustainability Taxonomy & FT-SPK</h3>
-                            <p>Life-cycle carbon intensity, feedstock ethics, and "rainbow" classification for Fischer-Tropsch SAF pathways.</p>
-                            <div class="tags">
-                                <span class="tag">Airbus ENGR7003</span>
-                                <span class="tag">FT-SPK</span>
-                                <span class="tag">LCA</span>
-                            </div>
+                    <!-- 2. Airbus (GOLD - Current Industry Consultancy) -->
+                    <a href="projects.html" class="card-item tier-gold">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-plane-departure"></i>
+                            <span>images/airbus-saf.jpg</span>
                         </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Consultancy Brief &rarr;</div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-plane-departure"></i> Current Industry Consultancy</span>
+                                <h3>Airbus SAF Sustainability Taxonomy & FT-SPK</h3>
+                                <p>Life-cycle carbon intensity, feedstock ethics, and "rainbow" classification for Fischer-Tropsch SAF pathways.</p>
+                                <div class="tags">
+                                    <span class="tag">Airbus</span>
+                                    <span class="tag">FT-SPK</span>
+                                    <span class="tag">LCA</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Consultancy Brief &rarr;</div>
+                        </div>
                     </a>
 
-                    <!-- Card 3: Embedded Golf Rangefinder -->
-                    <a href="golf-rangefinder.html" class="card-item starred">
-                        <div>
-                            <span class="star-badge"><i class="fa-solid fa-microchip"></i> Embedded Hardware</span>
-                            <h3>Handheld GPS Golf Rangefinder</h3>
-                            <p>Arduino Nano display module integrating an ST7789V LCD, GNSS receiver, and TP4056 Li-ion charger.</p>
-                            <div class="tags">
-                                <span class="tag">C++</span>
-                                <span class="tag">Arduino</span>
-                                <span class="tag">ST7789V</span>
-                            </div>
+                    <!-- 3. VIV Dissertation (GOLD) -->
+                    <a href="viv-dissertation.html" class="card-item tier-gold">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-wind"></i>
+                            <span>images/viv-dissertation.jpg</span>
                         </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Hardware Build &rarr;</div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-award"></i> First-Class MEng Project</span>
+                                <h3>VIV Energy Harvesting & Aerofoil Deflection</h3>
+                                <p>Combined 2D CFD (ANSYS Fluent) and low-speed wind tunnel testing evaluating solid-state power capture.</p>
+                                <div class="tags">
+                                    <span class="tag">ANSYS Fluent</span>
+                                    <span class="tag">CFD</span>
+                                    <span class="tag">Wind Tunnel</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">Read Case Study &rarr;</div>
+                        </div>
                     </a>
 
-                    <!-- Card 4: Machine Learning in ANC Systems -->
+                    <!-- 4. Golf Rangefinder (GOLD) -->
+                    <a href="golf-rangefinder.html" class="card-item tier-gold">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-microchip"></i>
+                            <span>images/rangefinder-physical.jpg</span>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-microchip"></i> Embedded Hardware</span>
+                                <h3>Handheld GPS Golf Rangefinder</h3>
+                                <p>Arduino Nano display module integrating an ST7789V LCD, GNSS receiver, and TP4056 Li-ion charger.</p>
+                                <div class="tags">
+                                    <span class="tag">C++</span>
+                                    <span class="tag">Arduino</span>
+                                    <span class="tag">ST7789V</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Hardware Build &rarr;</div>
+                        </div>
+                    </a>
+
+                    <!-- 5. ENGR7004 STM32 Thermal Control (SILVER - Current Project) -->
+                    <a href="projects.html" class="card-item tier-silver">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-temperature-half"></i>
+                            <span>images/stm32-thermal.jpg</span>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-temperature-half"></i> Current Project • ENGR7004</span>
+                                <h3>STM32 Closed-Loop Thermal Control</h3>
+                                <p>Real-time embedded PID temperature regulation, sensor feedback conditioning, and plant identification on STM32.</p>
+                                <div class="tags">
+                                    <span class="tag">STM32</span>
+                                    <span class="tag">PID Control</span>
+                                    <span class="tag">ENGR7004</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Control System &rarr;</div>
+                        </div>
+                    </a>
+
+                    <!-- 6. ENGR7013 Machine Learning (SILVER - Current Project) -->
+                    <a href="projects.html" class="card-item tier-silver">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-network-wired"></i>
+                            <span>images/engr7013-ml.jpg</span>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-network-wired"></i> Current Project • ENGR7013</span>
+                                <h3>Applied Engineering Machine Learning</h3>
+                                <p>Data-driven modeling, feature engineering, and supervised learning architectures for engineering systems.</p>
+                                <div class="tags">
+                                    <span class="tag">Python</span>
+                                    <span class="tag">PyTorch</span>
+                                    <span class="tag">ENGR7013</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View ML Project &rarr;</div>
+                        </div>
+                    </a>
+
+                    <!-- 7. Autonomous Line-Following Robot (SILVER) -->
+                    <a href="line-following-robot.html" class="card-item tier-silver">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-robot"></i>
+                            <span>images/rat-mobile-final.jpg</span>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-robot"></i> 1st Class Group Project</span>
+                                <h3>Autonomous Line-Following & Catapult Robot</h3>
+                                <p>STM32 Nucleo vehicle with a 7611 op-amp LDR bridge, water-jet aluminum chassis, and dual ping-pong catapults.</p>
+                                <div class="tags">
+                                    <span class="tag">C++ (Mbed)</span>
+                                    <span class="tag">Nucleo-F303RE</span>
+                                    <span class="tag">Op-Amp</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Robotics Build &rarr;</div>
+                        </div>
+                    </a>
+
+                    <!-- 8. Vibration Saw (SILVER) -->
+                    <a href="vibration-saw.html" class="card-item tier-silver">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-square-root-variable"></i>
+                            <span>images/vibration-saw.jpg</span>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-square-root-variable"></i> Group Project • Math Foundation</span>
+                                <h3>Vibration Saw Dynamic Modeling</h3>
+                                <p>Formulated the governing equations of motion, harmonic forcing response, and vibration isolation math.</p>
+                                <div class="tags">
+                                    <span class="tag">Dynamics</span>
+                                    <span class="tag">Vibration Analysis</span>
+                                    <span class="tag">MATLAB</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Mathematical Analysis &rarr;</div>
+                        </div>
+                    </a>
+
+                    <!-- 9. Aerofoil CFD (REGULAR) -->
                     <a href="projects.html" class="card-item">
-                        <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-brain"></i> Machine Learning & DSP</span>
-                            <h3>Machine Learning in Active Noise Control</h3>
-                            <p>Hybrid SFANC architecture combining a PyTorch filter-selector network with nonlinear FLANN filter banks.</p>
-                            <div class="tags">
-                                <span class="tag">PyTorch</span>
-                                <span class="tag">MATLAB</span>
-                                <span class="tag">SFANC</span>
-                            </div>
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-feather-pointed"></i>
+                            <span>images/naca0012-cfd.jpg</span>
                         </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View ML Architecture &rarr;</div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-wind"></i> Computational Fluid Dynamics</span>
+                                <h3>Turbulent NACA0012 Aerofoil CFD</h3>
+                                <p>ANSYS Fluent $k$-$\omega$ SST analysis across $0^\circ–20^\circ$ AoA, mesh independence ($y^+ < 1$), and stall at $16^\circ$.</p>
+                                <div class="tags">
+                                    <span class="tag">ANSYS Fluent</span>
+                                    <span class="tag">k-ω SST</span>
+                                    <span class="tag">MATLAB</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View CFD Analysis &rarr;</div>
+                        </div>
                     </a>
 
-                    <!-- Card 5: Autonomous Line-Following Robot -->
-                    <a href="line-following-robot.html" class="card-item">
-                        <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-robot"></i> 1st Class Group Project</span>
-                            <h3>Autonomous Line-Following & Catapult Robot</h3>
-                            <p>STM32 Nucleo vehicle with a 7611 op-amp LDR bridge, water-jet aluminum chassis, and dual ping-pong catapults.</p>
-                            <div class="tags">
-                                <span class="tag">C++ (Mbed)</span>
-                                <span class="tag">Nucleo-F303RE</span>
-                                <span class="tag">Op-Amp</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Robotics Build &rarr;</div>
-                    </a>
-
-                    <!-- Card 6: Vibration Saw -->
-                    <a href="vibration-saw.html" class="card-item">
-                        <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-square-root-variable"></i> Group Project • Math Foundation</span>
-                            <h3>Vibration Saw Dynamic Modeling</h3>
-                            <p>Formulated the governing equations of motion, harmonic forcing response, and vibration isolation math.</p>
-                            <div class="tags">
-                                <span class="tag">Dynamics</span>
-                                <span class="tag">Vibration Analysis</span>
-                                <span class="tag">MATLAB</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Mathematical Analysis &rarr;</div>
-                    </a>
-
-                    <!-- Card 7: STM32 Thermal Control (ENGR7004) -->
+                    <!-- 10. Turbojet Thermodynamics (REGULAR) -->
                     <a href="projects.html" class="card-item">
-                        <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-temperature-half"></i> Control Engineering (ENGR7004)</span>
-                            <h3>STM32 Closed-Loop Thermal Control</h3>
-                            <p>Real-time embedded PID temperature regulation, sensor feedback conditioning, and plant identification on STM32.</p>
-                            <div class="tags">
-                                <span class="tag">STM32</span>
-                                <span class="tag">PID Control</span>
-                                <span class="tag">Embedded C</span>
-                            </div>
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-fire-flame-curved"></i>
+                            <span>images/sr30-turbojet.jpg</span>
                         </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Control System &rarr;</div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-fire-flame-curved"></i> 1st Class Exemplar Report</span>
+                                <h3>SR-30 Turbojet Thermodynamic Analysis</h3>
+                                <p>Brayton cycle $T$-$s$ & $P$-$v$ modeling at $126.6\text{ N}$ peak thrust, yielding $\eta_{th} = 39.53\%$ and work ratio $0.632$.</p>
+                                <div class="tags">
+                                    <span class="tag">Brayton Cycle</span>
+                                    <span class="tag">Thermodynamics</span>
+                                    <span class="tag">MATLAB</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Cycle Study &rarr;</div>
+                        </div>
                     </a>
 
-                    <!-- Card 8: Machine Learning Module (ENGR7013) -->
+                    <!-- 11. Flow-Forming Defect Diagnostics (REGULAR) -->
                     <a href="projects.html" class="card-item">
-                        <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-network-wired"></i> Machine Learning (ENGR7013)</span>
-                            <h3>Applied Engineering Machine Learning</h3>
-                            <p>Data-driven modeling, feature engineering, and supervised learning architectures for engineering systems.</p>
-                            <div class="tags">
-                                <span class="tag">Python</span>
-                                <span class="tag">PyTorch</span>
-                                <span class="tag">ENGR7013</span>
-                            </div>
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-industry"></i>
+                            <span>images/cryotank-flowform.jpg</span>
                         </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View ML Project &rarr;</div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-industry"></i> Aerospace Materials</span>
+                                <h3>Flow-Forming Defect Diagnostics</h3>
+                                <p>Root-cause analysis of $24\%$ local thinning and $94.7\text{ MPa}$ hoop stress cracking in 2195 Al-Li LH2 cryotanks.</p>
+                                <div class="tags">
+                                    <span class="tag">2195 Al-Li</span>
+                                    <span class="tag">Failure Analysis</span>
+                                    <span class="tag">Cryogenics</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">Read Investigation &rarr;</div>
+                        </div>
                     </a>
 
-                    <!-- Card 9: NACA0012 Aerofoil CFD (ENGR314) -->
+                    <!-- 12. Cruise Control (REGULAR) -->
                     <a href="projects.html" class="card-item">
-                        <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-wind"></i> Computational Fluid Dynamics</span>
-                            <h3>Turbulent NACA0012 Aerofoil CFD</h3>
-                            <p>ANSYS Fluent $k$-$\omega$ SST analysis across $0^\circ–20^\circ$ AoA, mesh independence ($y^+ < 1$), and stall at $16^\circ$.</p>
-                            <div class="tags">
-                                <span class="tag">ANSYS Fluent</span>
-                                <span class="tag">k-ω SST</span>
-                                <span class="tag">MATLAB</span>
-                            </div>
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-gauge-high"></i>
+                            <span>images/cruise-control.jpg</span>
                         </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View CFD Analysis &rarr;</div>
-                    </a>
-
-                    <!-- Card 10: SR-30 Jet Engine Thermodynamics (ENGR217) -->
-                    <a href="projects.html" class="card-item">
-                        <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-fire-flame-curved"></i> 1st Class Exemplar Report</span>
-                            <h3>SR-30 Turbojet Thermodynamic Analysis</h3>
-                            <p>Brayton cycle $T$-$s$ & $P$-$v$ modeling at $126.6\text{ N}$ peak thrust, yielding $\eta_{th} = 39.53\%$ and work ratio $0.632$.</p>
-                            <div class="tags">
-                                <span class="tag">Brayton Cycle</span>
-                                <span class="tag">Thermodynamics</span>
-                                <span class="tag">MATLAB</span>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-gauge-high"></i> Control Systems</span>
+                                <h3>Closed-Loop Automotive Cruise Control</h3>
+                                <p>Laplace transfer function modeling ($G(s) = \frac{108}{6.4s+1}$) and Simulink P vs. I controller stability tuning.</p>
+                                <div class="tags">
+                                    <span class="tag">Simulink</span>
+                                    <span class="tag">Control Theory</span>
+                                    <span class="tag">MATLAB</span>
+                                </div>
                             </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Simulink Study &rarr;</div>
                         </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Cycle Study &rarr;</div>
-                    </a>
-
-                    <!-- Card 11: Flow-Forming Diagnostics -->
-                    <a href="projects.html" class="card-item">
-                        <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-industry"></i> Aerospace Materials</span>
-                            <h3>Flow-Forming Defect Diagnostics</h3>
-                            <p>Root-cause analysis of $24\%$ local thinning and $94.7\text{ MPa}$ hoop stress cracking in 2195 Al-Li LH2 cryotanks.</p>
-                            <div class="tags">
-                                <span class="tag">2195 Al-Li</span>
-                                <span class="tag">Failure Analysis</span>
-                                <span class="tag">Cryogenics</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">Read Investigation &rarr;</div>
-                    </a>
-
-                    <!-- Card 12: Cruise Control System (ENGR202) -->
-                    <a href="projects.html" class="card-item">
-                        <div>
-                            <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-gauge-high"></i> Control Systems (ENGR202)</span>
-                            <h3>Closed-Loop Automotive Cruise Control</h3>
-                            <p>Laplace transfer function modeling ($G(s) = \frac{108}{6.4s+1}$) and Simulink P vs. I controller stability tuning.</p>
-                            <div class="tags">
-                                <span class="tag">Simulink</span>
-                                <span class="tag">Control Theory</span>
-                                <span class="tag">MATLAB</span>
-                            </div>
-                        </div>
-                        <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Simulink Study &rarr;</div>
                     </a>
 
                 </div>
