@@ -32,7 +32,7 @@
             --accent: #38bdf8;
             --accent-hover: #0284c7;
             --gold: #f59e0b;
-            --silver: #cbd5e1;
+            --silver: #e2e8f0;
             --border: #334155;
         }
 
@@ -125,23 +125,27 @@
             border-color: var(--accent);
         }
 
-        /* Tiered Card Borders: Gold (1-4), Silver (5-8), Regular (9-12) */
+        /* Tiered Card Borders: Gold (1-4), Silver (5-9), Regular (10-15) */
         .project-card.tier-gold {
-            border-color: rgba(245, 158, 11, 0.48);
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.06);
+            border: 1.5px solid rgba(245, 158, 11, 0.58);
+            background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, var(--card-bg) 38%);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.08);
         }
 
         .project-card.tier-gold:hover {
             border-color: var(--gold);
+            box-shadow: 0 6px 24px rgba(245, 158, 11, 0.16);
         }
 
         .project-card.tier-silver {
-            border-color: rgba(203, 213, 225, 0.45);
-            box-shadow: 0 4px 18px rgba(203, 213, 225, 0.05);
+            border: 1.5px solid rgba(226, 232, 240, 0.72);
+            background: linear-gradient(180deg, rgba(226, 232, 240, 0.08) 0%, var(--card-bg) 40%);
+            box-shadow: 0 4px 20px rgba(226, 232, 240, 0.11), inset 0 1px 0 rgba(255, 255, 255, 0.14);
         }
 
         .project-card.tier-silver:hover {
-            border-color: var(--silver);
+            border-color: #ffffff;
+            box-shadow: 0 6px 24px rgba(226, 232, 240, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         /* Card Photo Slot */
@@ -162,6 +166,10 @@
             position: relative;
         }
 
+        .tier-silver .card-thumb {
+            border-bottom-color: rgba(226, 232, 240, 0.28);
+        }
+
         .card-thumb img {
             width: 100%;
             height: 100%;
@@ -172,7 +180,7 @@
         .card-thumb i {
             font-size: 1.75rem;
             margin-bottom: 0.4rem;
-            opacity: 0.7;
+            opacity: 0.75;
             color: var(--accent);
         }
 
@@ -182,6 +190,7 @@
 
         .tier-silver .card-thumb i {
             color: var(--silver);
+            opacity: 0.9;
         }
 
         .card-thumb span {
@@ -214,6 +223,7 @@
 
         .tier-silver .star-badge {
             color: var(--silver);
+            text-shadow: 0 0 12px rgba(226, 232, 240, 0.25);
         }
 
         .project-card h2 {
@@ -280,7 +290,7 @@
         <!-- Page Header -->
         <header class="page-header">
             <h1>Engineering & Analytical Projects</h1>
-            <p>Comprehensive portfolio documenting computational fluid dynamics, embedded hardware prototyping, machine learning control, thermodynamics, and structural material analysis.</p>
+            <p>Comprehensive portfolio documenting computational fluid dynamics, embedded hardware prototyping, aviation training, machine learning control, thermodynamics, and structural material analysis.</p>
         </header>
 
         <!-- All Projects Grid -->
@@ -318,7 +328,7 @@
                     <div>
                         <span class="star-badge"><i class="fa-solid fa-plane-departure"></i> Current Industry Consultancy</span>
                         <h2>Airbus SAF Sustainability Taxonomy & Fischer-Tropsch Pathway</h2>
-                        <p>Industry consultancy with Airbus Filton establishing a quantitative "rainbow" classification taxonomy for Sustainable Aviation Fuel, specializing in FT-SPK life-cycle carbon intensity, feedstock ethics, and ASTM D7566 pathways.</p>
+                        <p>Industry consultancy with Airbus Filton establishing a quantitative "rainbow" classification taxonomy for Sustainable Aviation Fuel, specializing in FT-SPK life-cycle carbon intensity, feedstock ethics, and ASTM D7566 pathways[cite: 25, 26].</p>
                         <div class="tags">
                             <span class="tag">Airbus</span>
                             <span class="tag">FT-SPK</span>
@@ -374,7 +384,29 @@
                 </div>
             </a>
 
-            <!-- 5. ENGR7004 STM32 Thermal Control (SILVER - Current Project) -->
+            <!-- 5. Private Pilot Licence (SILVER - Current Training) -->
+            <div class="project-card tier-silver">
+                <div class="card-thumb">
+                    <i class="fa-solid fa-plane"></i>
+                    <span>images/ppl-flight.jpg</span>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <span class="star-badge"><i class="fa-solid fa-compass"></i> Current Training • Aviation</span>
+                        <h2>Private Pilot Licence (PPL) Flight Training</h2>
+                        <p>Active flight training developing situational and 3D spatial awareness in busy controlled and uncontrolled airspace, navigating alongside commercial airliner traffic and sharing active airspace with the RAF Red Arrows.</p>
+                        <div class="tags">
+                            <span class="tag">PPL Training</span>
+                            <span class="tag">Airliner Traffic</span>
+                            <span class="tag">Spatial Awareness</span>
+                            <span class="tag">Red Arrows Airspace</span>
+                        </div>
+                    </div>
+                    <span class="card-link">Flight Operations & Navigation &rarr;</span>
+                </div>
+            </div>
+
+            <!-- 6. ENGR7004 STM32 Thermal Control (SILVER - Current Project) -->
             <div class="project-card tier-silver">
                 <div class="card-thumb">
                     <i class="fa-solid fa-temperature-half"></i>
@@ -396,7 +428,7 @@
                 </div>
             </div>
 
-            <!-- 6. ENGR7013 Machine Learning (SILVER - Current Project) -->
+            <!-- 7. ENGR7013 Machine Learning (SILVER - Current Project) -->
             <div class="project-card tier-silver">
                 <div class="card-thumb">
                     <i class="fa-solid fa-network-wired"></i>
@@ -418,7 +450,7 @@
                 </div>
             </div>
 
-            <!-- 7. Autonomous Line-Following Robot (SILVER) -->
+            <!-- 8. Autonomous Line-Following Robot (SILVER) -->
             <a href="line-following-robot.html" class="project-card tier-silver">
                 <div class="card-thumb">
                     <i class="fa-solid fa-robot"></i>
@@ -440,7 +472,7 @@
                 </div>
             </a>
 
-            <!-- 8. Vibration Saw (SILVER) -->
+            <!-- 9. Vibration Saw (SILVER) -->
             <a href="vibration-saw.html" class="project-card tier-silver">
                 <div class="card-thumb">
                     <i class="fa-solid fa-square-root-variable"></i>
@@ -462,7 +494,7 @@
                 </div>
             </a>
 
-            <!-- 9. Turbulent NACA0012 Aerofoil CFD (REGULAR) -->
+            <!-- 10. Turbulent NACA0012 Aerofoil CFD (REGULAR) -->
             <div class="project-card">
                 <div class="card-thumb">
                     <i class="fa-solid fa-feather-pointed"></i>
@@ -472,7 +504,7 @@
                     <div>
                         <span class="star-badge"><i class="fa-solid fa-wind"></i> Computational Fluid Dynamics</span>
                         <h2>Turbulent NACA0012 Aerofoil CFD Analysis</h2>
-                        <p>ANSYS Fluent $k$-$\omega$ SST simulation of incompressible water flow ($10\text{ m/s}$) across $0^\circ–20^\circ$ AoA, evaluating coarse vs. fine structured mesh independence ($y^+ < 1$) and aerodynamic stall onset at $16^\circ$.</p>
+                        <p>ANSYS Fluent $k$-$\omega$ SST simulation of incompressible water flow ($10\text{ m/s}$) across $0^\circ–20^\circ$ AoA, evaluating coarse vs. fine structured mesh independence ($y^+ < 1$) and aerodynamic stall onset at $16^\circ$[cite: 27, 30, 31, 32].</p>
                         <div class="tags">
                             <span class="tag">ANSYS Fluent</span>
                             <span class="tag">k-ω SST</span>
@@ -484,7 +516,7 @@
                 </div>
             </div>
 
-            <!-- 10. SR-30 Jet Engine Thermodynamics (REGULAR) -->
+            <!-- 11. SR-30 Jet Engine Thermodynamics (REGULAR) -->
             <div class="project-card">
                 <div class="card-thumb">
                     <i class="fa-solid fa-fire-flame-curved"></i>
@@ -494,7 +526,7 @@
                     <div>
                         <span class="star-badge"><i class="fa-solid fa-fire-flame-curved"></i> 1st Class Exemplar Report</span>
                         <h2>SR-30 Turbojet Thermodynamic Performance Analysis</h2>
-                        <p>Ideal Brayton cycle $T$-$s$ and $P$-$v$ state modeling of the Turbine Technologies SR-30 turbojet at $126.612\text{ N}$ peak thrust ($79,931\text{ RPM}$), deriving compressor/turbine specific work, work ratio ($0.632$), and thermal efficiency ($39.53\%$).</p>
+                        <p>Ideal Brayton cycle $T$-$s$ and $P$-$v$ state modeling of the Turbine Technologies SR-30 turbojet at $126.612\text{ N}$ peak thrust ($79,931\text{ RPM}$), deriving compressor/turbine specific work, work ratio ($0.632$), and thermal efficiency ($39.53\%$)[cite: 43, 47, 48, 52, 53].</p>
                         <div class="tags">
                             <span class="tag">Brayton Cycle</span>
                             <span class="tag">Thermodynamics</span>
@@ -506,7 +538,7 @@
                 </div>
             </div>
 
-            <!-- 11. Flow-Forming Diagnostics (REGULAR) -->
+            <!-- 12. Flow-Forming Diagnostics (REGULAR) -->
             <div class="project-card">
                 <div class="card-thumb">
                     <i class="fa-solid fa-industry"></i>
@@ -516,7 +548,7 @@
                     <div>
                         <span class="star-badge"><i class="fa-solid fa-industry"></i> Aerospace Materials</span>
                         <h2>Flow-Forming Defect Diagnostics in 2195 Al-Li</h2>
-                        <p>Root-cause mechanical and metallurgical analysis of circumferential rib-root cracking in flow-formed AA2195-T6 LH2 cryotanks ($20\text{ K}$), quantifying $24\%$ local thinning ($1.9\text{ mm}$), $27.4\%$ true plastic strain, and a $31.5\%$ hoop stress spike ($94.7\text{ MPa}$).</p>
+                        <p>Root-cause mechanical and metallurgical analysis of circumferential rib-root cracking in flow-formed AA2195-T6 LH2 cryotanks ($20\text{ K}$), quantifying $24\%$ local thinning ($1.9\text{ mm}$), $27.4\%$ true plastic strain, and a $31.5\%$ hoop stress spike ($94.7\text{ MPa}$)[cite: 56].</p>
                         <div class="tags">
                             <span class="tag">2195 Al-Li</span>
                             <span class="tag">Failure Analysis</span>
@@ -528,7 +560,7 @@
                 </div>
             </div>
 
-            <!-- 12. Closed-Loop Cruise Control (REGULAR) -->
+            <!-- 13. Closed-Loop Cruise Control (REGULAR) -->
             <div class="project-card">
                 <div class="card-thumb">
                     <i class="fa-solid fa-gauge-high"></i>
@@ -538,7 +570,7 @@
                     <div>
                         <span class="star-badge"><i class="fa-solid fa-gauge-high"></i> Control Systems</span>
                         <h2>Closed-Loop Automotive Cruise Control</h2>
-                        <p>Laplace transfer function derivation ($G(s) = \frac{108}{6.4s+1}$) and Simulink/MATLAB dynamic simulation comparing closed-loop Proportional ($K_p=1$) and Integral ($K_i=0.0005$) step responses, disturbance rejection, and steady-state error.</p>
+                        <p>Laplace transfer function derivation ($G(s) = \frac{108}{6.4s+1}$) and Simulink/MATLAB dynamic simulation comparing closed-loop Proportional ($K_p=1$) and Integral ($K_i=0.0005$) step responses, disturbance rejection, and steady-state error[cite: 58, 60, 61, 63, 64].</p>
                         <div class="tags">
                             <span class="tag">Simulink</span>
                             <span class="tag">MATLAB</span>
@@ -547,6 +579,49 @@
                         </div>
                     </div>
                     <span class="card-link">Control Theory Study &rarr;</span>
+                </div>
+            </div>
+
+            <!-- 14. Website Production (REGULAR) -->
+            <div class="project-card">
+                <div class="card-thumb">
+                    <i class="fa-solid fa-code"></i>
+                    <span>images/portfolio-site.jpg</span>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <span class="star-badge"><i class="fa-solid fa-code"></i> Web Engineering</span>
+                        <h2>Engineering Portfolio Website Production</h2>
+                        <p>Designed and built a custom static portfolio website hosted on GitHub Pages using semantic HTML5, responsive CSS Grid/Flexbox layouts, MathJax equation typesetting, and a touch/mouse drag carousel.</p>
+                        <div class="tags">
+                            <span class="tag">HTML5 / CSS3</span>
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">MathJax</span>
+                            <span class="tag">GitHub Pages</span>
+                        </div>
+                    </div>
+                    <span class="card-link">Front-End Architecture &rarr;</span>
+                </div>
+            </div>
+
+            <!-- 15. Lancaster Scholarship (REGULAR) -->
+            <div class="project-card">
+                <div class="card-thumb">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>images/lancaster-scholarship.jpg</span>
+                </div>
+                <div class="card-body">
+                    <div>
+                        <span class="star-badge"><i class="fa-solid fa-graduation-cap"></i> Academic Distinction</span>
+                        <h2>Lancaster University A-Level Academic Scholarship</h2>
+                        <p>Awarded a merit-based academic scholarship by Lancaster University in recognition of strong A-Level examination results upon matriculating into the MEng Engineering program.</p>
+                        <div class="tags">
+                            <span class="tag">Academic Merit</span>
+                            <span class="tag">A-Level Results</span>
+                            <span class="tag">Lancaster University</span>
+                        </div>
+                    </div>
+                    <span class="card-link">Academic Achievement &rarr;</span>
                 </div>
             </div>
 

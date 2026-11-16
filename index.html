@@ -31,7 +31,7 @@
             --accent: #38bdf8;
             --accent-hover: #0284c7;
             --gold: #f59e0b;
-            --silver: #cbd5e1;
+            --silver: #e2e8f0;
             --border: #334155;
             --slider-progress: 0%;
         }
@@ -180,23 +180,27 @@
             border-color: var(--accent);
         }
 
-        /* Tiered Card Borders: Gold (1-4), Silver (5-8), Regular (9-12) */
+        /* Tiered Card Borders: Gold (1-4), Silver (5-9), Regular (10-15) */
         .card-item.tier-gold {
-            border-color: rgba(245, 158, 11, 0.48);
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.06);
+            border: 1.5px solid rgba(245, 158, 11, 0.58);
+            background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, var(--card-bg) 38%);
+            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.08);
         }
 
         .card-item.tier-gold:hover {
             border-color: var(--gold);
+            box-shadow: 0 6px 24px rgba(245, 158, 11, 0.16);
         }
 
         .card-item.tier-silver {
-            border-color: rgba(203, 213, 225, 0.45);
-            box-shadow: 0 4px 18px rgba(203, 213, 225, 0.05);
+            border: 1.5px solid rgba(226, 232, 240, 0.72);
+            background: linear-gradient(180deg, rgba(226, 232, 240, 0.08) 0%, var(--card-bg) 40%);
+            box-shadow: 0 4px 20px rgba(226, 232, 240, 0.11), inset 0 1px 0 rgba(255, 255, 255, 0.14);
         }
 
         .card-item.tier-silver:hover {
-            border-color: var(--silver);
+            border-color: #ffffff;
+            box-shadow: 0 6px 24px rgba(226, 232, 240, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
 
         /* Card Photo Slot */
@@ -217,6 +221,10 @@
             position: relative;
         }
 
+        .tier-silver .card-thumb {
+            border-bottom-color: rgba(226, 232, 240, 0.28);
+        }
+
         .card-thumb img {
             width: 100%;
             height: 100%;
@@ -227,7 +235,7 @@
         .card-thumb i {
             font-size: 1.55rem;
             margin-bottom: 0.35rem;
-            opacity: 0.7;
+            opacity: 0.75;
             color: var(--accent);
         }
 
@@ -237,6 +245,7 @@
 
         .tier-silver .card-thumb i {
             color: var(--silver);
+            opacity: 0.9;
         }
 
         .card-thumb span {
@@ -267,6 +276,7 @@
 
         .tier-silver .star-badge {
             color: var(--silver);
+            text-shadow: 0 0 12px rgba(226, 232, 240, 0.25);
         }
 
         .card-item h3 {
@@ -335,7 +345,9 @@
 
         .dots-container {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .dot {
@@ -387,7 +399,7 @@
         <main id="projects">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                 <h2 class="section-title">Featured Showcase</h2>
-                <a href="projects.html" style="color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.95rem;">View All (12) &rarr;</a>
+                <a href="projects.html" style="color: var(--accent); text-decoration: none; font-weight: 600; font-size: 0.95rem;">View All (15) &rarr;</a>
             </div>
 
             <div class="slider-viewport">
@@ -477,7 +489,28 @@
                         </div>
                     </a>
 
-                    <!-- 5. ENGR7004 STM32 Thermal Control (SILVER - Current Project) -->
+                    <!-- 5. Private Pilot Licence (SILVER - Current Training) -->
+                    <a href="projects.html" class="card-item tier-silver">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-plane"></i>
+                            <span>images/ppl-flight.jpg</span>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-compass"></i> Current Training • Aviation</span>
+                                <h3>Private Pilot Licence (PPL) Flight Training</h3>
+                                <p>Operating among commercial airliner traffic with high 3D spatial awareness, including sharing airspace with the RAF Red Arrows.</p>
+                                <div class="tags">
+                                    <span class="tag">PPL</span>
+                                    <span class="tag">Airspace & ATC</span>
+                                    <span class="tag">Spatial Awareness</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Flight Log &rarr;</div>
+                        </div>
+                    </a>
+
+                    <!-- 6. ENGR7004 STM32 Thermal Control (SILVER - Current Project) -->
                     <a href="projects.html" class="card-item tier-silver">
                         <div class="card-thumb">
                             <i class="fa-solid fa-temperature-half"></i>
@@ -498,7 +531,7 @@
                         </div>
                     </a>
 
-                    <!-- 6. ENGR7013 Machine Learning (SILVER - Current Project) -->
+                    <!-- 7. ENGR7013 Machine Learning (SILVER - Current Project) -->
                     <a href="projects.html" class="card-item tier-silver">
                         <div class="card-thumb">
                             <i class="fa-solid fa-network-wired"></i>
@@ -519,7 +552,7 @@
                         </div>
                     </a>
 
-                    <!-- 7. Autonomous Line-Following Robot (SILVER) -->
+                    <!-- 8. Autonomous Line-Following Robot (SILVER) -->
                     <a href="line-following-robot.html" class="card-item tier-silver">
                         <div class="card-thumb">
                             <i class="fa-solid fa-robot"></i>
@@ -540,7 +573,7 @@
                         </div>
                     </a>
 
-                    <!-- 8. Vibration Saw (SILVER) -->
+                    <!-- 9. Vibration Saw (SILVER) -->
                     <a href="vibration-saw.html" class="card-item tier-silver">
                         <div class="card-thumb">
                             <i class="fa-solid fa-square-root-variable"></i>
@@ -561,7 +594,7 @@
                         </div>
                     </a>
 
-                    <!-- 9. Aerofoil CFD (REGULAR) -->
+                    <!-- 10. Aerofoil CFD (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
                             <i class="fa-solid fa-feather-pointed"></i>
@@ -582,7 +615,7 @@
                         </div>
                     </a>
 
-                    <!-- 10. Turbojet Thermodynamics (REGULAR) -->
+                    <!-- 11. Turbojet Thermodynamics (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
                             <i class="fa-solid fa-fire-flame-curved"></i>
@@ -603,7 +636,7 @@
                         </div>
                     </a>
 
-                    <!-- 11. Flow-Forming Defect Diagnostics (REGULAR) -->
+                    <!-- 12. Flow-Forming Defect Diagnostics (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
                             <i class="fa-solid fa-industry"></i>
@@ -624,7 +657,7 @@
                         </div>
                     </a>
 
-                    <!-- 12. Cruise Control (REGULAR) -->
+                    <!-- 13. Cruise Control (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
                             <i class="fa-solid fa-gauge-high"></i>
@@ -645,13 +678,55 @@
                         </div>
                     </a>
 
+                    <!-- 14. Website Production (REGULAR) -->
+                    <a href="projects.html" class="card-item">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-code"></i>
+                            <span>images/portfolio-site.jpg</span>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-code"></i> Web Engineering</span>
+                                <h3>Engineering Portfolio Website Production</h3>
+                                <p>Hand-coded responsive GitHub Pages site featuring custom JS drag-carousel controls, MathJax rendering, and CSS grid layouts.</p>
+                                <div class="tags">
+                                    <span class="tag">HTML5 / CSS3</span>
+                                    <span class="tag">JavaScript</span>
+                                    <span class="tag">GitHub Pages</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Architecture &rarr;</div>
+                        </div>
+                    </a>
+
+                    <!-- 15. Lancaster A-Level Scholarship (REGULAR) -->
+                    <a href="projects.html" class="card-item">
+                        <div class="card-thumb">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>images/lancaster-scholarship.jpg</span>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <span class="star-badge"><i class="fa-solid fa-graduation-cap"></i> Academic Distinction</span>
+                                <h3>Lancaster University A-Level Scholarship</h3>
+                                <p>Awarded merit scholarship by Lancaster University recognizing high-achieving A-Level examination results upon entry to MEng Engineering.</p>
+                                <div class="tags">
+                                    <span class="tag">Academic Merit</span>
+                                    <span class="tag">A-Levels</span>
+                                    <span class="tag">Lancaster Univ.</span>
+                                </div>
+                            </div>
+                            <div style="margin-top: 1rem; color: var(--accent); font-weight: 600; font-size: 0.85rem;">View Academic Record &rarr;</div>
+                        </div>
+                    </a>
+
                 </div>
             </div>
 
             <!-- Controls -->
             <div class="controls-wrapper">
                 <div class="range-container">
-                    <input type="range" min="0" max="9" value="0" step="1" class="range-slider" id="range-slider">
+                    <input type="range" min="0" max="12" value="0" step="1" class="range-slider" id="range-slider">
                 </div>
                 <div class="dots-container" id="dots-container"></div>
             </div>
