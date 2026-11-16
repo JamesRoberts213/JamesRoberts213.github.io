@@ -14,6 +14,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- MathJax for Inline Equations -->
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
     <style>
         :root {
             --bg-color: #0f172a;
@@ -197,7 +206,7 @@
         <!-- Page Header -->
         <header class="page-header">
             <h1>Engineering & Analytical Projects</h1>
-            <p>Comprehensive portfolio documenting computational fluid dynamics, embedded hardware prototyping, signal processing, and structural vibration analysis.</p>
+            <p>Comprehensive portfolio documenting computational fluid dynamics, embedded hardware prototyping, machine learning control, thermodynamics, and structural material analysis.</p>
         </header>
 
         <!-- All Projects Grid -->
@@ -219,7 +228,23 @@
                 <span class="card-link">View Full Case Study & Videos &rarr;</span>
             </a>
 
-            <!-- Project 2: Embedded Golf Rangefinder -->
+            <!-- Project 2: Airbus SAF Sustainability Taxonomy (Industry Consultancy) -->
+            <div class="project-card starred">
+                <div>
+                    <span class="star-badge"><i class="fa-solid fa-plane-departure"></i> Airbus Industry Consultancy (ENGR7003)</span>
+                    <h2>SAF Sustainability Taxonomy & Fischer-Tropsch Pathway</h2>
+                    <p>Industry consultancy with Airbus Filton establishing a quantitative "rainbow" classification taxonomy for Sustainable Aviation Fuel, specializing in FT-SPK life-cycle carbon intensity, feedstock ethics, and ASTM D7566 pathways.</p>
+                    <div class="tags">
+                        <span class="tag">Airbus</span>
+                        <span class="tag">FT-SPK</span>
+                        <span class="tag">ASTM D7566</span>
+                        <span class="tag">Life-Cycle Analysis</span>
+                    </div>
+                </div>
+                <span class="card-link">Industry Consultancy Brief &rarr;</span>
+            </div>
+
+            <!-- Project 3: Embedded Golf Rangefinder -->
             <a href="golf-rangefinder.html" class="project-card starred">
                 <div>
                     <span class="star-badge"><i class="fa-solid fa-microchip"></i> Embedded Hardware System</span>
@@ -235,7 +260,23 @@
                 <span class="card-link">View Hardware Architecture &rarr;</span>
             </a>
 
-            <!-- Project 3: Autonomous Line-Following Robot -->
+            <!-- Project 4: Machine Learning in Active Noise Control -->
+            <div class="project-card">
+                <div>
+                    <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-brain"></i> Machine Learning & Signal Processing</span>
+                    <h2>Machine Learning in Active Noise Control (SFANC)</h2>
+                    <p>Hybrid Spatially Filtered Active Noise Control framework integrating a PyTorch ONNX filter-selector network with nonlinear FLANN filter banks and Simulink cabin acoustic plant models.</p>
+                    <div class="tags">
+                        <span class="tag">PyTorch</span>
+                        <span class="tag">MATLAB / Simulink</span>
+                        <span class="tag">SFANC</span>
+                        <span class="tag">FLANN</span>
+                    </div>
+                </div>
+                <span class="card-link">Hybrid ML-ANC Architecture &rarr;</span>
+            </div>
+
+            <!-- Project 5: Autonomous Line-Following Robot -->
             <a href="line-following-robot.html" class="project-card">
                 <div>
                     <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-robot"></i> 1st Class Group Project</span>
@@ -251,23 +292,7 @@
                 <span class="card-link">View Robotics Case Study &rarr;</span>
             </a>
 
-            <!-- Project 4: Active Noise Control -->
-            <div class="project-card">
-                <div>
-                    <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-wave-square"></i> Signal Processing</span>
-                    <h2>Active Noise Control (ANC) System</h2>
-                    <p>Algorithmic architecture evaluating Filtered-X Least Mean Square (FxLMS) adaptive filters, FIR transfer functions, and secondary path phase error bounds.</p>
-                    <div class="tags">
-                        <span class="tag">MATLAB</span>
-                        <span class="tag">FxLMS</span>
-                        <span class="tag">DSP</span>
-                        <span class="tag">Control Systems</span>
-                    </div>
-                </div>
-                <span class="card-link">Algorithmic Study &rarr;</span>
-            </div>
-
-            <!-- Project 5: Vibration Saw (Replaced CFD Numerical Modelling) -->
+            <!-- Project 6: Vibration Saw -->
             <a href="vibration-saw.html" class="project-card">
                 <div>
                     <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-square-root-variable"></i> Group Project • Mathematical Foundation</span>
@@ -283,20 +308,100 @@
                 <span class="card-link">View Mathematical Foundation &rarr;</span>
             </a>
 
-            <!-- Project 6: Flow-Forming Diagnostics -->
+            <!-- Project 7: STM32 Thermal Control (ENGR7004) -->
+            <div class="project-card">
+                <div>
+                    <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-temperature-half"></i> Control Engineering (ENGR7004)</span>
+                    <h2>STM32 Closed-Loop Thermal Control System</h2>
+                    <p>Embedded thermal plant modeling and closed-loop PID controller implementation on an STM32 microcontroller for precision heating regulation and disturbance rejection.</p>
+                    <div class="tags">
+                        <span class="tag">STM32</span>
+                        <span class="tag">PID Control</span>
+                        <span class="tag">Thermal Systems</span>
+                        <span class="tag">ENGR7004</span>
+                    </div>
+                </div>
+                <span class="card-link">Control Design &rarr;</span>
+            </div>
+
+            <!-- Project 8: Machine Learning Module (ENGR7013) -->
+            <div class="project-card">
+                <div>
+                    <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-network-wired"></i> Machine Learning (ENGR7013)</span>
+                    <h2>Applied Engineering Machine Learning</h2>
+                    <p>Design, training, and validation of supervised learning models and feature extraction pipelines applied to engineering datasets and predictive diagnostics.</p>
+                    <div class="tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">PyTorch</span>
+                        <span class="tag">Data Modeling</span>
+                        <span class="tag">ENGR7013</span>
+                    </div>
+                </div>
+                <span class="card-link">ML Investigation &rarr;</span>
+            </div>
+
+            <!-- Project 9: Turbulent NACA0012 Aerofoil CFD (ENGR314) -->
+            <div class="project-card">
+                <div>
+                    <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-wind"></i> Computational Fluid Dynamics (ENGR314)</span>
+                    <h2>Turbulent NACA0012 Aerofoil CFD Analysis</h2>
+                    <p>ANSYS Fluent $k$-$\omega$ SST simulation of incompressible water flow ($10\text{ m/s}$) across $0^\circ–20^\circ$ AoA, evaluating coarse vs. fine structured mesh independence ($y^+ < 1$) and aerodynamic stall onset at $16^\circ$.</p>
+                    <div class="tags">
+                        <span class="tag">ANSYS Fluent</span>
+                        <span class="tag">k-ω SST</span>
+                        <span class="tag">Mesh Sensitivity</span>
+                        <span class="tag">MATLAB</span>
+                    </div>
+                </div>
+                <span class="card-link">Aerodynamic CFD Study &rarr;</span>
+            </div>
+
+            <!-- Project 10: SR-30 Jet Engine Thermodynamics (ENGR217) -->
+            <div class="project-card">
+                <div>
+                    <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-fire-flame-curved"></i> 1st Class Exemplar Report (ENGR217)</span>
+                    <h2>SR-30 Turbojet Thermodynamic Performance Analysis</h2>
+                    <p>Ideal Brayton cycle $T$-$s$ and $P$-$v$ state modeling of the Turbine Technologies SR-30 turbojet at $126.612\text{ N}$ peak thrust ($79,931\text{ RPM}$), deriving compressor/turbine specific work, work ratio ($0.632$), and thermal efficiency ($39.53\%$).</p>
+                    <div class="tags">
+                        <span class="tag">Brayton Cycle</span>
+                        <span class="tag">Thermodynamics</span>
+                        <span class="tag">MATLAB</span>
+                        <span class="tag">Propulsion</span>
+                    </div>
+                </div>
+                <span class="card-link">Thermodynamic Study &rarr;</span>
+            </div>
+
+            <!-- Project 11: Flow-Forming Diagnostics -->
             <div class="project-card">
                 <div>
                     <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-industry"></i> Aerospace Materials</span>
-                    <h2>Flow-Forming Defect Diagnostics</h2>
-                    <p>Material failure analysis investigating primary pass forming cracking mechanisms in flow-formed 2195 aluminum-lithium liquid hydrogen tank cylinders.</p>
+                    <h2>Flow-Forming Defect Diagnostics in 2195 Al-Li</h2>
+                    <p>Root-cause mechanical and metallurgical analysis of circumferential rib-root cracking in flow-formed AA2195-T6 LH2 cryotanks ($20\text{ K}$), quantifying $24\%$ local thinning ($1.9\text{ mm}$), $27.4\%$ true plastic strain, and a $31.5\%$ hoop stress spike ($94.7\text{ MPa}$).</p>
                     <div class="tags">
                         <span class="tag">2195 Al-Li</span>
                         <span class="tag">Failure Analysis</span>
-                        <span class="tag">Aerospace</span>
-                        <span class="tag">Materials</span>
+                        <span class="tag">Cryogenics</span>
+                        <span class="tag">Manufacturing</span>
                     </div>
                 </div>
-                <span class="card-link">Materials Study &rarr;</span>
+                <span class="card-link">Materials Investigation &rarr;</span>
+            </div>
+
+            <!-- Project 12: Closed-Loop Cruise Control (ENGR202) -->
+            <div class="project-card">
+                <div>
+                    <span class="star-badge" style="color: var(--text-muted);"><i class="fa-solid fa-gauge-high"></i> Control Systems (ENGR202)</span>
+                    <h2>Closed-Loop Automotive Cruise Control</h2>
+                    <p>Laplace transfer function derivation ($G(s) = \frac{108}{6.4s+1}$) and Simulink/MATLAB dynamic simulation comparing closed-loop Proportional ($K_p=1$) and Integral ($K_i=0.0005$) step responses, disturbance rejection, and steady-state error.</p>
+                    <div class="tags">
+                        <span class="tag">Simulink</span>
+                        <span class="tag">MATLAB</span>
+                        <span class="tag">Laplace Transform</span>
+                        <span class="tag">P & I Control</span>
+                    </div>
+                </div>
+                <span class="card-link">Control Theory Study &rarr;</span>
             </div>
 
         </main>
