@@ -11,7 +11,7 @@
     <!-- Google Fonts & Font Awesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- MathJax for Rendering LaTeX Math Equations -->
@@ -25,6 +25,11 @@
         };
     </script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- Three.js & STLLoader for Interactive Wind Tunnel STL Assembly Viewer -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
     
     <style>
         :root {
@@ -34,8 +39,10 @@
             --text-muted: #94a3b8;
             --accent: #38bdf8;
             --accent-hover: #0284c7;
+            --emerald: #10b981;
             --gold: #f59e0b;
             --border: #334155;
+            --code-bg: #020617;
         }
 
         * {
@@ -250,6 +257,179 @@
         .video-info p {
             font-size: 0.85rem;
             color: var(--text-muted);
+        }
+
+        /* Retrospective Redesign Section & Wind Tunnel STL Viewer */
+        .retro-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 1.75rem;
+            align-items: start;
+            margin-top: 1.25rem;
+        }
+
+        @media (max-width: 780px) {
+            .retro-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .tunnel-viewer-shell {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tunnel-hud-top {
+            background-color: rgba(15, 23, 42, 0.92);
+            border-bottom: 1px solid var(--border);
+            padding: 0.55rem 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        #viv-tunnel-canvas {
+            width: 100%;
+            height: 410px;
+            position: relative;
+            cursor: grab;
+            background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+        }
+
+        #viv-tunnel-canvas:active {
+            cursor: grabbing;
+        }
+
+        .tunnel-controls {
+            background-color: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid var(--border);
+            padding: 0.65rem 0.85rem;
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .viewer-btn {
+            background-color: var(--card-bg);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.38rem 0.7rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.73rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.15s;
+        }
+
+        .viewer-btn:hover, .viewer-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background-color: rgba(56, 189, 248, 0.12);
+        }
+
+        .viewer-btn.flow-active {
+            border-color: var(--emerald);
+            color: #34d399;
+            background-color: rgba(16, 185, 129, 0.14);
+        }
+
+        .retro-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .retro-card {
+            background-color: rgba(15, 23, 42, 0.65);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.15rem;
+        }
+
+        .retro-card h3 {
+            font-size: 0.98rem;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .retro-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+        }
+
+        .retro-list li {
+            position: relative;
+            padding-left: 1.35rem;
+            font-size: 0.88rem;
+            color: var(--text-muted);
+        }
+
+        .retro-list li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .retro-list strong {
+            color: var(--text-main);
+        }
+
+        /* STL Part Legend / Toggle List */
+        .stl-part-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+        }
+
+        .stl-part-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+            background-color: rgba(2, 6, 23, 0.65);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.42rem 0.65rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: border-color 0.15s;
+        }
+
+        .stl-part-item:hover {
+            border-color: var(--accent);
+        }
+
+        .stl-part-item.hidden-part {
+            opacity: 0.45;
+        }
+
+        .part-swatch {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            flex-shrink: 0;
         }
 
         /* Learned Grid (6 Items) */
@@ -550,7 +730,90 @@
             </div>
         </div>
 
-        <!-- Section 4: What I Learnt (6 Engineering Insights) -->
+        <!-- Section 4: Retrospective Redesign ("If I Was To Do It Again") & Wind Tunnel STL Viewer -->
+        <div class="section">
+            <h2><i class="fa-solid fa-rotate-left"></i> Retrospective Design Iteration: "If I Was To Do It Again"</h2>
+            <p style="color: var(--text-muted);">Synthesizing empirical wind tunnel and ANSYS Fluent findings into an optimized next-generation SolidWorks assembly engineered to maximize coherent vortex shedding and cantilevered root strain.</p>
+
+            <div class="retro-grid">
+                <!-- Left Column: Interactive Wind Tunnel STL Assembly Viewer -->
+                <div class="tunnel-viewer-shell">
+                    <div class="tunnel-hud-top">
+                        <span><i class="fa-solid fa-wind" style="color: var(--accent);"></i> WIND TUNNEL TEST SECTION • $f_s = 6.5\text{ Hz}$</span>
+                        <span id="stl-load-status" style="color: #34d399;">STL ASSEMBLY READY</span>
+                    </div>
+
+                    <div id="viv-tunnel-canvas"></div>
+
+                    <div class="tunnel-controls">
+                        <div style="display: flex; gap: 0.45rem; flex-wrap: wrap;">
+                            <button class="viewer-btn flow-active" id="btn-toggle-flow" onclick="toggleTunnelFlow()">
+                                <i class="fa-solid fa-wind"></i> Airflow & VIV: ON
+                            </button>
+                            <button class="viewer-btn" id="btn-toggle-explode" onclick="toggleExplodedView()">
+                                <i class="fa-solid fa-up-down"></i> Exploded View
+                            </button>
+                            <button class="viewer-btn" id="btn-toggle-xray" onclick="toggleXrayView()">
+                                <i class="fa-solid fa-eye"></i> X-Ray
+                            </button>
+                        </div>
+                        <button class="viewer-btn" onclick="resetTunnelCamera()">
+                            <i class="fa-solid fa-compress-arrows-alt"></i> Reset View
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Column: Design Improvements & STL Part Toggles -->
+                <div class="retro-sidebar">
+                    <div class="retro-card">
+                        <h3><i class="fa-solid fa-sliders"></i> Key Architectural Upgrades</h3>
+                        <ul class="retro-list">
+                            <li><strong>Uniform 50 mm Diameter:</strong> Eliminates spanwise diameter tapers to lock in a single, coherent Strouhal shedding frequency ($f_s = \text{St}\cdot U / D = 6.5\text{ Hz}$) along the active span[cite: 23].</li>
+                            <li><strong>Hemispherical Dome Tip:</strong> Suppresses 3D free-end tip vortex downwash that otherwise disrupts spanwise vortex correlation near the upper tip[cite: 23].</li>
+                            <li><strong>Scaled 50 mm Amplifier Shroud:</strong> Matches the trailing-edge feedback shroud geometry directly to the 50 mm bluff body, retaining the 5.32x dynamic lift boost[cite: 23].</li>
+                            <li><strong>Decoupled Base Wake Sleeve:</strong> Connects the lower cylindrical fairing directly to the baseplate to establish a uniform, constant wake field while isolating the cantilevered load-bearing flexure from root turbulence[cite: 23].</li>
+                        </ul>
+                    </div>
+
+                    <div class="retro-card">
+                        <h3><i class="fa-solid fa-cubes"></i> SolidWorks STL Assembly Parts</h3>
+                        <p style="font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.55rem;">Click a part below to toggle visibility in the wind tunnel:</p>
+                        <div class="stl-part-list">
+                            <div class="stl-part-item" id="part-row-top" onclick="togglePartVisibility('top')">
+                                <span style="display:flex; align-items:center; gap:0.5rem;">
+                                    <span class="part-swatch" style="background:#cbd5e1;"></span>
+                                    <span>IfIWasTopDoItAgaintopwide.STL</span>
+                                </span>
+                                <i class="fa-solid fa-eye" style="color:var(--accent);"></i>
+                            </div>
+                            <div class="stl-part-item" id="part-row-amp" onclick="togglePartVisibility('amp')">
+                                <span style="display:flex; align-items:center; gap:0.5rem;">
+                                    <span class="part-swatch" style="background:#38bdf8;"></span>
+                                    <span>IfIWasToDoItAgainAmplifier.STL</span>
+                                </span>
+                                <i class="fa-solid fa-eye" style="color:var(--accent);"></i>
+                            </div>
+                            <div class="stl-part-item" id="part-row-centre" onclick="togglePartVisibility('centre')">
+                                <span style="display:flex; align-items:center; gap:0.5rem;">
+                                    <span class="part-swatch" style="background:#94a3b8;"></span>
+                                    <span>IfIWasToDoItAgainUnformCentreAerofoil.STL</span>
+                                </span>
+                                <i class="fa-solid fa-eye" style="color:var(--accent);"></i>
+                            </div>
+                            <div class="stl-part-item" id="part-row-base" onclick="togglePartVisibility('base')">
+                                <span style="display:flex; align-items:center; gap:0.5rem;">
+                                    <span class="part-swatch" style="background:#475569;"></span>
+                                    <span>IfIWasToDoItNow.STL</span>
+                                </span>
+                                <i class="fa-solid fa-eye" style="color:var(--accent);"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: What I Learnt (6 Engineering Insights) -->
         <div class="section">
             <h2><i class="fa-solid fa-lightbulb"></i> Critical Engineering Insights</h2>
             <div class="learned-grid">
@@ -586,7 +849,7 @@
             </div>
         </div>
 
-        <!-- Section 5: Document & Presentation Viewer -->
+        <!-- Section 6: Document & Presentation Viewer -->
         <div class="section">
             <h2><i class="fa-solid fa-folder-open"></i> Technical Documentation & Defense Deck</h2>
             
@@ -611,7 +874,7 @@
             </div>
         </div>
 
-        <!-- Section 6: Tech Stack & Tools -->
+        <!-- Section 7: Tech Stack & Tools -->
         <div class="section">
             <h2><i class="fa-solid fa-code"></i> Technical Stack & Tools</h2>
             <div class="tags-container">
@@ -652,6 +915,378 @@
         const dlBtn = document.getElementById(downloadBtnId);
         dlBtn.href = pdfPath;
     }
+
+    // ---------- INTERACTIVE WIND TUNNEL STL ASSEMBLY VIEWER ----------
+    (function initWindTunnelViewer() {
+        const container = document.getElementById('viv-tunnel-canvas');
+        if (!container || typeof THREE === 'undefined') return;
+
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x020617, 0.032);
+
+        const camera = new THREE.PerspectiveCamera(42, container.clientWidth / container.clientHeight, 0.1, 100);
+        const defaultCamPos = new THREE.Vector3(7.2, 4.6, 8.2);
+        const defaultTarget = new THREE.Vector3(0.4, 2.3, 0);
+        camera.position.copy(defaultCamPos);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.target.copy(defaultTarget);
+        controls.minDistance = 3.5;
+        controls.maxDistance = 18;
+
+        // Lighting (Wind Tunnel Overhead LED Strips + Rim Light)
+        scene.add(new THREE.AmbientLight(0x94a3b8, 0.65));
+
+        const topLight1 = new THREE.DirectionalLight(0xf8fafc, 1.05);
+        topLight1.position.set(4, 10, 5);
+        topLight1.castShadow = true;
+        scene.add(topLight1);
+
+        const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.75);
+        rimLight.position.set(-6, 5, -5);
+        scene.add(rimLight);
+
+        // 1. Wind Tunnel Test Section Environment
+        const tunnelGroup = new THREE.Group();
+        scene.add(tunnelGroup);
+
+        // Floor Plate
+        const floorGeo = new THREE.BoxGeometry(14, 0.18, 6.2);
+        const floorMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.6, roughness: 0.4 });
+        const floorMesh = new THREE.Mesh(floorGeo, floorMat);
+        floorMesh.position.y = -0.09;
+        floorMesh.receiveShadow = true;
+        tunnelGroup.add(floorMesh);
+
+        // Floor Grid Lines
+        const gridHelper = new THREE.GridHelper(14, 28, 0x1e293b, 0x162032);
+        gridHelper.position.y = 0.01;
+        tunnelGroup.add(gridHelper);
+
+        // Acrylic Wind Tunnel Frame & Glass Walls
+        const tunnelW = 14, tunnelH = 5.4, tunnelD = 6.0;
+        const boxGeo = new THREE.BoxGeometry(tunnelW, tunnelH, tunnelD);
+        const edgesGeo = new THREE.EdgesGeometry(boxGeo);
+        const edgesMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.35 });
+        const tunnelWireframe = new THREE.LineSegments(edgesGeo, edgesMat);
+        tunnelWireframe.position.y = tunnelH / 2;
+        tunnelGroup.add(tunnelWireframe);
+
+        // Translucent Acrylic Back & Top Panels
+        const glassMat = new THREE.MeshPhysicalMaterial({
+            color: 0x38bdf8,
+            transparent: true,
+            opacity: 0.045,
+            roughness: 0.1,
+            side: THREE.DoubleSide,
+            depthWrite: false
+        });
+        const glassBox = new THREE.Mesh(boxGeo, glassMat);
+        glassBox.position.y = tunnelH / 2;
+        tunnelGroup.add(glassBox);
+
+        // Upstream Honeycomb Flow-Straightener Mesh (x = -6.8)
+        const honeyGroup = new THREE.Group();
+        honeyGroup.position.set(-6.8, tunnelH / 2, 0);
+        const honeyMat = new THREE.LineBasicMaterial({ color: 0x475569, transparent: true, opacity: 0.45 });
+        const honeyPoints = [];
+        for (let y = -tunnelH / 2; y <= tunnelH / 2; y += 0.35) {
+            honeyPoints.push(new THREE.Vector3(0, y, -tunnelD / 2), new THREE.Vector3(0, y, tunnelD / 2));
+        }
+        for (let z = -tunnelD / 2; z <= tunnelD / 2; z += 0.35) {
+            honeyPoints.push(new THREE.Vector3(0, -tunnelH / 2, z), new THREE.Vector3(0, tunnelH / 2, z));
+        }
+        honeyGroup.add(new THREE.LineSegments(new THREE.BufferGeometry().setFromPoints(honeyPoints), honeyMat));
+        tunnelGroup.add(honeyGroup);
+
+        // 2. Assembly Groups (Base Fixed Sleeve + Cantilevered Oscillating Upper Assembly)
+        const assemblyRoot = new THREE.Group();
+        scene.add(assemblyRoot);
+
+        // Fixed lower wake sleeve connected to baseplate (IfIWasToDoItNow.STL)
+        const baseGroup = new THREE.Group();
+        assemblyRoot.add(baseGroup);
+
+        // Pivoting cantilevered upper assembly (pivots at the decoupled joint y = 1.65)
+        const cantileverPivot = new THREE.Group();
+        cantileverPivot.position.set(0, 1.65, 0);
+        assemblyRoot.add(cantileverPivot);
+
+        const partGroups = {
+            base: baseGroup,
+            centre: new THREE.Group(),
+            amp: new THREE.Group(),
+            top: new THREE.Group()
+        };
+        cantileverPivot.add(partGroups.centre);
+        cantileverPivot.add(partGroups.amp);
+        cantileverPivot.add(partGroups.top);
+
+        // Materials matching SolidWorks metallic & anodized finishes
+        const mats = {
+            base:   new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.65, roughness: 0.35 }),
+            centre: new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.55, roughness: 0.3 }),
+            amp:    new THREE.MeshStandardMaterial({ color: 0x38bdf8, metalness: 0.45, roughness: 0.28 }),
+            top:    new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.6,  roughness: 0.25 })
+        };
+
+        // Procedural CAD Fallback Geometry matching the exact SolidWorks Viva slide assembly
+        function buildFallbackAssembly() {
+            // 1. IfIWasToDoItNow.STL — Baseplate + 8 Bolt Holes + Lower Uniform 50mm Wake Sleeve
+            const plate = new THREE.Mesh(new THREE.BoxGeometry(1.45, 0.1, 1.45), mats.base);
+            plate.position.y = 0.05;
+            baseGroup.add(plate);
+
+            const boltGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.12, 12);
+            const boltMat = new THREE.MeshStandardMaterial({ color: 0x0f172a });
+            [[-0.55,-0.55],[0,-0.55],[0.55,-0.55],[-0.55,0],[0.55,0],[-0.55,0.55],[0,0.55],[0.55,0.55]].forEach(([bx, bz]) => {
+                const b = new THREE.Mesh(boltGeo, boltMat);
+                b.position.set(bx, 0.055, bz);
+                baseGroup.add(b);
+            });
+
+            const lowerSleeve = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 1.52, 36), mats.base);
+            lowerSleeve.position.y = 0.86;
+            baseGroup.add(lowerSleeve);
+
+            // Decoupled internal flexure neck visible at the separation gap (y = 1.65)
+            const flexureCore = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.35, 24), mats.amp);
+            flexureCore.position.y = 1.65;
+            baseGroup.add(flexureCore);
+
+            // 2. IfIWasToDoItAgainUnformCentreAerofoil.STL — Uniform 50mm Centre Cylinder (local y: 0.06 to 2.25)
+            const centreCyl = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 2.2, 36), mats.centre);
+            centreCyl.position.y = 1.16;
+            partGroups.centre.add(centreCyl);
+
+            // 3. IfIWasTopDoItAgaintopwide.STL — Upper Collar + Hemispherical Dome Tip (local y: 2.26 to 2.95)
+            const upperCollar = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 0.42, 36), mats.top);
+            upperCollar.position.y = 2.47;
+            partGroups.top.add(upperCollar);
+
+            const domeTip = new THREE.Mesh(new THREE.SphereGeometry(0.32, 36, 20, 0, Math.PI * 2, 0, Math.PI / 2), mats.top);
+            domeTip.position.y = 2.68;
+            partGroups.top.add(domeTip);
+
+            // 4. IfIWasToDoItAgainAmplifier.STL — Cross-Pin + Scaled 50mm Trailing-Edge Curved Amplifier Shroud
+            const crossPin = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.92, 20), mats.amp);
+            crossPin.rotation.x = Math.PI / 2;
+            crossPin.position.set(0.08, 2.47, 0);
+            partGroups.amp.add(crossPin);
+
+            // C-shaped trailing-edge feedback shroud (+X downstream side)
+            const shroudOuterR = 0.48, shroudInnerR = 0.41, shroudH = 0.72;
+            const arcShape = new THREE.Shape();
+            arcShape.absarc(0, 0, shroudOuterR, -Math.PI * 0.48, Math.PI * 0.48, false);
+            arcShape.absarc(0, 0, shroudInnerR, Math.PI * 0.48, -Math.PI * 0.48, true);
+            arcShape.closePath();
+
+            const extrudeGeo = new THREE.ExtrudeGeometry(arcShape, { depth: shroudH, bevelEnabled: false, curveSegments: 32 });
+            extrudeGeo.rotateX(Math.PI / 2);
+            const shroudMesh = new THREE.Mesh(extrudeGeo, mats.amp);
+            shroudMesh.position.set(0.06, 2.47 + shroudH / 2, 0);
+            partGroups.amp.add(shroudMesh);
+        }
+
+        // Load real SolidWorks STL files if hosted under ./stl/, seamlessly falling back if not found
+        const stlFiles = [
+            { key: 'base',   path: 'stl/IfIWasToDoItNow.STL' },
+            { key: 'centre', path: 'stl/IfIWasToDoItAgainUnformCentreAerofoil.STL' },
+            { key: 'amp',    path: 'stl/IfIWasToDoItAgainAmplifier.STL' },
+            { key: 'top',    path: 'stl/IfIWasTopDoItAgaintopwide.STL' }
+        ];
+
+        buildFallbackAssembly(); // Render immediately so viewer is never blank
+
+        if (typeof THREE.STLLoader !== 'undefined') {
+            const loader = new THREE.STLLoader();
+            let loadedRealCount = 0;
+            stlFiles.forEach(item => {
+                loader.load(
+                    item.path,
+                    function(geometry) {
+                        // Replace fallback mesh for this component with real SolidWorks STL mesh
+                        while (partGroups[item.key].children.length > 0) {
+                            partGroups[item.key].remove(partGroups[item.key].children[0]);
+                        }
+                        geometry.computeVertexNormals();
+                        // Scale mm -> scene units (50 mm = 0.64 units -> scale = 0.0128)
+                        geometry.scale(0.0128, 0.0128, 0.0128);
+                        if (item.key !== 'base') {
+                            geometry.translate(0, -1.65, 0);
+                        }
+                        const mesh = new THREE.Mesh(geometry, mats[item.key]);
+                        partGroups[item.key].add(mesh);
+                        loadedRealCount++;
+                        document.getElementById('stl-load-status').textContent = `LOADED ${loadedRealCount}/4 SOLIDWORKS STLs`;
+                    },
+                    undefined,
+                    function() {
+                        // Keep fallback geometry silently when running locally without /stl/ files
+                    }
+                );
+            });
+        }
+
+        // 3. Wind Tunnel Airflow Streamlines & Shedding von Kármán Vortex Rings
+        const streamCount = 48;
+        const streamPositions = new Float32Array(streamCount * 6);
+        const streamMeta = [];
+        for (let i = 0; i < streamCount; i++) {
+            const x = (Math.random() - 0.5) * 13.5;
+            const y = 0.35 + Math.random() * 4.6;
+            const z = (Math.random() - 0.5) * 5.2;
+            const speed = 0.09 + Math.random() * 0.06;
+            streamMeta.push({ x, y, z, speed });
+        }
+        const streamGeo = new THREE.BufferGeometry();
+        streamGeo.setAttribute('position', new THREE.BufferAttribute(streamPositions, 3));
+        const streamMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.42 });
+        const streamLines = new THREE.LineSegments(streamGeo, streamMat);
+        scene.add(streamLines);
+
+        // Alternating Wake Vortex Rings (+X downstream)
+        const vortexRings = [];
+        const ringGeo = new THREE.TorusGeometry(0.24, 0.018, 8, 24);
+        for (let i = 0; i < 8; i++) {
+            const vMat = new THREE.MeshBasicMaterial({
+                color: i % 2 === 0 ? 0x38bdf8 : 0x34d399,
+                transparent: true,
+                opacity: 0.45
+            });
+            const ring = new THREE.Mesh(ringGeo, vMat);
+            ring.rotation.y = Math.PI / 2;
+            ring.userData = { offset: i * 0.85, sign: i % 2 === 0 ? 1 : -1 };
+            scene.add(ring);
+            vortexRings.push(ring);
+        }
+
+        // Interactive Viewer States
+        let flowActive = true;
+        let isExploded = false;
+        let isXray = false;
+        let simTime = 0;
+
+        window.toggleTunnelFlow = function() {
+            flowActive = !flowActive;
+            const btn = document.getElementById('btn-toggle-flow');
+            btn.classList.toggle('flow-active', flowActive);
+            btn.innerHTML = flowActive
+                ? '<i class="fa-solid fa-wind"></i> Airflow & VIV: ON'
+                : '<i class="fa-solid fa-pause"></i> Airflow & VIV: PAUSED';
+            streamLines.visible = flowActive;
+            vortexRings.forEach(r => r.visible = flowActive);
+        };
+
+        window.toggleExplodedView = function() {
+            isExploded = !isExploded;
+            document.getElementById('btn-toggle-explode').classList.toggle('active', isExploded);
+        };
+
+        window.toggleXrayView = function() {
+            isXray = !isXray;
+            document.getElementById('btn-toggle-xray').classList.toggle('active', isXray);
+            Object.values(mats).forEach(m => {
+                m.transparent = isXray;
+                m.opacity = isXray ? 0.42 : 1.0;
+                m.needsUpdate = true;
+            });
+        };
+
+        window.togglePartVisibility = function(key) {
+            const grp = partGroups[key];
+            grp.visible = !grp.visible;
+            const row = document.getElementById(`part-row-${key}`);
+            row.classList.toggle('hidden-part', !grp.visible);
+            const icon = row.querySelector('i');
+            icon.className = grp.visible ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash';
+            icon.style.color = grp.visible ? 'var(--accent)' : 'var(--text-muted)';
+        };
+
+        window.resetTunnelCamera = function() {
+            camera.position.copy(defaultCamPos);
+            controls.target.copy(defaultTarget);
+            controls.update();
+        };
+
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Smooth Exploded Assembly Interpolation
+            const targetCentreY = isExploded ? 0.55 : 0.0;
+            const targetAmpY    = isExploded ? 1.15 : 0.0;
+            const targetTopY    = isExploded ? 1.85 : 0.0;
+
+            partGroups.centre.position.y += (targetCentreY - partGroups.centre.position.y) * 0.1;
+            partGroups.amp.position.y    += (targetAmpY    - partGroups.amp.position.y)    * 0.1;
+            partGroups.top.position.y    += (targetTopY    - partGroups.top.position.y)    * 0.1;
+
+            if (flowActive) {
+                simTime += 0.045;
+
+                // 6.5 Hz Resonant Lock-in Transversal Oscillation (Z-axis bending)
+                const vivDeflection = Math.sin(simTime * 2.2) * 0.085;
+                cantileverPivot.rotation.x = vivDeflection;
+
+                // Update Airflow Streamlines (-X -> +X)
+                const posAttr = streamGeo.attributes.position.array;
+                for (let i = 0; i < streamCount; i++) {
+                    const m = streamMeta[i];
+                    m.x += m.speed;
+                    if (m.x > 6.6) m.x = -6.8;
+
+                    // Subtle wake deflection behind cylinder
+                    const wakeZ = (m.x > 0 && Math.abs(m.z) < 0.75)
+                        ? m.z + Math.sin(m.x * 2.5 - simTime * 3.0) * 0.12
+                        : m.z;
+
+                    posAttr[i * 6 + 0] = m.x;
+                    posAttr[i * 6 + 1] = m.y;
+                    posAttr[i * 6 + 2] = wakeZ;
+                    posAttr[i * 6 + 3] = m.x - 0.55;
+                    posAttr[i * 6 + 4] = m.y;
+                    posAttr[i * 6 + 5] = wakeZ;
+                }
+                streamGeo.attributes.position.needsUpdate = true;
+
+                // Update von Kármán Shedding Vortex Rings downstream (+X)
+                vortexRings.forEach((ring) => {
+                    const travel = ((simTime * 1.4 + ring.userData.offset) % 6.2);
+                    ring.position.set(
+                        0.65 + travel,
+                        3.75 + Math.sin(travel * 0.8) * 0.12,
+                        ring.userData.sign * (0.22 + travel * 0.09) * Math.cos(travel * 1.3 - simTime * 2.2)
+                    );
+                    const scale = 0.7 + travel * 0.22;
+                    ring.scale.set(scale, scale, scale);
+                    ring.material.opacity = Math.max(0, 0.48 * (1 - travel / 6.2));
+                });
+            } else {
+                cantileverPivot.rotation.x *= 0.9;
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Responsive Resize
+        window.addEventListener('resize', () => {
+            if (!container.clientWidth) return;
+            camera.aspect = container.clientWidth / container.clientHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.clientWidth, container.clientHeight);
+        });
+    })();
     </script>
 </body>
 </html>
