@@ -227,34 +227,17 @@
             width: 100%;
             aspect-ratio: 16 / 11;
             background-color: var(--code-bg);
-            border: 1px dashed #475569;
+            border: 1px solid var(--border);
             border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 1.5rem;
-            color: var(--text-muted);
             overflow: hidden;
             position: relative;
         }
 
-        .hardware-photo-frame i {
-            font-size: 2.4rem;
-            color: var(--accent);
-            margin-bottom: 0.65rem;
-            opacity: 0.85;
-        }
-
-        .hardware-photo-frame code {
-            color: var(--accent);
-            background: rgba(56, 189, 248, 0.12);
-            padding: 0.15rem 0.45rem;
-            border-radius: 4px;
-            font-size: 0.82rem;
-            margin-top: 0.35rem;
-            display: inline-block;
+        .hardware-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         /* Interactive Diff-Amp & Mbed Control Simulator */
@@ -652,7 +635,7 @@
             color: var(--text-main);
         }
 
-        /* Media Card & Placeholder */
+        /* Media Card & Image Container */
         .media-card {
             background-color: rgba(6, 10, 19, 0.7);
             border: 1px solid var(--border);
@@ -662,26 +645,19 @@
             flex-direction: column;
         }
 
-        .media-placeholder {
+        .media-thumb {
             width: 100%;
             aspect-ratio: 16 / 10;
             background-color: var(--code-bg);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
             border-bottom: 1px solid var(--border);
-            padding: 1rem;
-            text-align: center;
-            font-size: 0.85rem;
+            overflow: hidden;
         }
 
-        .media-placeholder i {
-            font-size: 2rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-            opacity: 0.75;
+        .media-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         .media-info {
@@ -912,10 +888,7 @@
             <h2><i class="fa-solid fa-camera"></i> Final Competition Build ("Rat Mobile")</h2>
             <div class="hero-hardware-grid">
                 <div class="hardware-photo-frame">
-                    <i class="fa-solid fa-robot"></i>
-                    <strong>Final Assembled Robot Photo (Figure 1)</strong>
-                    <span style="font-size: 0.85rem; margin-top: 0.25rem;">Replace this placeholder with Figure 1 from your report:</span>
-                    <code>images/rat-mobile-final.jpg</code>
+                    <img src="images/rat-mobile-final.jpeg" alt="Final Assembled Rat Mobile Competition Robot">
                 </div>
 
                 <div>
@@ -1161,9 +1134,8 @@ int main()
                         </ul>
                     </div>
                     <div class="media-card">
-                        <div class="media-placeholder">
-                            <i class="fa-solid fa-diagram-project"></i>
-                            <span>Add Circuit Diagram / Ray-Tracing image:<br><code>images/rat-mobile-circuit-raytrace.png</code></span>
+                        <div class="media-thumb">
+                            <img src="images/circuit-diagram-robot.png" alt="Wheatstone Bridge Schematic and Optical Ray-Tracing">
                         </div>
                         <div class="media-info">
                             <h3>Wheatstone Bridge Schematic & Optical Ray-Tracing</h3>
@@ -1186,9 +1158,8 @@ int main()
                         </ul>
                     </div>
                     <div class="media-card">
-                        <div class="media-placeholder">
-                            <i class="fa-solid fa-cube"></i>
-                            <span>Add SolidWorks Chassis / MATLAB Trajectory plot:<br><code>images/rat-mobile-cad-trajectory.png</code></span>
+                        <div class="media-thumb">
+                            <img src="images/cad-traj.png" alt="SolidWorks CAD and MATLAB Ballistic Trajectories">
                         </div>
                         <div class="media-info">
                             <h3>SolidWorks CAD & MATLAB Ballistic Trajectories</h3>
