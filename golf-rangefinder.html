@@ -803,7 +803,7 @@
             color: var(--text-main);
         }
 
-        /* Media Card & Image/Placeholder */
+        /* Media Card & Interactive 3D Exploded STL Viewer */
         .media-card {
             background-color: rgba(15, 23, 42, 0.7);
             border: 1px solid var(--border);
@@ -860,6 +860,118 @@
             font-size: 0.8rem;
             margin-top: 0.35rem;
             display: inline-block;
+        }
+
+        #stl-viewer-container {
+            width: 100%;
+            height: 350px;
+            background-color: #020617;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+            cursor: grab;
+        }
+
+        #stl-viewer-container:active {
+            cursor: grabbing;
+        }
+
+        #stl-loading-msg {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            gap: 0.5rem;
+            pointer-events: none;
+            text-align: center;
+            padding: 1rem;
+            z-index: 5;
+        }
+
+        .explode-slider-bar {
+            position: absolute;
+            bottom: 44px;
+            left: 12px;
+            right: 12px;
+            z-index: 10;
+            background: rgba(15, 23, 42, 0.88);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 6px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            backdrop-filter: blur(4px);
+        }
+
+        .explode-slider-bar span.lbl {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .explode-slider-bar input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .explode-slider-bar span.pct {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            color: var(--text-main);
+            width: 34px;
+            text-align: right;
+        }
+
+        .stl-controls-bar {
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            display: flex;
+            gap: 0.4rem;
+            z-index: 10;
+        }
+
+        .stl-ctrl-btn {
+            background-color: rgba(15, 23, 42, 0.88);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.28rem 0.6rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            backdrop-filter: blur(4px);
+        }
+
+        .stl-ctrl-btn:hover, .stl-ctrl-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .stl-hint-badge {
+            position: absolute;
+            top: 10px;
+            left: 12px;
+            background-color: rgba(15, 23, 42, 0.82);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 0.2rem 0.55rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.68rem;
+            pointer-events: none;
+            z-index: 10;
         }
 
         .media-info {
@@ -1273,7 +1385,7 @@
         <!-- Section 3: Interactive Engineering Deep-Dive (Full Code, PCB, CAD) -->
         <div class="section">
             <h2><i class="fa-solid fa-layer-group"></i> Engineering Deep-Dive: Firmware, PCB & CAD</h2>
-            <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Inspect the complete production C++ firmware alongside the PCB layout and SolidWorks mechanical packaging workflow.</p>
+            <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Inspect the complete production C++ firmware alongside the PCB layout and interactive 3D exploded SolidWorks assembly.</p>
 
             <!-- Tab Controls -->
             <div class="eng-tabs">
@@ -1284,7 +1396,7 @@
                     <i class="fa-solid fa-microchip"></i> Schematic & PCB Design
                 </button>
                 <button class="eng-tab-btn" onclick="switchEngTab('tab-cad', this)">
-                    <i class="fa-solid fa-cube"></i> Mechanical CAD & DFM
+                    <i class="fa-solid fa-cube"></i> Interactive 3D CAD & Explosion
                 </button>
             </div>
 
@@ -1838,7 +1950,7 @@ void loop() {
                 </div>
             </div>
 
-            <!-- Panel 3: Mechanical CAD & DFM -->
+            <!-- Panel 3: Interactive 3D CAD & Explosion -->
             <div id="tab-cad" class="eng-panel">
                 <div class="design-split">
                     <div>
@@ -1851,16 +1963,29 @@ void loop() {
                         </ul>
                     </div>
                     <div class="media-card">
-                        <div class="media-frame">
-                            <img src="images/rangefinder-cad-exploded.png" alt="SolidWorks Clamshell Assembly" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div class="media-placeholder">
-                                <i class="fa-solid fa-cube"></i>
-                                <span>Add SolidWorks CAD render:<br><code>images/rangefinder-cad-exploded.png</code></span>
+                        <div id="stl-viewer-container">
+                            <span class="stl-hint-badge"><i class="fa-solid fa-rotate"></i> Drag: Orbit • Scroll: Zoom</span>
+                            <div id="stl-loading-msg">
+                                <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem; color: var(--accent);"></i>
+                                <span>Loading 3D SolidWorks Assembly...</span>
+                            </div>
+                            
+                            <!-- Interactive Exploded View Slider -->
+                            <div class="explode-slider-bar">
+                                <span class="lbl">EXPLODE</span>
+                                <input type="range" id="explode-slider" min="0" max="100" value="0">
+                                <span class="pct" id="explode-pct">0%</span>
+                            </div>
+
+                            <div class="stl-controls-bar">
+                                <button type="button" class="stl-ctrl-btn active" id="stl-btn-rotate" onclick="window.toggleStlRotate()">Auto-Rotate</button>
+                                <button type="button" class="stl-ctrl-btn" id="stl-btn-wire" onclick="window.toggleStlWireframe()">Wireframe</button>
+                                <button type="button" class="stl-ctrl-btn" onclick="window.resetStlCamera()">Reset</button>
                             </div>
                         </div>
                         <div class="media-info">
-                            <h3>SolidWorks Clamshell Assembly</h3>
-                            <p>Exploded view detailing PCB mounting standoffs, tactile button actuators, and brass insert bosses.</p>
+                            <h3>Interactive 3D Exploded Assembly</h3>
+                            <p>Drag the <strong>EXPLODE</strong> slider to separate the outer shell, ST7789V display, PCB, GNSS module, compass, and Li-Ion battery.</p>
                         </div>
                     </div>
                 </div>
@@ -2061,6 +2186,9 @@ void loop() {
         document.querySelectorAll('.eng-tab-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(panelId).classList.add('active');
         clickedBtn.classList.add('active');
+        if (panelId === 'tab-cad' && window.resizeStlViewer) {
+            window.resizeStlViewer();
+        }
     }
 
     // Copy Clean Firmware Code to Clipboard
@@ -2205,6 +2333,161 @@ void loop() {
     // Initialize Simulator & Arduino IDE Syntax Highlighting
     highlightArduinoCode();
     updateSimulator();
+    </script>
+
+    <!-- Three.js Multi-Part Exploded STL Assembly Loader -->
+    <script type="module">
+        import * as THREE from 'https://esm.sh/three@0.160.0';
+        import { STLLoader } from 'https://esm.sh/three@0.160.0/examples/jsm/loaders/STLLoader.js';
+        import { OrbitControls } from 'https://esm.sh/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
+        const container = document.getElementById('stl-viewer-container');
+        const loadingMsg = document.getElementById('stl-loading-msg');
+        const explodeSlider = document.getElementById('explode-slider');
+        const explodePct = document.getElementById('explode-pct');
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x020617);
+
+        const camera = new THREE.PerspectiveCamera(45, 16 / 10, 0.1, 5000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
+
+        // Studio Lighting Setup
+        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+        
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
+        keyLight.position.set(1.5, 2.5, 2.0);
+        scene.add(keyLight);
+
+        const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.85);
+        rimLight.position.set(-2.0, -1.0, -1.5);
+        scene.add(rimLight);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.autoRotate = true;
+        controls.autoRotateSpeed = 1.4;
+
+        // Master Group holding all assembly parts
+        const assemblyGroup = new THREE.Group();
+        assemblyGroup.rotation.x = -Math.PI / 2; // Orient SolidWorks Z-up into Three.js Y-up
+        scene.add(assemblyGroup);
+
+        // 12 Key STL Components + Color + Explosion Offset [dx, dy, dz] in mm
+        const assemblyParts = [
+            { file: 'RangefinderAssembly1 - ScreenAssem-1 ScreenCover-1.stl',      color: 0x38bdf8, offset: [0, 0, 55] },
+            { file: 'RangefinderAssembly1 - TopOfCase-1.stl',                      color: 0xe2e8f0, offset: [0, 0, 38] },
+            { file: 'RangefinderAssembly1 - buttons-1.stl',                        color: 0xf59e0b, offset: [0, 0, 28] },
+            { file: 'RangefinderAssembly1 - ScreenAssem-1 screen-1.stl',           color: 0x1e293b, offset: [0, 0, 18] },
+            { file: 'RangefinderAssembly1 - ScreenAssem-1 screenSupportBar#-1.stl', color: 0x94a3b8, offset: [-18, 0, 12] },
+            { file: 'RangefinderAssembly1 - ScreenAssem-1 screenSupportBar#-2.stl', color: 0x94a3b8, offset: [18, 0, 12] },
+            { file: 'RangefinderAssembly1 - GPSAntenna-1.stl',                     color: 0xd97706, offset: [0, 22, 10] },
+            { file: 'RangefinderAssembly1 - GPSBoard-1.stl',                       color: 0x10b981, offset: [0, 15, 4] },
+            { file: 'RangefinderAssembly1 - Compass-1.stl',                        color: 0x06b6d4, offset: [0, -15, 4] },
+            { file: 'RangefinderAssembly1 - 3D_PCB_PCB_RangefinderNew_2026-10-01_202__0-01_2026-10-01.step-1 Board~9VI5.step-1.stl', color: 0x059669, offset: [0, 0, -4] },
+            { file: 'RangefinderAssembly1 - Battery-1.stl',                        color: 0x64748b, offset: [0, 0, -20] },
+            { file: 'RangefinderAssembly1 - BottomOfCase-1.stl',                   color: 0xcbd5e1, offset: [0, 0, -40] }
+        ];
+
+        const loader = new STLLoader();
+        const loadedMeshes = [];
+        let defaultCamPos = new THREE.Vector3(120, 90, 120);
+
+        Promise.all(
+            assemblyParts.map(part => new Promise((resolve) => {
+                loader.load(
+                    `models/${encodeURIComponent(part.file)}`,
+                    (geometry) => {
+                        geometry.computeVertexNormals();
+                        const material = new THREE.MeshStandardMaterial({
+                            color: part.color,
+                            metalness: 0.25,
+                            roughness: 0.42
+                        });
+                        const mesh = new THREE.Mesh(geometry, material);
+                        mesh.userData.explodeOffset = new THREE.Vector3(...part.offset);
+                        assemblyGroup.add(mesh);
+                        loadedMeshes.push(mesh);
+                        resolve();
+                    },
+                    undefined,
+                    () => resolve() // Skip gracefully if an optional part isn't uploaded yet
+                );
+            }))
+        ).then(() => {
+            if (loadedMeshes.length === 0) {
+                loadingMsg.innerHTML = `
+                    <i class="fa-solid fa-cube" style="font-size: 1.75rem; color: var(--accent);"></i>
+                    <span>Add your 12 STL component files to:<br><code style="color: var(--accent);">models/</code></span>
+                `;
+                return;
+            }
+
+            // Center the entire assembled model at the origin
+            const box = new THREE.Box3().setFromObject(assemblyGroup);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            assemblyGroup.position.sub(center);
+
+            const maxDim = Math.max(size.x, size.y, size.z) || 80;
+            camera.near = Math.max(0.01, maxDim * 0.01);
+            camera.far = maxDim * 40;
+            camera.updateProjectionMatrix();
+
+            defaultCamPos.set(maxDim * 1.6, maxDim * 1.2, maxDim * 1.6);
+            camera.position.copy(defaultCamPos);
+            controls.target.set(0, 0, 0);
+            controls.update();
+
+            loadingMsg.style.display = 'none';
+        });
+
+        // Explode Slider Event
+        explodeSlider.addEventListener('input', (e) => {
+            const factor = parseFloat(e.target.value) / 100.0;
+            explodePct.textContent = `${e.target.value}%`;
+            loadedMeshes.forEach(mesh => {
+                mesh.position.copy(mesh.userData.explodeOffset).multiplyScalar(factor);
+            });
+        });
+
+        window.resizeStlViewer = () => {
+            const w = container.clientWidth || 400;
+            const h = container.clientHeight || 350;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        };
+
+        window.toggleStlRotate = () => {
+            controls.autoRotate = !controls.autoRotate;
+            document.getElementById('stl-btn-rotate').classList.toggle('active', controls.autoRotate);
+        };
+
+        window.toggleStlWireframe = () => {
+            loadedMeshes.forEach(m => m.material.wireframe = !m.material.wireframe);
+            const isWire = loadedMeshes[0]?.material.wireframe || false;
+            document.getElementById('stl-btn-wire').classList.toggle('active', isWire);
+        };
+
+        window.resetStlCamera = () => {
+            camera.position.copy(defaultCamPos);
+            controls.target.set(0, 0, 0);
+            controls.update();
+        };
+
+        new ResizeObserver(window.resizeStlViewer).observe(container);
+        window.resizeStlViewer();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
     </script>
 
 </body>
