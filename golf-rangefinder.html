@@ -864,7 +864,7 @@
 
         #stl-viewer-container {
             width: 100%;
-            height: 350px;
+            height: 360px;
             background-color: #020617;
             border-bottom: 1px solid var(--border);
             position: relative;
@@ -1985,7 +1985,7 @@ void loop() {
                         </div>
                         <div class="media-info">
                             <h3>Interactive 3D Exploded Assembly</h3>
-                            <p>Drag the <strong>EXPLODE</strong> slider to separate the outer shell, ST7789V display, PCB, GNSS module, compass, and Li-Ion battery.</p>
+                            <p>Drag the <strong>EXPLODE</strong> slider to separate the red PLA outer shell, ST7789V display, blue PCBs, GNSS module, compass, and Li-Ion battery.</p>
                         </div>
                     </div>
                 </div>
@@ -2355,13 +2355,13 @@ void loop() {
         container.appendChild(renderer.domElement);
 
         // Studio Lighting Setup
-        scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+        scene.add(new THREE.AmbientLight(0xffffff, 0.9));
         
-        const keyLight = new THREE.DirectionalLight(0xffffff, 1.1);
-        keyLight.position.set(1.5, 2.5, 2.0);
+        const keyLight = new THREE.DirectionalLight(0xffffff, 1.15);
+        keyLight.position.set(1.5, 2.0, 2.5);
         scene.add(keyLight);
 
-        const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.85);
+        const rimLight = new THREE.DirectionalLight(0x38bdf8, 0.7);
         rimLight.position.set(-2.0, -1.0, -1.5);
         scene.add(rimLight);
 
@@ -2369,32 +2369,33 @@ void loop() {
         controls.enableDamping = true;
         controls.dampingFactor = 0.06;
         controls.autoRotate = true;
-        controls.autoRotateSpeed = 1.4;
+        controls.autoRotateSpeed = 1.2;
 
-        // Master Group holding all assembly parts
+        // Master Group: SolidWorks +Y points vertically up (+Y in Three.js) so stack explodes vertically,
+        // and rotated around Y so the front screen & buttons greet the camera (+Z)
         const assemblyGroup = new THREE.Group();
-        assemblyGroup.rotation.x = -Math.PI / 2; // Orient SolidWorks Z-up into Three.js Y-up
+        assemblyGroup.rotation.set(0, -Math.PI / 2, 0);
         scene.add(assemblyGroup);
 
-        // 12 Key STL Components (Uppercase .STL matching models/ on GitHub) + Color + Explosion Offset [dx, dy, dz] in mm
+        // 12 STL Components: Real-life red PLA enclosure, blue PCBs, black buttons, and vertical stack explosion along SolidWorks Y
         const assemblyParts = [
-            { file: 'ScreenCover.STL',  color: 0x38bdf8, offset: [0, 0, 55] },
-            { file: 'TopOfCase.STL',    color: 0xe2e8f0, offset: [0, 0, 38] },
-            { file: 'Buttons.STL',      color: 0xf59e0b, offset: [0, 0, 28] },
-            { file: 'Screen.STL',       color: 0x1e293b, offset: [0, 0, 18] },
-            { file: 'SupportBar1.STL',  color: 0x94a3b8, offset: [-18, 0, 12] },
-            { file: 'SupportBar2.STL',  color: 0x94a3b8, offset: [18, 0, 12] },
-            { file: 'GPSAntenna.STL',   color: 0xd97706, offset: [0, 22, 10] },
-            { file: 'GPSBoard.STL',     color: 0x10b981, offset: [0, 15, 4] },
-            { file: 'Compass.STL',      color: 0x06b6d4, offset: [0, -15, 4] },
-            { file: 'PCB.STL',          color: 0x059669, offset: [0, 0, -4] },
-            { file: 'Battery.STL',      color: 0x64748b, offset: [0, 0, -20] },
-            { file: 'BottomOfCase.STL', color: 0xcbd5e1, offset: [0, 0, -40] }
+            { file: 'ScreenCover.STL',  color: 0xdc2626, offset: [0, 65, 0] },   // Red PLA Screen Bezel
+            { file: 'TopOfCase.STL',    color: 0xdc2626, offset: [0, 42, 0] },   // Red PLA Top Shell
+            { file: 'Buttons.STL',      color: 0x1e293b, offset: [0, 30, 0] },   // Matte Black Tactile Buttons
+            { file: 'Screen.STL',       color: 0x0f172a, offset: [0, 20, 0] },   // ST7789V 2.0" IPS Display
+            { file: 'SupportBar1.STL',  color: 0x94a3b8, offset: [-16, 12, 0] }, // Screen Support Bar L
+            { file: 'SupportBar2.STL',  color: 0x94a3b8, offset: [16, 12, 0] },  // Screen Support Bar R
+            { file: 'GPSAntenna.STL',   color: 0xd97706, offset: [0, 12, 0] },   // Ceramic GPS Patch Antenna
+            { file: 'GPSBoard.STL',     color: 0x1d4ed8, offset: [0, 4, 0] },    // Blue GNSS Module PCB
+            { file: 'Compass.STL',      color: 0x1d4ed8, offset: [0, 4, 0] },    // Blue QMC5883P Compass PCB
+            { file: 'PCB.STL',          color: 0x1d4ed8, offset: [0, -8, 0] },   // Blue Custom Main Carrier PCB
+            { file: 'Battery.STL',      color: 0x475569, offset: [0, -24, 0] },  // 1200mAh Li-Ion Pouch Cell
+            { file: 'BottomOfCase.STL', color: 0xdc2626, offset: [0, -45, 0] }   // Red PLA Bottom Shell
         ];
 
         const loader = new STLLoader();
         const loadedMeshes = [];
-        let defaultCamPos = new THREE.Vector3(120, 90, 120);
+        let defaultCamPos = new THREE.Vector3(0, 140, 220);
 
         Promise.all(
             assemblyParts.map(part => new Promise((resolve) => {
@@ -2404,7 +2405,7 @@ void loop() {
                         geometry.computeVertexNormals();
                         const material = new THREE.MeshStandardMaterial({
                             color: part.color,
-                            metalness: 0.25,
+                            metalness: 0.22,
                             roughness: 0.42
                         });
                         const mesh = new THREE.Mesh(geometry, material);
@@ -2414,7 +2415,7 @@ void loop() {
                         resolve();
                     },
                     undefined,
-                    () => resolve() // Skip gracefully if an optional part isn't uploaded yet
+                    () => resolve()
                 );
             }))
         ).then(() => {
@@ -2437,7 +2438,8 @@ void loop() {
             camera.far = maxDim * 40;
             camera.updateProjectionMatrix();
 
-            defaultCamPos.set(maxDim * 1.6, maxDim * 1.2, maxDim * 1.6);
+            // Position camera in front (+Z) and elevated (+Y) so the front face greets the viewer
+            defaultCamPos.set(maxDim * 0.45, maxDim * 1.15, maxDim * 1.55);
             camera.position.copy(defaultCamPos);
             controls.target.set(0, 0, 0);
             controls.update();
@@ -2456,7 +2458,7 @@ void loop() {
 
         window.resizeStlViewer = () => {
             const w = container.clientWidth || 400;
-            const h = container.clientHeight || 350;
+            const h = container.clientHeight || 360;
             camera.aspect = w / h;
             camera.updateProjectionMatrix();
             renderer.setSize(w, h);
