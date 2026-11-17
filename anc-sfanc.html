@@ -40,7 +40,7 @@
             --amber: #f59e0b;
             --coral: #f472b6;
             --border: #26354d;
-            --code-bg: #060a13;
+            --code-bg: #1e1e1e; /* Authentic VS Code / MATLAB Dark Editor Surface */
         }
 
         * {
@@ -226,7 +226,7 @@
         .cover-photo-frame {
             width: 100%;
             aspect-ratio: 16 / 10;
-            background-color: var(--code-bg);
+            background-color: #060a13;
             border: 1px solid var(--border);
             border-radius: 10px;
             overflow: hidden;
@@ -331,7 +331,7 @@
         }
 
         .canvas-box {
-            background-color: var(--code-bg);
+            background-color: #060a13;
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: 0.85rem;
@@ -348,6 +348,64 @@
             display: block;
         }
 
+        .audio-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.65rem;
+            flex-wrap: wrap;
+            background-color: rgba(22, 32, 50, 0.65);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.55rem 0.75rem;
+        }
+
+        .audio-btn {
+            background-color: rgba(16, 185, 129, 0.14);
+            color: var(--emerald);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            border-radius: 6px;
+            padding: 0.38rem 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.15s;
+        }
+
+        .audio-btn:hover {
+            background-color: rgba(16, 185, 129, 0.25);
+        }
+
+        .audio-btn.playing {
+            background-color: var(--emerald);
+            color: #060a13;
+        }
+
+        .cycle-btn {
+            background-color: rgba(245, 158, 11, 0.14);
+            color: var(--amber);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 6px;
+            padding: 0.38rem 0.75rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.15s;
+        }
+
+        .cycle-btn.active {
+            background-color: var(--amber);
+            color: #060a13;
+        }
+
         .telemetry-bar {
             display: flex;
             justify-content: space-between;
@@ -357,7 +415,7 @@
             border-radius: 6px;
             padding: 0.55rem 0.85rem;
             font-family: 'Fira Code', monospace;
-            font-size: 0.75rem;
+            font-size: 0.74rem;
             flex-wrap: wrap;
             gap: 0.5rem;
         }
@@ -369,12 +427,12 @@
             padding: 1.15rem;
             display: flex;
             flex-direction: column;
-            gap: 0.95rem;
+            gap: 0.9rem;
         }
 
         .preset-row {
             display: flex;
-            gap: 0.45rem;
+            gap: 0.4rem;
             flex-wrap: wrap;
         }
 
@@ -383,9 +441,9 @@
             color: var(--text-muted);
             border: 1px solid var(--border);
             border-radius: 6px;
-            padding: 0.35rem 0.65rem;
+            padding: 0.35rem 0.6rem;
             font-family: 'Fira Code', monospace;
-            font-size: 0.73rem;
+            font-size: 0.72rem;
             cursor: pointer;
             transition: all 0.15s;
         }
@@ -394,6 +452,12 @@
             border-color: var(--accent);
             color: var(--accent);
             background-color: rgba(56, 189, 248, 0.1);
+        }
+
+        .preset-btn.regime-btn.active {
+            border-color: var(--emerald);
+            color: var(--emerald);
+            background-color: rgba(16, 185, 129, 0.12);
         }
 
         .preset-btn.warn-btn:hover, .preset-btn.warn-btn.active {
@@ -433,16 +497,16 @@
         .metrics-mini-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.6rem;
+            gap: 0.55rem;
         }
 
         .mini-pill {
             background-color: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 6px;
-            padding: 0.45rem 0.65rem;
+            padding: 0.42rem 0.6rem;
             font-family: 'Fira Code', monospace;
-            font-size: 0.74rem;
+            font-size: 0.72rem;
             display: flex;
             justify-content: space-between;
         }
@@ -529,7 +593,7 @@
         }
 
         .eq-math {
-            background-color: var(--code-bg);
+            background-color: #060a13;
             border: 1px solid #1e293b;
             border-radius: 6px;
             padding: 0.75rem;
@@ -593,33 +657,60 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Code Window */
+        /* VS Code Dark+ & MATLAB Dark Editor Code Windows */
         .code-window {
-            background-color: var(--code-bg);
-            border: 1px solid #1e293b;
+            background-color: #1e1e1e;
+            border: 1px solid #333333;
             border-radius: 8px;
             overflow: hidden;
             margin-top: 1rem;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
         }
 
         .code-header {
-            background-color: #162032;
+            background-color: #252526;
             padding: 0.65rem 1rem;
-            border-bottom: 1px solid #334155;
+            border-bottom: 1px solid #3c3c3c;
             display: flex;
             justify-content: space-between;
             align-items: center;
             font-family: 'Fira Code', monospace;
             font-size: 0.8rem;
-            color: var(--text-main);
+            color: #cccccc;
             gap: 1rem;
             flex-wrap: wrap;
         }
 
+        .editor-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+        }
+
+        .lang-pill {
+            font-size: 0.68rem;
+            padding: 0.12rem 0.45rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .lang-py {
+            background-color: rgba(86, 156, 214, 0.2);
+            color: #569cd6;
+            border: 1px solid rgba(86, 156, 214, 0.4);
+        }
+
+        .lang-mat {
+            background-color: rgba(217, 119, 6, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+        }
+
         .copy-code-btn {
-            background-color: rgba(56, 189, 248, 0.14);
-            color: var(--accent);
-            border: 1px solid rgba(56, 189, 248, 0.35);
+            background-color: #333333;
+            color: #d4d4d4;
+            border: 1px solid #454545;
             padding: 0.3rem 0.7rem;
             border-radius: 5px;
             font-family: 'Inter', sans-serif;
@@ -633,19 +724,30 @@
         }
 
         .copy-code-btn:hover {
-            background-color: var(--accent);
-            color: var(--bg-color);
+            background-color: #0e639c;
+            border-color: #1177bb;
+            color: #ffffff;
         }
 
         .code-window pre {
             padding: 1.25rem;
-            max-height: 520px;
+            max-height: 540px;
             overflow: auto;
             font-family: 'Fira Code', monospace;
             font-size: 0.8rem;
             line-height: 1.55;
-            color: #e2e8f0;
+            color: #d4d4d4;
+            background-color: #1e1e1e;
         }
+
+        /* VS Code Dark+ & MATLAB Dark Syntax Token Palette */
+        .vsc-ctrl    { color: #c586c0; } /* import, from, return, if, elif, else, for, with, raise */
+        .vsc-kw      { color: #569cd6; } /* def, class, function, persistent, end, true, false, None */
+        .vsc-type    { color: #4ec9b0; } /* nn, Module, Tensor, torch, np, F, zeros, sin, tanh, max, abs, double */
+        .vsc-func    { color: #dcdcaa; } /* function & method identifiers */
+        .vsc-str     { color: #ce9178; } /* strings & docstrings */
+        .vsc-num     { color: #b5cea8; } /* numeric literals */
+        .vsc-comment { color: #6a9955; font-style: italic; } /* # and % comments */
 
         /* Spec Table */
         .spec-table {
@@ -946,7 +1048,7 @@
                 <div>
                     <h3 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.65rem;">Overcoming Classical FxLMS Bottlenecks</h3>
                     <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.85rem;">
-                        Conventional linear Filtered-x LMS (FxLMS) controllers suffer from slow convergence during rapid non-stationary noise transitions, speaker saturation, and nonlinear acoustic distortion. This architecture fuses offline deep learning with real-time adaptive DSP:
+                        Conventional linear Filtered-x LMS (FxLMS) controllers struggle with slow convergence during rapid non-stationary noise transitions, speaker saturation, and nonlinear acoustic distortion. This architecture fuses offline deep learning with real-time adaptive DSP:
                     </p>
                     <ul class="design-list">
                         <li><strong>Zero-Cold-Start SFANC Switching:</strong> A lightweight PyTorch 1D-CNN classifies $2048$-sample noise frames ($80\text{ Hz}$, $120\text{ Hz}$, $200\text{ Hz}$ tonal regimes + low-pass broadband) and loads pre-trained weights via ONNX.</li>
@@ -997,18 +1099,30 @@
             </div>
         </div>
 
-        <!-- Section 2: Interactive FLANN-SFANC & Secondary Path Phase Simulator -->
+        <!-- Section 2: Interactive 40s Multi-Regime Acoustic Simulator with Web Audio -->
         <div class="section">
-            <h2><i class="fa-solid fa-sliders"></i> Interactive FLANN-SFANC & Phase Stability Simulator</h2>
-            <p style="color: var(--text-muted);">Explore how linear FxLMS, nonlinear FLANN-SFANC, and secondary-path phase misalignment ($\Delta\phi$) affect residual noise attenuation when primary acoustic paths exhibit quadratic and trigonometric distortion.</p>
+            <h2><i class="fa-solid fa-volume-high"></i> Interactive 40-Second Multi-Regime ANC & Audio Simulator</h2>
+            <p style="color: var(--text-muted);">Replicates your exact 4-regime Simulink `timeseries` test signal ($0\text{–}10\text{s}: 80\text{ Hz}$, $10\text{–}20\text{s}: 120\text{ Hz}$, $20\text{–}30\text{s}: 200\text{ Hz}$, $30\text{–}40\text{s}: \text{Band-Limited Broadband}$). Enable live audio output to hear the residual error mic $e(n)$ drop as FLANN-SFANC cancels both fundamental tones and nonlinear harmonics.</p>
 
             <div class="sim-grid">
-                <!-- Live Waveform & Attenuation Canvas -->
+                <!-- Live Waveform & Web Audio Controls -->
                 <div class="canvas-box">
                     <canvas id="anc-waveform-canvas" width="520" height="295"></canvas>
                     
+                    <div class="audio-toolbar">
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <button class="audio-btn" id="btn-audio-toggle" onclick="toggleAudioPlayback()">
+                                <i class="fa-solid fa-volume-xmark"></i> Enable Live Audio Output
+                            </button>
+                            <button class="cycle-btn" id="btn-auto-cycle" onclick="toggle40sCycle()">
+                                <i class="fa-solid fa-clock"></i> Auto-Run 40s Sequence
+                            </button>
+                        </div>
+                        <span style="font-family: 'Fira Code', monospace; font-size: 0.74rem; color: var(--amber);" id="sim-clock-readout">t = 0.0s / 40.0s</span>
+                    </div>
+
                     <div class="telemetry-bar">
-                        <span style="color: #94a3b8;">PRIMARY: <strong style="color: #f8fafc;">100%</strong></span>
+                        <span style="color: #94a3b8;">REGIME: <strong style="color: #f8fafc;" id="sim-regime-readout">R1 (80 Hz)</strong></span>
                         <span style="color: var(--emerald);" id="sim-att-readout">ATTENUATION: -24.8 dB</span>
                         <span style="color: var(--accent);" id="sim-stab-readout">STABILITY: CONVERGENT</span>
                     </div>
@@ -1016,7 +1130,15 @@
 
                 <!-- Simulation Controls -->
                 <div class="sim-controls-box">
-                    <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">CONTROLLER MODE PRESETS:</div>
+                    <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">TEST SIGNAL REGIME (`multiNoiseSim`):</div>
+                    <div class="preset-row">
+                        <button class="preset-btn regime-btn active" id="btn-reg-0" onclick="selectRegime(0)">R1: 80 Hz</button>
+                        <button class="preset-btn regime-btn" id="btn-reg-1" onclick="selectRegime(1)">R2: 120 Hz</button>
+                        <button class="preset-btn regime-btn" id="btn-reg-2" onclick="selectRegime(2)">R3: 200 Hz</button>
+                        <button class="preset-btn regime-btn" id="btn-reg-3" onclick="selectRegime(3)">R4: Broadband</button>
+                    </div>
+
+                    <div style="font-size: 0.78rem; color: var(--text-muted); font-weight: 600;">CONTROLLER MODE PRESETS:</div>
                     <div class="preset-row">
                         <button class="preset-btn" id="btn-mode-off" onclick="setAncMode('off')">ANC Off</button>
                         <button class="preset-btn" id="btn-mode-linear" onclick="setAncMode('linear')">Linear FxLMS</button>
@@ -1042,8 +1164,8 @@
 
                     <div class="metrics-mini-grid">
                         <div class="mini-pill">
-                            <span style="color: var(--text-muted);">FADE / CONV.:</span>
-                            <span style="color: var(--emerald);" id="out-conv">15 ms Fade + FxNLMS</span>
+                            <span style="color: var(--text-muted);">CNN SELECT:</span>
+                            <span style="color: var(--emerald);" id="out-conv">Class 1 (15ms Fade)</span>
                         </div>
                         <div class="mini-pill">
                             <span style="color: var(--text-muted);">HARMONICS:</span>
@@ -1142,7 +1264,7 @@
             </div>
         </div>
 
-        <!-- Section 5: Production Implementation Code (Real PyTorch & MATLAB Scripts) -->
+        <!-- Section 5: Production Implementation Code (VS Code Python & MATLAB Themes) -->
         <div class="section">
             <h2><i class="fa-solid fa-code"></i> Production Code: Phase 1 PyTorch Training & Phase 2 Simulink Controller</h2>
             <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Inspect the exact Phase 1 PyTorch script used to optimize the $4 \times 192$ FLANN filter bank and train/export `selector_net.onnx`, alongside the real-time MATLAB Function block `HybridFLANNController.m` deployed in Simulink.</p>
@@ -1156,11 +1278,14 @@
                 </button>
             </div>
 
-            <!-- Tab 1: Real PyTorch Script (MLanc.txt) -->
+            <!-- Tab 1: Real PyTorch Script (VS Code Dark+ Theme) -->
             <div id="tab-pytorch" class="eng-panel active">
                 <div class="code-window">
                     <div class="code-header">
-                        <span><i class="fa-solid fa-file-code"></i> train_flann_sfanc.py — Phase 1 Offline FLANN Optimization & 1D-CNN ONNX Export</span>
+                        <span class="editor-badge">
+                            <span class="lang-pill lang-py">Python • VS Code</span>
+                            <span>train_flann_sfanc.py — Phase 1 Offline FLANN Optimization & 1D-CNN ONNX Export</span>
+                        </span>
                         <button class="copy-code-btn" onclick="copyCodeBlock('code-py', this)">
                             <i class="fa-regular fa-copy"></i> Copy Code
                         </button>
@@ -1402,11 +1527,14 @@ print("\nPhase 1 Complete! Exported 'selector_net.onnx' (2048-sample) and 'flann
                 </div>
             </div>
 
-            <!-- Tab 2: Real MATLAB Function Block (hybridflanncontroller.txt) -->
+            <!-- Tab 2: Real MATLAB Function Block (MATLAB Dark Theme) -->
             <div id="tab-matlab" class="eng-panel">
                 <div class="code-window">
                     <div class="code-header">
-                        <span><i class="fa-solid fa-file-code"></i> HybridFLANNController.m — Simulink Real-Time Cross-Fade & Leaky FxNLMS Block</span>
+                        <span class="editor-badge">
+                            <span class="lang-pill lang-mat">MATLAB • Simulink</span>
+                            <span>HybridFLANNController.m — Simulink Real-Time Cross-Fade & Leaky FxNLMS Block</span>
+                        </span>
                         <button class="copy-code-btn" onclick="copyCodeBlock('code-mat', this)">
                             <i class="fa-regular fa-copy"></i> Copy Code
                         </button>
@@ -1496,8 +1624,8 @@ end</code></pre>
                     </tr>
                     <tr>
                         <td><strong>WP3: Phase 2 Simulink Loop</strong></td>
-                        <td>`HybridFLANNController.m` Integration</td>
-                        <td>Coupled ONNX selector with $15\text{ ms}$ ($120$-sample) linear cross-fade, Leaky FxNLMS ($\mu=0.025$), and $u_{\max}=6.0$ soft clipping.</td>
+                        <td>`HybridFLANNController.m` & 40s Test</td>
+                        <td>Coupled ONNX selector with $15\text{ ms}$ ($120$-sample) linear cross-fade, Leaky FxNLMS ($\mu=0.025$), and 4-regime `timeseries` validation.</td>
                         <td><span class="status-pill status-active">In Progress</span></td>
                     </tr>
                     <tr>
@@ -1642,6 +1770,46 @@ end</code></pre>
     </div>
 
     <script>
+    // ---------- VS CODE DARK+ & MATLAB SYNTAX HIGHLIGHTERS ----------
+    function highlightPythonVSCode() {
+        const el = document.getElementById('code-py');
+        let text = el.textContent
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const pyRegex = /(#.*$)|("""[\s\S]*?"""|"[^"\\]*(?:\\.[^"\\]*)*"|'[^'\\]*(?:\\.[^'\\]*)*')|\b(import|from|as|return|if|elif|else|for|in|with|raise)\b|\b(def|class|True|False|None|self|super)\b|\b(nn|Module|Tensor|torch|np|F|Selector|Adam|CrossEntropyLoss|Sequential|Conv1d|ReLU|AdaptiveAvgPool1d|Flatten|Linear|ValueError)\b|\b([a-zA-Z_][a-zA-Z0-9_]*)(?=\s*\()|\b(\d+(?:\.\d+)?(?:e-?\d+)?)\b/gm;
+
+        text = text.replace(pyRegex, (m, comment, str, ctrl, kw, type, func, num) => {
+            if (comment) return `<span class="vsc-comment">${comment}</span>`;
+            if (str)     return `<span class="vsc-str">${str}</span>`;
+            if (ctrl)    return `<span class="vsc-ctrl">${ctrl}</span>`;
+            if (kw)      return `<span class="vsc-kw">${kw}</span>`;
+            if (type)    return `<span class="vsc-type">${type}</span>`;
+            if (func)    return `<span class="vsc-func">${func}</span>`;
+            if (num)     return `<span class="vsc-num">${num}</span>`;
+            return m;
+        });
+        el.innerHTML = text;
+    }
+
+    function highlightMatlabEditor() {
+        const el = document.getElementById('code-mat');
+        let text = el.textContent
+            .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+        const matRegex = /(%.*$)|('[^']*')|\b(function|if|elseif|else|end|for|while|persistent|return)\b|\b(true|false|pi)\b|\b(zeros|ones|sin|cos|tanh|max|abs|double|isempty|HybridFLANNController)\b|\b(\d+(?:\.\d+)?(?:e-?\d+)?)\b/gm;
+
+        text = text.replace(matRegex, (m, comment, str, kw, constant, builtin, num) => {
+            if (comment)  return `<span class="vsc-comment">${comment}</span>`;
+            if (str)      return `<span class="vsc-str">${str}</span>`;
+            if (kw)       return `<span class="vsc-kw">${kw}</span>`;
+            if (constant) return `<span class="vsc-kw">${constant}</span>`;
+            if (builtin)  return `<span class="vsc-type">${builtin}</span>`;
+            if (num)      return `<span class="vsc-num">${num}</span>`;
+            return m;
+        });
+        el.innerHTML = text;
+    }
+
     // Tab Switcher
     function switchEngTab(panelId, clickedBtn) {
         document.querySelectorAll('.eng-panel').forEach(p => p.classList.remove('active'));
@@ -1660,18 +1828,148 @@ end</code></pre>
         });
     }
 
-    // ---------- INTERACTIVE FLANN-SFANC & PHASE STABILITY SIMULATOR ----------
+    // ---------- INTERACTIVE 40s MULTI-REGIME SIMULATOR & WEB AUDIO ENGINE ----------
     const canvas = document.getElementById('anc-waveform-canvas');
     const ctx = canvas.getContext('2d');
 
+    const REGIMES = [
+        { name: 'R1 (80 Hz)',        f0: 80,  isBroadband: false, clsLabel: 'Class 1 (15ms Fade)' },
+        { name: 'R2 (120 Hz)',       f0: 120, isBroadband: false, clsLabel: 'Class 2 (15ms Fade)' },
+        { name: 'R3 (200 Hz)',       f0: 200, isBroadband: false, clsLabel: 'Class 3 (15ms Fade)' },
+        { name: 'R4 (Broadband)',    f0: 0,   isBroadband: true,  clsLabel: 'Class 4 (15ms Fade)' }
+    ];
+
+    let activeRegime = 0;
     let ancMode = 'hybrid'; // 'off' | 'linear' | 'hybrid' | 'unstable'
     let nonlinPct = 35;
     let phaseErrDeg = 15;
     let phaseTick = 0;
 
+    // 40-second auto-cycle timer
+    let autoCycle = false;
+    let simSeconds = 0.0;
+    let lastFrameTime = performance.now();
+
+    // Web Audio API Synthesizer State
+    let audioCtx = null;
+    let scriptNode = null;
+    let masterGain = null;
+    let isAudioPlaying = false;
+    let audioPhase1 = 0;
+    let audioPhase2 = 0;
+    let audioPhase3 = 0;
+    let noiseHistory = new Float32Array(8);
+    let noiseIdx = 0;
+
+    function initWebAudio() {
+        if (audioCtx) return;
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+        const fs = audioCtx.sampleRate;
+
+        masterGain = audioCtx.createGain();
+        masterGain.gain.value = 0.14; // Safe comfortable listening volume
+        masterGain.connect(audioCtx.destination);
+
+        // Real-time DSP sample generator matching multiNoiseSim & HybridFLANNController
+        scriptNode = audioCtx.createScriptProcessor(1024, 0, 1);
+        scriptNode.onaudioprocess = function(e) {
+            const out = e.outputBuffer.getChannelData(0);
+            const alpha = nonlinPct / 100.0;
+            const phiRad = (phaseErrDeg * Math.PI) / 180.0;
+            const reg = REGIMES[activeRegime];
+
+            for (let i = 0; i < out.length; i++) {
+                let x = 0;
+                if (!reg.isBroadband) {
+                    const f0 = reg.f0;
+                    audioPhase1 += (2 * Math.PI * f0) / fs;
+                    audioPhase2 += (2 * Math.PI * (2 * f0)) / fs;
+                    audioPhase3 += (2 * Math.PI * (3 * f0)) / fs;
+                    if (audioPhase1 > 2 * Math.PI) audioPhase1 -= 2 * Math.PI;
+                    if (audioPhase2 > 2 * Math.PI) audioPhase2 -= 2 * Math.PI;
+                    if (audioPhase3 > 2 * Math.PI) audioPhase3 -= 2 * Math.PI;
+
+                    // Fundamental + 2nd harmonic (matching x1, x2, x3 in MATLAB)
+                    x = Math.sin(audioPhase1) + 0.3 * Math.sin(audioPhase2);
+                } else {
+                    // 8-tap moving average low-pass filtered white noise + 2.5*tanh(x/2.5)
+                    noiseHistory[noiseIdx] = (Math.random() * 2 - 1) * 2.2;
+                    noiseIdx = (noiseIdx + 1) & 7;
+                    let sum = 0;
+                    for (let k = 0; k < 8; k++) sum += noiseHistory[k];
+                    const filt = sum / 8.0;
+                    x = 2.5 * Math.tanh(filt / 2.5);
+                }
+
+                // Nonlinear primary path disturbance d(n) = x + alpha*(0.55*x^2 + 0.3*sin(pi*x))
+                const nlTerm = alpha * (0.55 * Math.sin(audioPhase2 || x * 2) + 0.3 * Math.sin(Math.PI * x));
+                const d = x + (reg.isBroadband ? alpha * 0.45 * Math.sin(Math.PI * x) : nlTerm);
+
+                // Anti-noise response y(n) by mode
+                let anti = 0;
+                if (ancMode === 'linear') {
+                    const xDelayed = !reg.isBroadband
+                        ? (Math.sin(audioPhase1 - phiRad) + 0.3 * Math.sin(audioPhase2 - phiRad))
+                        : x * Math.cos(phiRad);
+                    anti = -xDelayed;
+                } else if (ancMode === 'hybrid') {
+                    const dDelayed = !reg.isBroadband
+                        ? (Math.sin(audioPhase1 - phiRad) + 0.3 * Math.sin(audioPhase2 - phiRad) + alpha * (0.55 * Math.sin(audioPhase2 - phiRad) + 0.3 * Math.sin(Math.PI * x)))
+                        : d * Math.cos(phiRad * 0.5);
+                    anti = -0.96 * dDelayed;
+                } else if (ancMode === 'unstable' || phaseErrDeg >= 90) {
+                    anti = -1.45 * Math.sin(audioPhase1 - phiRad);
+                }
+
+                const err = d + anti;
+                // Soft limiter u_max = 6.0 scaled for audio card safety
+                out[i] = Math.max(-1.0, Math.min(1.0, err * 0.55));
+            }
+        };
+        scriptNode.connect(masterGain);
+    }
+
+    function toggleAudioPlayback() {
+        const btn = document.getElementById('btn-audio-toggle');
+        if (!isAudioPlaying) {
+            initWebAudio();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            isAudioPlaying = true;
+            btn.classList.add('playing');
+            btn.innerHTML = '<i class="fa-solid fa-volume-high"></i> Audio Live (Error Mic e(n))';
+        } else {
+            if (audioCtx) audioCtx.suspend();
+            isAudioPlaying = false;
+            btn.classList.remove('playing');
+            btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> Enable Live Audio Output';
+        }
+    }
+
+    function toggle40sCycle() {
+        autoCycle = !autoCycle;
+        const btn = document.getElementById('btn-auto-cycle');
+        btn.classList.toggle('active', autoCycle);
+        if (autoCycle) {
+            simSeconds = activeRegime * 10.0;
+            btn.innerHTML = '<i class="fa-solid fa-pause"></i> Pause 40s Sequence';
+        } else {
+            btn.innerHTML = '<i class="fa-solid fa-clock"></i> Auto-Run 40s Sequence';
+        }
+    }
+
+    function selectRegime(idx) {
+        activeRegime = idx;
+        simSeconds = idx * 10.0;
+        document.querySelectorAll('.regime-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+        document.getElementById('sim-regime-readout').textContent = REGIMES[idx].name;
+        updateAncSliders();
+    }
+
     function setAncMode(mode) {
         ancMode = mode;
-        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#btn-mode-off, #btn-mode-linear, #btn-mode-hybrid, #btn-mode-unstable')
+            .forEach(b => b.classList.remove('active'));
         document.getElementById(`btn-mode-${mode}`).classList.add('active');
 
         if (mode === 'unstable') {
@@ -1693,7 +1991,8 @@ end</code></pre>
 
         if (phaseErrDeg >= 90 && ancMode !== 'off') {
             ancMode = 'unstable';
-            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('#btn-mode-off, #btn-mode-linear, #btn-mode-hybrid, #btn-mode-unstable')
+                .forEach(b => b.classList.remove('active'));
             document.getElementById('btn-mode-unstable').classList.add('active');
         }
 
@@ -1716,7 +2015,7 @@ end</code></pre>
         let residualRatio = 1.0;
         if (ancMode === 'off') {
             residualRatio = 1.0;
-            document.getElementById('out-conv').textContent = 'Disabled';
+            document.getElementById('out-conv').textContent = 'Bypassed';
             document.getElementById('out-harm').textContent = 'Uncancelled';
             document.getElementById('sim-stab-readout').textContent = 'STABILITY: BYPASSED';
             document.getElementById('sim-stab-readout').style.color = '#94a3b8';
@@ -1736,7 +2035,7 @@ end</code></pre>
         } else {
             const phaseFactor = Math.sin(phiRad * 0.5);
             residualRatio = Math.max(0.03, 0.04 + 0.35 * phaseFactor + 0.05 * alpha);
-            document.getElementById('out-conv').textContent = '15 ms Fade + FxNLMS';
+            document.getElementById('out-conv').textContent = REGIMES[activeRegime].clsLabel;
             document.getElementById('out-harm').textContent = 'sin(πx) & x² Cancelled';
             document.getElementById('sim-stab-readout').textContent = 'STABILITY: CONVERGENT';
             document.getElementById('sim-stab-readout').style.color = '#10b981';
@@ -1749,7 +2048,22 @@ end</code></pre>
         document.getElementById('out-rms').textContent = (0.707 * residualRatio).toFixed(3);
     }
 
-    function drawWaveforms() {
+    function drawWaveforms(now) {
+        const dt = (now - lastFrameTime) / 1000.0;
+        lastFrameTime = now;
+
+        if (autoCycle) {
+            simSeconds = (simSeconds + dt) % 40.0;
+            const targetReg = Math.min(3, Math.floor(simSeconds / 10.0));
+            if (targetReg !== activeRegime) {
+                activeRegime = targetReg;
+                document.querySelectorAll('.regime-btn').forEach((b, i) => b.classList.toggle('active', i === targetReg));
+                document.getElementById('sim-regime-readout').textContent = REGIMES[targetReg].name;
+                updateAncSliders();
+            }
+        }
+        document.getElementById('sim-clock-readout').textContent = `t = ${simSeconds.toFixed(1)}s / 40.0s`;
+
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         // Background Grid
@@ -1768,15 +2082,28 @@ end</code></pre>
 
         const alpha = nonlinPct / 100.0;
         const phiRad = (phaseErrDeg * Math.PI) / 180.0;
+        const reg = REGIMES[activeRegime];
+        const freqScale = reg.isBroadband ? 1.0 : (reg.f0 / 80.0);
 
-        // 1. Primary Disturbance d(n) (Fundamental + Quadratic & Trigonometric Harmonics)
+        // Helper for deterministic visual wave per regime
+        function evalDisturbance(x) {
+            if (!reg.isBroadband) {
+                const t = (x * 0.028 * freqScale) + phaseTick * freqScale;
+                return Math.sin(t) + 0.3 * Math.sin(2 * t) + alpha * (0.45 * Math.sin(2 * t) + 0.25 * Math.cos(3 * t));
+            } else {
+                const u = x * 0.14 + phaseTick * 2.2;
+                const pseudoNoise = 0.45 * Math.sin(u * 1.7) + 0.35 * Math.cos(u * 3.1 + 1.2) + 0.28 * Math.sin(u * 5.3 + 2.4);
+                return pseudoNoise + alpha * 0.35 * Math.sin(Math.PI * pseudoNoise);
+            }
+        }
+
+        // 1. Primary Disturbance d(n)
         ctx.beginPath();
         ctx.strokeStyle = 'rgba(148, 163, 184, 0.55)';
         ctx.lineWidth = 2;
         for (let x = 0; x < canvas.width; x++) {
-            const t = (x * 0.032) + phaseTick;
-            const d = Math.sin(t) + alpha * (0.55 * Math.sin(2 * t) + 0.3 * Math.cos(3 * t));
-            const y = midY - d * 68;
+            const d = evalDisturbance(x);
+            const y = midY - d * 60;
             if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
         ctx.stroke();
@@ -1786,21 +2113,26 @@ end</code></pre>
         ctx.strokeStyle = (ancMode === 'unstable' || phaseErrDeg >= 90) ? '#f472b6' : '#38bdf8';
         ctx.lineWidth = 2.5;
         for (let x = 0; x < canvas.width; x++) {
-            const t = (x * 0.032) + phaseTick;
-            const d = Math.sin(t) + alpha * (0.55 * Math.sin(2 * t) + 0.3 * Math.cos(3 * t));
+            const d = evalDisturbance(x);
             let anti = 0;
 
             if (ancMode === 'linear') {
-                anti = -Math.sin(t - phiRad);
+                if (!reg.isBroadband) {
+                    const t = (x * 0.028 * freqScale) + phaseTick * freqScale;
+                    anti = -(Math.sin(t - phiRad) + 0.3 * Math.sin(2 * t - phiRad));
+                } else {
+                    anti = -0.65 * d * Math.cos(phiRad);
+                }
             } else if (ancMode === 'hybrid') {
-                anti = -(Math.sin(t - phiRad) + alpha * (0.55 * Math.sin(2 * t - phiRad) + 0.3 * Math.cos(3 * t - phiRad)));
+                const dShift = evalDisturbance(x - (phaseErrDeg * 0.06));
+                anti = -0.96 * dShift;
             } else if (ancMode === 'unstable' || phaseErrDeg >= 90) {
                 const blowup = 1.0 + 0.35 * Math.sin(phaseTick * 0.5);
-                anti = -blowup * (Math.sin(t - phiRad) + alpha * 0.55 * Math.sin(2 * t - phiRad));
+                anti = -blowup * evalDisturbance(x - 14);
             }
 
             const err = d + anti;
-            const y = midY - Math.max(-1.85, Math.min(1.85, err)) * 68;
+            const y = midY - Math.max(-1.85, Math.min(1.85, err)) * 60;
             if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
         }
         ctx.stroke();
@@ -1808,16 +2140,18 @@ end</code></pre>
         // Legend Overlay
         ctx.font = '11px Fira Code, monospace';
         ctx.fillStyle = '#94a3b8';
-        ctx.fillText('--- Primary Disturbance d(n)', 14, 22);
+        ctx.fillText(`--- Primary d(n): ${reg.name}`, 14, 22);
         ctx.fillStyle = (ancMode === 'unstable' || phaseErrDeg >= 90) ? '#f472b6' : '#38bdf8';
         ctx.fillText('___ Residual Error Mic e(n)', 14, 40);
 
-        phaseTick += 0.055;
+        phaseTick += 0.05;
         requestAnimationFrame(drawWaveforms);
     }
 
+    highlightPythonVSCode();
+    highlightMatlabEditor();
     updateAncSliders();
-    drawWaveforms();
+    requestAnimationFrame(drawWaveforms);
     </script>
 
 </body>
