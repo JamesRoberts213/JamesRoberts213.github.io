@@ -2376,7 +2376,7 @@ void loop() {
         assemblyGroup.rotation.x = -Math.PI / 2; // Orient SolidWorks Z-up into Three.js Y-up
         scene.add(assemblyGroup);
 
-        // 12 Key STL Components (Uppercase .STL matching models/) + Color + Explosion Offset [dx, dy, dz] in mm
+        // 12 Key STL Components (Uppercase .STL matching models/ on GitHub) + Color + Explosion Offset [dx, dy, dz] in mm
         const assemblyParts = [
             { file: 'RangefinderAssembly1 - ScreenAssem-1 ScreenCover-1.STL',      color: 0x38bdf8, offset: [0, 0, 55] },
             { file: 'RangefinderAssembly1 - TopOfCase-1.STL',                      color: 0xe2e8f0, offset: [0, 0, 38] },
@@ -2421,7 +2421,7 @@ void loop() {
             if (loadedMeshes.length === 0) {
                 loadingMsg.innerHTML = `
                     <i class="fa-solid fa-cube" style="font-size: 1.75rem; color: var(--accent);"></i>
-                    <span>Open with Live Server (HTTP) and ensure your 12 STL files are in:<br><code style="color: var(--accent);">models/</code></span>
+                    <span>Add your 12 STL files to:<br><code style="color: var(--accent);">models/</code></span>
                 `;
                 return;
             }
