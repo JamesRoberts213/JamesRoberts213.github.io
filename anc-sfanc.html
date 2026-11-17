@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page Under Construction | James Roberts</title>
-
+    <title>Hybrid FLANN-SFANC Active Noise Control | James Roberts</title>
+    
     <!-- Favicon / Tab Icon -->
     <link rel="icon" type="image/png" href="favicon.png">
 
@@ -14,16 +14,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- MathJax for Rendering LaTeX Math Equations -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
     <style>
+        /* Precision Dark Engineering Palette */
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
+            --bg-color: #0b1120;
+            --card-bg: #162032;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --accent: #38bdf8;
             --accent-hover: #0284c7;
-            --gold: #f59e0b;
-            --border: #334155;
+            --emerald: #10b981;
+            --violet: #c084fc;
+            --amber: #f59e0b;
+            --coral: #f472b6;
+            --border: #26354d;
+            --code-bg: #060a13;
         }
 
         * {
@@ -32,26 +49,25 @@
             padding: 0;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
             padding: 0 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            overflow-x: hidden;
         }
 
         .container {
-            max-width: 1000px;
-            width: 100%;
+            max-width: 950px;
             margin: 0 auto;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
 
+        /* Navigation */
         nav {
             display: flex;
             justify-content: space-between;
@@ -67,93 +83,684 @@
             text-decoration: none;
         }
 
-        .nav-links a {
+        .back-btn {
             color: var(--text-muted);
             text-decoration: none;
-            margin-left: 1.5rem;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             transition: color 0.2s;
         }
 
-        .nav-links a:hover {
+        .back-btn:hover {
             color: var(--accent);
         }
 
-        .construction-wrapper {
-            flex: 1;
+        /* Header Badges & Title */
+        .project-header {
+            padding: 3rem 0 2rem;
+        }
+
+        .badges {
             display: flex;
+            gap: 0.75rem;
             align-items: center;
-            justify-content: center;
-            padding: 4rem 0;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
         }
 
-        .construction-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 3rem 2.25rem;
-            max-width: 580px;
-            width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
-        }
-
-        .icon-ring {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto 1.5rem;
-            border-radius: 50%;
-            background: rgba(56, 189, 248, 0.12);
-            border: 1px solid rgba(56, 189, 248, 0.35);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.85rem;
-            color: var(--accent);
-        }
-
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            background-color: rgba(245, 158, 11, 0.12);
-            color: var(--gold);
+        .badge-research {
+            background-color: rgba(245, 158, 11, 0.14);
+            color: var(--amber);
             border: 1px solid rgba(245, 158, 11, 0.35);
-            padding: 0.25rem 0.85rem;
+            padding: 0.25rem 0.75rem;
             border-radius: 9999px;
-            font-family: 'Fira Code', monospace;
-            font-size: 0.78rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 1.25rem;
         }
 
-        .construction-card h1 {
-            font-size: 1.85rem;
+        .badge-ml {
+            background-color: rgba(56, 189, 248, 0.14);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .badge-type {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.85rem;
+        }
+
+        .project-header h1 {
+            font-size: 2.25rem;
             font-weight: 700;
-            margin-bottom: 0.85rem;
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        .project-header p {
+            color: var(--text-muted);
+            font-size: 1.08rem;
+        }
+
+        /* Key Metrics Banner */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.25rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(22, 32, 50, 0.7) 100%);
+            border: 1px solid rgba(56, 189, 248, 0.28);
+            border-radius: 12px;
+            padding: 1.35rem;
+        }
+
+        .metric-label {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1.55rem;
+            font-weight: 700;
             color: var(--text-main);
         }
 
-        .construction-card p {
+        .metric-sub {
+            font-size: 0.82rem;
             color: var(--text-muted);
-            font-size: 1rem;
+        }
+
+        /* Content Sections */
+        .section {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
             margin-bottom: 2rem;
         }
 
+        .section h2 {
+            font-size: 1.35rem;
+            margin-bottom: 1.25rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .section h2 i {
+            color: var(--accent);
+        }
+
+        /* Research Overview Split */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 1.75rem;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 740px) {
+            .overview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .cover-photo-frame {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .cover-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .design-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .design-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .design-list li::before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .design-list strong {
+            color: var(--text-main);
+        }
+
+        /* Interactive Acoustic Cancellation & Phase Margin Simulator */
+        .sim-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 1.75rem;
+            align-items: start;
+            margin-top: 1.25rem;
+        }
+
+        @media (max-width: 780px) {
+            .sim-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .canvas-box {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        #anc-waveform-canvas {
+            width: 100%;
+            height: 295px;
+            border-radius: 6px;
+            background-color: #080d19;
+            display: block;
+        }
+
+        .telemetry-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(22, 32, 50, 0.85);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.55rem 0.85rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .sim-controls-box {
+            background-color: rgba(6, 10, 19, 0.65);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.15rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.95rem;
+        }
+
+        .preset-row {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            background-color: var(--card-bg);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.35rem 0.65rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.73rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .preset-btn:hover, .preset-btn.active {
+            border-color: var(--accent);
+            color: var(--accent);
+            background-color: rgba(56, 189, 248, 0.1);
+        }
+
+        .preset-btn.warn-btn:hover, .preset-btn.warn-btn.active {
+            border-color: var(--coral);
+            color: var(--coral);
+            background-color: rgba(244, 114, 182, 0.1);
+        }
+
+        .slider-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+        }
+
+        .slider-label-row span:first-child {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .slider-label-row span:last-child {
+            font-family: 'Fira Code', monospace;
+            color: var(--accent);
+        }
+
+        .sim-controls-box input[type="range"] {
+            width: 100%;
+            accent-color: var(--accent);
+            cursor: pointer;
+        }
+
+        .metrics-mini-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+        }
+
+        .mini-pill {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.45rem 0.65rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.74rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Hybrid Signal Flow Block Diagram */
+        .block-diagram {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 720px) {
+            .block-diagram {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .diag-col {
+            background-color: rgba(6, 10, 19, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.15rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .diag-col-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--accent);
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.4rem;
+        }
+
+        .diag-node {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .diag-node strong {
+            display: block;
+            color: var(--text-main);
+            margin-bottom: 0.2rem;
+        }
+
+        .diag-bus {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            color: var(--emerald);
+            background: rgba(16, 185, 129, 0.12);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 0.35rem;
+        }
+
+        /* Governing Equations Box */
+        .eq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .eq-card {
+            background-color: rgba(6, 10, 19, 0.65);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .eq-card h3 {
+            font-size: 0.95rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .eq-math {
+            background-color: var(--code-bg);
+            border: 1px solid #1e293b;
+            border-radius: 6px;
+            padding: 0.75rem;
+            margin: 0.65rem 0;
+            overflow-x: auto;
+            font-size: 0.92rem;
+        }
+
+        .eq-card p {
+            font-size: 0.86rem;
+            color: var(--text-muted);
+        }
+
+        /* Interactive Engineering Tabs */
+        .eng-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .eng-tab-btn {
+            background: rgba(6, 10, 19, 0.65);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 0.6rem 1.1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .eng-tab-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent);
+        }
+
+        .eng-tab-btn.active {
+            color: var(--bg-color);
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .eng-panel {
+            display: none;
+            animation: fadeIn 0.25s ease;
+        }
+
+        .eng-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Code Window */
+        .code-window {
+            background-color: var(--code-bg);
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .code-header {
+            background-color: #162032;
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-main);
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .copy-code-btn {
+            background-color: rgba(56, 189, 248, 0.14);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            padding: 0.3rem 0.7rem;
+            border-radius: 5px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s;
+        }
+
+        .copy-code-btn:hover {
+            background-color: var(--accent);
+            color: var(--bg-color);
+        }
+
+        .code-window pre {
+            padding: 1.25rem;
+            max-height: 480px;
+            overflow: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            line-height: 1.55;
+            color: #e2e8f0;
+        }
+
+        .tok-kw      { color: #f472b6; font-weight: 600; }
+        .tok-type    { color: #38bdf8; font-weight: 600; }
+        .tok-func    { color: #fbbf24; font-weight: 500; }
+        .tok-string  { color: #34d399; }
+        .tok-number  { color: #fb923c; }
+        .tok-comment { color: #64748b; font-style: italic; }
+
+        /* Spec Table */
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .spec-table th, .spec-table td {
+            padding: 0.75rem 0.95rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .spec-table th {
+            color: var(--accent);
+            font-weight: 600;
+            background-color: rgba(6, 10, 19, 0.55);
+        }
+
+        .spec-table td {
+            color: var(--text-muted);
+        }
+
+        .spec-table td strong {
+            color: var(--text-main);
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 0.18rem 0.55rem;
+            border-radius: 999px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .status-done {
+            background-color: rgba(16, 185, 129, 0.14);
+            color: var(--emerald);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .status-active {
+            background-color: rgba(56, 189, 248, 0.14);
+            color: var(--accent);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+        }
+
+        .status-next {
+            background-color: rgba(245, 158, 11, 0.14);
+            color: var(--amber);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+        }
+
+        /* Strict 2x2 Software & Skills Grid */
+        .skills-matrix {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 680px) {
+            .skills-matrix {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .skill-domain-card {
+            background-color: rgba(6, 10, 19, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+        }
+
+        .skill-domain-card h3 {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.45rem;
+        }
+
+        .skill-pill {
+            background-color: rgba(56, 189, 248, 0.1);
+            color: var(--text-main);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            font-size: 0.8rem;
+            padding: 0.25rem 0.6rem;
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* Key Research Insights (6-Card Grid) */
+        .learned-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 1rem;
+        }
+
+        .learned-card {
+            background-color: rgba(6, 10, 19, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-width: 0;
+        }
+
+        .learned-card h3 {
+            font-size: 1rem;
+            color: var(--accent);
+            margin-bottom: 0.65rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            line-height: 1.4;
+        }
+
+        .learned-card h3 i {
+            margin-top: 0.2rem;
+            flex-shrink: 0;
+        }
+
+        .learned-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+        }
+
+        /* Action Buttons */
         .actions {
             display: flex;
-            gap: 0.85rem;
-            justify-content: center;
+            gap: 1rem;
             flex-wrap: wrap;
+            margin-top: 2rem;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 0.55rem;
-            padding: 0.75rem 1.4rem;
+            gap: 0.6rem;
+            padding: 0.75rem 1.5rem;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 0.92rem;
             text-decoration: none;
             transition: all 0.2s;
         }
@@ -168,17 +775,18 @@
         }
 
         .btn-secondary {
-            background-color: rgba(15, 23, 42, 0.6);
+            background-color: var(--card-bg);
             color: var(--text-main);
             border: 1px solid var(--border);
         }
 
         .btn-secondary:hover {
             border-color: var(--accent);
-            color: var(--accent);
         }
 
+        /* Footer */
         footer {
+            margin-top: 4rem;
             padding: 2rem 0;
             border-top: 1px solid var(--border);
             text-align: center;
@@ -190,42 +798,629 @@
 <body>
 
     <div class="container">
+        <!-- Navigation Bar -->
         <nav>
             <a href="index.html" class="logo">James Roberts</a>
-            <div class="nav-links">
-                <a href="index.html#projects">Featured</a>
-                <a href="projects.html">All Projects</a>
-                <a href="index.html#contact">Contact</a>
-            </div>
+            <a href="projects.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> All Projects</a>
         </nav>
 
-        <main class="construction-wrapper">
-            <div class="construction-card">
-                <div class="icon-ring">
-                    <i class="fa-solid fa-screwdriver-wrench"></i>
+        <!-- Project Header -->
+        <header class="project-header">
+            <div class="badges">
+                <span class="badge-research"><i class="fa-solid fa-brain"></i> Current Research • ML & Acoustic DSP</span>
+                <span class="badge-ml"><i class="fa-solid fa-wave-square"></i> PyTorch ONNX + Simulink</span>
+                <span class="badge-type">Nonlinear Control & Multi-Sensor Fusion</span>
+            </div>
+            <h1>Hybrid FLANN-SFANC Machine Learning Active Noise Control</h1>
+            <p>A hybrid Selective Fixed-Filter Active Noise Control (SFANC) framework combining a lightweight PyTorch ONNX neural filter selector with Functional Link Artificial Neural Network (FLANN) trigonometric expansion and Filtered-x Normalized LMS (FxNLMS) adaptive compensation for nonlinear cabin acoustic environments.</p>
+        </header>
+
+        <!-- Metrics Banner -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-label">Control Architecture</div>
+                <div class="metric-value">FLANN-SFANC</div>
+                <div class="metric-sub">Pre-trained bank + online FxNLMS</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">ML Inference Bridge</div>
+                <div class="metric-value">PyTorch &rarr; ONNX</div>
+                <div class="metric-sub">CUDA trained, deployed in Simulink</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Phase Stability Bound</div>
+                <div class="metric-value">$|\Delta\phi| < 90^\circ$</div>
+                <div class="metric-sub">Secondary path mismatch margin</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-label">Sensing Topology</div>
+                <div class="metric-value">Mic + Accel</div>
+                <div class="metric-sub">Multi-sensor causal reference fusion</div>
+            </div>
+        </div>
+
+        <!-- Research Overview & Motivation -->
+        <div class="section">
+            <h2><i class="fa-solid fa-microscope"></i> Research Scope & Motivation</h2>
+            <div class="overview-grid">
+                <div class="cover-photo-frame">
+                    <img src="images/anc-sfanc.jpg" alt="Hybrid FLANN-SFANC Active Noise Control Architecture">
                 </div>
-                <div class="status-badge">
-                    <i class="fa-solid fa-circle-notch fa-spin"></i> DOCUMENTATION IN PROGRESS
-                </div>
-                <h1>This Page Is Under Construction</h1>
-                <p>
-                    Full technical documentation, simulation results, CAD renders, and source code for this project are currently being compiled. Check back soon or explore other completed case studies.
-                </p>
-                <div class="actions">
-                    <a href="projects.html" class="btn btn-primary">
-                        <i class="fa-solid fa-arrow-left"></i> Back to All Projects
-                    </a>
-                    <a href="index.html" class="btn btn-secondary">
-                        <i class="fa-solid fa-house"></i> Home
-                    </a>
+
+                <div>
+                    <h3 style="font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.65rem;">Overcoming Classical FxLMS Bottlenecks</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 0.85rem;">
+                        Conventional linear Filtered-x LMS (FxLMS) controllers struggle with slow convergence during rapid non-stationary noise transients, loudspeaker saturation, and nonlinear primary acoustic paths. This research synthesizes three core mechanisms into a unified cabin ANC architecture:
+                    </p>
+                    <ul class="design-list">
+                        <li><strong>Zero-Latency SFANC Switching:</strong> A lightweight neural classifier inspects incoming noise frames and selects optimal pre-trained control filter weights instantaneously via ONNX runtime.</li>
+                        <li><strong>Nonlinear FLANN Expansion:</strong> Trigonometric functional expansion ($\sin(k\pi x), \cos(k\pi x)$) captures harmonic distortion and nonlinear primary/secondary path dynamics without deep multi-layer latency.</li>
+                        <li><strong>Multi-Sensor Reference Fusion:</strong> Combines reference microphones with structural accelerometers to preserve causality on structure-borne cabin noise.</li>
+                    </ul>
                 </div>
             </div>
-        </main>
+        </div>
 
+        <!-- Section 1: Interactive FLANN-SFANC & Secondary Path Phase Simulator -->
+        <div class="section">
+            <h2><i class="fa-solid fa-sliders"></i> Interactive FLANN-SFANC & Phase Stability Simulator</h2>
+            <p style="color: var(--text-muted);">Explore how linear FxLMS, nonlinear FLANN-SFANC, and secondary-path phase misalignment ($\Delta\phi$) affect residual noise attenuation when primary acoustic paths exhibit harmonic distortion.</p>
+
+            <div class="sim-grid">
+                <!-- Live Waveform & Attenuation Canvas -->
+                <div class="canvas-box">
+                    <canvas id="anc-waveform-canvas" width="520" height="295"></canvas>
+                    
+                    <div class="telemetry-bar">
+                        <span style="color: #94a3b8;">PRIMARY: <strong style="color: #f8fafc;">100%</strong></span>
+                        <span style="color: var(--emerald);" id="sim-att-readout">ATTENUATION: -24.8 dB</span>
+                        <span style="color: var(--accent);" id="sim-stab-readout">STABILITY: CONVERGENT</span>
+                    </div>
+                </div>
+
+                <!-- Simulation Controls -->
+                <div class="sim-controls-box">
+                    <div style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">CONTROLLER MODE PRESETS:</div>
+                    <div class="preset-row">
+                        <button class="preset-btn" id="btn-mode-off" onclick="setAncMode('off')">ANC Off</button>
+                        <button class="preset-btn" id="btn-mode-linear" onclick="setAncMode('linear')">Linear FxLMS</button>
+                        <button class="preset-btn active" id="btn-mode-hybrid" onclick="setAncMode('hybrid')">FLANN-SFANC</button>
+                        <button class="preset-btn warn-btn" id="btn-mode-unstable" onclick="setAncMode('unstable')">$\Delta\phi > 90^\circ$ Divergence</button>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <span>Primary Path Nonlinearity ($\alpha_{NL}$)</span>
+                            <span id="val-nonlin">35%</span>
+                        </div>
+                        <input type="range" id="slider-nonlin" min="0" max="80" step="5" value="35" oninput="updateAncSliders()">
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <span>Secondary Path Phase Error ($\Delta\phi$)</span>
+                            <span id="val-phase">15°</span>
+                        </div>
+                        <input type="range" id="slider-phase" min="0" max="115" step="5" value="15" oninput="updateAncSliders()">
+                    </div>
+
+                    <div class="metrics-mini-grid">
+                        <div class="mini-pill">
+                            <span style="color: var(--text-muted);">CONV. TIME:</span>
+                            <span style="color: var(--emerald);" id="out-conv">&lt; 15 ms (SFANC)</span>
+                        </div>
+                        <div class="mini-pill">
+                            <span style="color: var(--text-muted);">HARMONICS:</span>
+                            <span style="color: var(--accent);" id="out-harm">2nd & 3rd Cancelled</span>
+                        </div>
+                        <div class="mini-pill">
+                            <span style="color: var(--text-muted);">PHASE MARGIN:</span>
+                            <span style="color: var(--emerald);" id="out-margin">+75° Safe</span>
+                        </div>
+                        <div class="mini-pill">
+                            <span style="color: var(--text-muted);">RESIDUAL RMS:</span>
+                            <span style="color: var(--amber);" id="out-rms">0.058</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Hybrid System Architecture & Signal Flow -->
+        <div class="section">
+            <h2><i class="fa-solid fa-diagram-project"></i> Hybrid FLANN-SFANC Signal Processing Pipeline</h2>
+            <p style="color: var(--text-muted);">End-to-end integration bridging PyTorch CUDA training, ONNX model export, and closed-loop MATLAB/Simulink acoustic plant execution.</p>
+
+            <div class="block-diagram">
+                <div class="diag-col">
+                    <div class="diag-col-title"><i class="fa-solid fa-ear-listen"></i> Multi-Sensor Acquisition</div>
+                    <div class="diag-node">
+                        <strong>Reference Mic + Accelerometer</strong>
+                        Captures airborne acoustic waves and structural vibration ahead of the secondary loudspeaker.
+                        <span class="diag-bus">Causal Reference x(n)</span>
+                    </div>
+                    <div class="diag-node">
+                        <strong>FLANN Trigonometric Expansion</strong>
+                        Maps $x(n)$ into orthogonal harmonics $\Phi(x) = [x, \sin(\pi x), \cos(\pi x), \dots]^T$.
+                        <span class="diag-bus">Order P = 3 Expansion</span>
+                    </div>
+                </div>
+
+                <div class="diag-col">
+                    <div class="diag-col-title"><i class="fa-solid fa-brain"></i> PyTorch ONNX Selector</div>
+                    <div class="diag-node">
+                        <strong>1D CNN / Spectral Frame Classifier</strong>
+                        Trained in PyTorch (CUDA) on broadband, tonal, and impulsive cabin noise profiles.
+                        <span class="diag-bus">ONNX Runtime Inference</span>
+                    </div>
+                    <div class="diag-node">
+                        <strong>Pre-Trained Control Filter Bank</strong>
+                        Instantaneously loads warm-start nonlinear weight vector $\mathbf{w}_{k}$ to eliminate convergence lag.
+                        <span class="diag-bus">Zero-Latency Warm Start</span>
+                    </div>
+                </div>
+
+                <div class="diag-col">
+                    <div class="diag-col-title"><i class="fa-solid fa-wave-square"></i> Simulink Acoustic Plant</div>
+                    <div class="diag-node">
+                        <strong>Filtered-x NLMS Fine-Tuning</strong>
+                        Refines $\mathbf{w}(n)$ online using estimated secondary path $\hat{S}(z)$ and error mic $e(n)$.
+                        <span class="diag-bus">Step-Size Normalized $\mu(n)$</span>
+                    </div>
+                    <div class="diag-node">
+                        <strong>Secondary Path & Error Summation</strong>
+                        Anti-noise $y(n) * s(n)$ destructively interferes with primary disturbance $d(n)$ at error zone.
+                        <span class="diag-bus">e(n) = d(n) + y(n)*s(n)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: Mathematical Formulation -->
+        <div class="section">
+            <h2><i class="fa-solid fa-square-root-variable"></i> Mathematical & Control Formulation</h2>
+            <div class="eq-grid">
+                <div class="eq-card">
+                    <h3>1. FLANN Trigonometric Basis Expansion</h3>
+                    <div class="eq-math">
+                        $$\mathbf{\Phi}(x(n)) = \Big[x(n),\, \sin(\pi x(n)),\, \cos(\pi x(n)),\, \dots,\, \sin(P\pi x(n)),\, \cos(P\pi x(n))\Big]^T$$
+                    </div>
+                    <p>Projects the scalar reference signal into a higher-dimensional nonlinear feature space, enabling a single-layer adaptive filter $y(n) = \mathbf{w}^T(n)\mathbf{\Phi}(x(n))$ to cancel harmonic distortion.</p>
+                </div>
+
+                <div class="eq-card">
+                    <h3>2. Hybrid SFANC + FxNLMS Weight Update</h3>
+                    <div class="eq-math">
+                        $$\mathbf{w}(n+1) = \mathbf{w}(n) - \frac{\mu}{\|\mathbf{\Phi}'(n)\|_2^2 + \delta}\, e(n)\,\mathbf{\Phi}'(n), \quad \mathbf{w}(0) = \mathbf{w}_{\text{ONNX}}$$
+                    </div>
+                    <p>Initializes weights from the ONNX neural classifier ($\mathbf{w}_{\text{ONNX}}$) and adapts online using the filtered expanded vector $\mathbf{\Phi}'(n) = \hat{s}(n) * \mathbf{\Phi}(x(n))$.</p>
+                </div>
+
+                <div class="eq-card">
+                    <h3>3. Secondary Path Phase Misalignment Bound</h3>
+                    <div class="eq-math">
+                        $$\text{Re}\left\{ S(e^{j\omega})\,\hat{S}^*(e^{j\omega}) \right\} > 0 \iff |\phi_S(\omega) - \phi_{\hat{S}}(\omega)| < 90^\circ$$
+                    </div>
+                    <p>Strict Lyapunov / mean-square stability condition: if phase mismatch between the true secondary path $S(z)$ and internal model $\hat{S}(z)$ exceeds $\pm 90^\circ$, negative feedback flips to positive instability.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Engineering Deep-Dive (PyTorch ONNX + MATLAB/Simulink Code) -->
+        <div class="section">
+            <h2><i class="fa-solid fa-code"></i> Implementation: PyTorch ONNX Selector & FLANN-FxNLMS</h2>
+            <p style="color: var(--text-muted); margin-bottom: 1.25rem;">Inspect the PyTorch filter-selector architecture exported to ONNX and the MATLAB/Simulink FLANN-FxNLMS adaptive kernel.</p>
+
+            <div class="eng-tabs">
+                <button class="eng-tab-btn active" onclick="switchEngTab('tab-pytorch', this)">
+                    <i class="fa-brands fa-python"></i> PyTorch Selector & ONNX Export
+                </button>
+                <button class="eng-tab-btn" onclick="switchEngTab('tab-matlab', this)">
+                    <i class="fa-solid fa-wave-square"></i> MATLAB FLANN-FxNLMS Kernel
+                </button>
+            </div>
+
+            <!-- Tab 1: PyTorch ONNX Selector -->
+            <div id="tab-pytorch" class="eng-panel active">
+                <div class="code-window">
+                    <div class="code-header">
+                        <span><i class="fa-solid fa-file-code"></i> sfanc_selector_onnx.py — PyTorch CUDA Classifier & ONNX Export</span>
+                        <button class="copy-code-btn" onclick="copyCodeBlock('code-py', this)">
+                            <i class="fa-regular fa-copy"></i> Copy Code
+                        </button>
+                    </div>
+                    <pre><code id="code-py">import torch
+import torch.nn as nn
+
+class SFANCFilterSelector(nn.Module):
+    """Lightweight 1D-CNN selector mapping acoustic reference frames to pre-trained FLANN filter indices."""
+    def __init__(self, frame_len: int = 256, num_filters: int = 12):
+        super().__init__()
+        self.features = nn.Sequential(
+            nn.Conv1d(1, 16, kernel_size=7, stride=2, padding=3),
+            nn.BatchNorm1d(16),
+            nn.ReLU(),
+            nn.Conv1d(16, 32, kernel_size=5, stride=2, padding=2),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.AdaptiveAvgPool1d(8)
+        )
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(32 * 8, 64),
+            nn.ReLU(),
+            nn.Linear(64, num_filters)
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # x shape: (batch, 1, frame_len)
+        return self.classifier(self.features(x))
+
+def export_selector_to_onnx(weights_path: str, onnx_out: str = "sfanc_selector.onnx"):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = SFANCFilterSelector(frame_len=256, num_filters=12).to(device)
+    model.load_state_dict(torch.load(weights_path, map_location=device))
+    model.eval()
+
+    dummy_frame = torch.randn(1, 1, 256, device=device)
+    torch.onnx.export(
+        model,
+        dummy_frame,
+        onnx_out,
+        input_names=["ref_frame"],
+        output_names=["filter_logits"],
+        dynamic_axes={"ref_frame": {0: "batch"}, "filter_logits": {0: "batch"}},
+        opset_version=14
+    )
+    print(f"Exported SFANC ONNX selector to {onnx_out}")</code></pre>
+                </div>
+            </div>
+
+            <!-- Tab 2: MATLAB FLANN-FxNLMS -->
+            <div id="tab-matlab" class="eng-panel">
+                <div class="code-window">
+                    <div class="code-header">
+                        <span><i class="fa-solid fa-file-code"></i> flann_sfanc_step.m — Simulink Nonlinear Adaptive Filter Step</span>
+                        <button class="copy-code-btn" onclick="copyCodeBlock('code-mat', this)">
+                            <i class="fa-regular fa-copy"></i> Copy Code
+                        </button>
+                    </div>
+                    <pre><code id="code-mat">function [y_anti, w_next] = flann_sfanc_step(x_buf, e_n, w_curr, s_hat, P_order, mu, delta)
+% FLANN-SFANC Nonlinear Filtered-x NLMS Control Step
+% x_buf   : Tap-delay reference vector [N x 1]
+% w_curr  : Warm-started weights from ONNX selector bank
+% s_hat   : Estimated secondary path impulse response [M x 1]
+
+    % 1. Functional Link Trigonometric Expansion (Order P)
+    phi = x_buf;
+    for p = 1:P_order
+        phi = [phi; sin(p * pi * x_buf); cos(p * pi * x_buf)];
+    end
+
+    % 2. Compute Anti-Noise Control Output
+    y_anti = w_curr' * phi;
+
+    % 3. Filter Expanded Basis Through Secondary Path Estimate S_hat(z)
+    phi_filt = filter(s_hat, 1, phi);
+
+    % 4. Normalized FxNLMS Weight Adaptation
+    norm_factor = (phi_filt' * phi_filt) + delta;
+    w_next = w_curr - (mu / norm_factor) * e_n * phi_filt;
+end</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 5: Research Progress & Validation Roadmap -->
+        <div class="section">
+            <h2><i class="fa-solid fa-list-check"></i> Research Progress & Validation Milestones</h2>
+            <p style="color: var(--text-muted);">Current development status across literature synthesis, neural selector training, Simulink plant modeling, and phase-stability benchmarking.</p>
+            <table class="spec-table">
+                <thead>
+                    <tr>
+                        <th>Work Package</th>
+                        <th>Technical Deliverable</th>
+                        <th>Key Findings / Configuration</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>WP1: Literature Review</strong></td>
+                        <td>ML in ANC Taxonomy & Stability Analysis</td>
+                        <td>Synthesized secondary-path $\pm 90^\circ$ phase bounds, non-linear primary path compensation, and mic-accelerometer sensor fusion.</td>
+                        <td><span class="status-pill status-done">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>WP2: PyTorch Selector</strong></td>
+                        <td>1D-CNN Filter Classifier & ONNX Export</td>
+                        <td>Trained on CUDA workstation (GTX 1070) and exported to ONNX for Simulink `predict` block integration.</td>
+                        <td><span class="status-pill status-done">Completed</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>WP3: Simulink Plant</strong></td>
+                        <td>Hybrid FLANN-SFANC Cabin Model</td>
+                        <td>Coupled ONNX warm-start bank with trigonometric FLANN expansion ($P=3$) and online FxNLMS fine-tuning.</td>
+                        <td><span class="status-pill status-active">In Progress</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>WP4: Robustness Benchmarking</strong></td>
+                        <td>Transient & Phase-Perturbation Sweep</td>
+                        <td>Evaluating broadband & multi-tonal attenuation (dB) under $\pm 45^\circ$ secondary path drift vs. linear FxLMS.</td>
+                        <td><span class="status-pill status-next">Next Phase</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Section 6: Software Suite & Core Engineering Skills (2x2 Grid) -->
+        <div class="section">
+            <h2><i class="fa-solid fa-toolbox"></i> Software Suite & Core Engineering Skills</h2>
+            <div class="skills-matrix">
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-brain"></i> Machine Learning & Inference</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">PyTorch (CUDA)</span>
+                        <span class="skill-pill">ONNX Runtime</span>
+                        <span class="skill-pill">1D-CNN Spectral Classification</span>
+                        <span class="skill-pill">FLANN Functional Expansion</span>
+                    </div>
+                </div>
+
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-wave-square"></i> Acoustic DSP & Adaptive Control</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">SFANC Filter Banks</span>
+                        <span class="skill-pill">FxLMS / FxNLMS</span>
+                        <span class="skill-pill">Secondary Path Modeling</span>
+                        <span class="skill-pill">Lyapunov Phase Bounds</span>
+                    </div>
+                </div>
+
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-diagram-project"></i> Simulation & Modeling</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">MATLAB</span>
+                        <span class="skill-pill">Simulink</span>
+                        <span class="skill-pill">Acoustic Transfer Functions</span>
+                        <span class="skill-pill">Nonlinear Plant Distortion</span>
+                    </div>
+                </div>
+
+                <div class="skill-domain-card">
+                    <h3><i class="fa-solid fa-microchip"></i> Multi-Sensor Hardware Architecture</h3>
+                    <div class="skill-pill-group">
+                        <span class="skill-pill">Mic + Accelerometer Fusion</span>
+                        <span class="skill-pill">Causality & Delay Analysis</span>
+                        <span class="skill-pill">Real-Time Frame Buffering</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 7: Key Technical Takeaways -->
+        <div class="section">
+            <h2><i class="fa-solid fa-lightbulb"></i> Key Research Insights</h2>
+            <div class="learned-grid">
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-bolt"></i> <span>Eliminating Cold-Start Convergence Lag</span></h3>
+                    <p>Using a neural network solely to select pre-trained filter weights (SFANC) rather than generating raw audio samples per tick keeps inference lightweight while achieving millisecond transient response.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-wave-square"></i> <span>Harmonic Cancellation via FLANN</span></h3>
+                    <p>Linear FIR filters cannot cancel 2nd and 3rd harmonics generated by loudspeaker saturation or nonlinear structural paths; trigonometric FLANN expansion resolves this with a single adaptive weight vector.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-compass"></i> <span>Strict $\pm 90^\circ$ Secondary Path Margin</span></h3>
+                    <p>Thermal or geometric shifts in a cabin alter the secondary acoustic path $S(z)$; maintaining phase error below $90^\circ$ is essential to prevent positive feedback divergence.</p>
+                </div>
+
+                <div class="learned-card">
+                    <h3><i class="fa-solid fa-ear-listen"></i> <span>Accelerometer + Microphone Fusion</span></h3>
+                    <p>Fusing structural accelerometer signals with reference microphones provides earlier mechanical lead time for structure-borne road/engine noise, preserving controller causality.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Links -->
+        <div class="actions">
+            <a href="https://github.com/JamesRoberts213" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                <i class="fa-brands fa-github"></i> View GitHub Repository
+            </a>
+            <a href="projects.html" class="btn btn-secondary">
+                <i class="fa-solid fa-arrow-left"></i> Back to All Projects
+            </a>
+        </div>
+
+        <!-- Footer -->
         <footer>
             <p>&copy; 2026 James Roberts. Built with HTML & CSS on GitHub Pages.</p>
         </footer>
     </div>
+
+    <script>
+    // Tab Switcher
+    function switchEngTab(panelId, clickedBtn) {
+        document.querySelectorAll('.eng-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.eng-tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(panelId).classList.add('active');
+        clickedBtn.classList.add('active');
+    }
+
+    // Copy Code Helper
+    function copyCodeBlock(elementId, btn) {
+        const text = document.getElementById(elementId).textContent;
+        navigator.clipboard.writeText(text).then(() => {
+            const orig = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+            setTimeout(() => { btn.innerHTML = orig; }, 2000);
+        });
+    }
+
+    // ---------- INTERACTIVE FLANN-SFANC & PHASE STABILITY SIMULATOR ----------
+    const canvas = document.getElementById('anc-waveform-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let ancMode = 'hybrid'; // 'off' | 'linear' | 'hybrid' | 'unstable'
+    let nonlinPct = 35;
+    let phaseErrDeg = 15;
+    let phaseTick = 0;
+
+    function setAncMode(mode) {
+        ancMode = mode;
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(`btn-mode-${mode}`).classList.add('active');
+
+        if (mode === 'unstable') {
+            phaseErrDeg = 105;
+            document.getElementById('slider-phase').value = 105;
+        } else if (phaseErrDeg > 90) {
+            phaseErrDeg = 15;
+            document.getElementById('slider-phase').value = 15;
+        }
+        updateAncSliders();
+    }
+
+    function updateAncSliders() {
+        nonlinPct = parseInt(document.getElementById('slider-nonlin').value);
+        phaseErrDeg = parseInt(document.getElementById('slider-phase').value);
+
+        document.getElementById('val-nonlin').textContent = `${nonlinPct}%`;
+        document.getElementById('val-phase').textContent = `${phaseErrDeg}°`;
+
+        if (phaseErrDeg >= 90 && ancMode !== 'off') {
+            ancMode = 'unstable';
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-mode-unstable').classList.add('active');
+        }
+
+        // Compute attenuation & stability indicators
+        const alpha = nonlinPct / 100.0;
+        const phiRad = (phaseErrDeg * Math.PI) / 180.0;
+        const margin = 90 - phaseErrDeg;
+
+        const marginEl = document.getElementById('out-margin');
+        if (margin > 20) {
+            marginEl.textContent = `+${margin}° Safe`;
+            marginEl.style.color = '#10b981';
+        } else if (margin > 0) {
+            marginEl.textContent = `+${margin}° Marginal`;
+            marginEl.style.color = '#f59e0b';
+        } else {
+            marginEl.textContent = `${margin}° UNSTABLE`;
+            marginEl.style.color = '#f472b6';
+        }
+
+        let residualRatio = 1.0;
+        if (ancMode === 'off') {
+            residualRatio = 1.0;
+            document.getElementById('out-conv').textContent = 'Disabled';
+            document.getElementById('out-harm').textContent = 'Uncancelled';
+            document.getElementById('sim-stab-readout').textContent = 'STABILITY: BYPASSED';
+            document.getElementById('sim-stab-readout').style.color = '#94a3b8';
+        } else if (ancMode === 'unstable' || phaseErrDeg >= 90) {
+            residualRatio = 1.65;
+            document.getElementById('out-conv').textContent = 'Diverging';
+            document.getElementById('out-harm').textContent = 'Amplified';
+            document.getElementById('sim-stab-readout').textContent = 'STABILITY: DIVERGENT (>90°)';
+            document.getElementById('sim-stab-readout').style.color = '#f472b6';
+        } else if (ancMode === 'linear') {
+            // Linear FxLMS cancels fundamental well (modulated by cos(phaseErr)), leaves harmonics untouched
+            const fundRem = Math.sqrt(Math.max(0.01, 2 - 2 * Math.cos(phiRad)));
+            residualRatio = Math.min(1.1, 0.08 * fundRem + alpha * 0.65);
+            document.getElementById('out-conv').textContent = '~180 ms (FxLMS)';
+            document.getElementById('out-harm').textContent = '2nd/3rd Remain';
+            document.getElementById('sim-stab-readout').textContent = 'STABILITY: LINEAR ONLY';
+            document.getElementById('sim-stab-readout').style.color = '#38bdf8';
+        } else {
+            // Hybrid FLANN-SFANC cancels both fundamental and nonlinear harmonics
+            const phaseFactor = Math.sin(phiRad * 0.5);
+            residualRatio = Math.max(0.03, 0.04 + 0.35 * phaseFactor + 0.05 * alpha);
+            document.getElementById('out-conv').textContent = '< 15 ms (SFANC)';
+            document.getElementById('out-harm').textContent = '2nd & 3rd Cancelled';
+            document.getElementById('sim-stab-readout').textContent = 'STABILITY: CONVERGENT';
+            document.getElementById('sim-stab-readout').style.color = '#10b981';
+        }
+
+        const attDb = -20 * Math.log10(residualRatio);
+        const attEl = document.getElementById('sim-att-readout');
+        attEl.textContent = `ATTENUATION: ${attDb >= 0 ? '-' : '+'}${Math.abs(attDb).toFixed(1)} dB`;
+        attEl.style.color = attDb > 10 ? '#10b981' : (attDb > 0 ? '#f59e0b' : '#f472b6');
+        document.getElementById('out-rms').textContent = (0.707 * residualRatio).toFixed(3);
+    }
+
+    function drawWaveforms() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Background Grid
+        ctx.strokeStyle = '#131c31';
+        ctx.lineWidth = 1;
+        for (let gx = 0; gx < canvas.width; gx += 26) {
+            ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, canvas.height); ctx.stroke();
+        }
+        for (let gy = 0; gy < canvas.height; gy += 26) {
+            ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(canvas.width, gy); ctx.stroke();
+        }
+
+        const midY = canvas.height / 2;
+        ctx.strokeStyle = '#26354d';
+        ctx.beginPath(); ctx.moveTo(0, midY); ctx.lineTo(canvas.width, midY); ctx.stroke();
+
+        const alpha = nonlinPct / 100.0;
+        const phiRad = (phaseErrDeg * Math.PI) / 180.0;
+
+        // 1. Primary Disturbance d(n) (Fundamental + 2nd/3rd Harmonics)
+        ctx.beginPath();
+        ctx.strokeStyle = 'rgba(148, 163, 184, 0.55)';
+        ctx.lineWidth = 2;
+        for (let x = 0; x < canvas.width; x++) {
+            const t = (x * 0.032) + phaseTick;
+            const d = Math.sin(t) + alpha * (0.55 * Math.sin(2 * t) + 0.3 * Math.cos(3 * t));
+            const y = midY - d * 68;
+            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // 2. Residual Error e(n) = d(n) + y(n)*s(n)
+        ctx.beginPath();
+        ctx.strokeStyle = (ancMode === 'unstable' || phaseErrDeg >= 90) ? '#f472b6' : '#38bdf8';
+        ctx.lineWidth = 2.5;
+        for (let x = 0; x < canvas.width; x++) {
+            const t = (x * 0.032) + phaseTick;
+            const d = Math.sin(t) + alpha * (0.55 * Math.sin(2 * t) + 0.3 * Math.cos(3 * t));
+            let anti = 0;
+
+            if (ancMode === 'linear') {
+                anti = -Math.sin(t - phiRad);
+            } else if (ancMode === 'hybrid') {
+                anti = -(Math.sin(t - phiRad) + alpha * (0.55 * Math.sin(2 * t - phiRad) + 0.3 * Math.cos(3 * t - phiRad)));
+            } else if (ancMode === 'unstable' || phaseErrDeg >= 90) {
+                const blowup = 1.0 + 0.35 * Math.sin(phaseTick * 0.5);
+                anti = -blowup * (Math.sin(t - phiRad) + alpha * 0.55 * Math.sin(2 * t - phiRad));
+            }
+
+            const err = d + anti;
+            const y = midY - Math.max(-1.85, Math.min(1.85, err)) * 68;
+            if (x === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Legend Overlay
+        ctx.font = '11px Fira Code, monospace';
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillText('--- Primary Disturbance d(n)', 14, 22);
+        ctx.fillStyle = (ancMode === 'unstable' || phaseErrDeg >= 90) ? '#f472b6' : '#38bdf8';
+        ctx.fillText('___ Residual Error Mic e(n)', 14, 40);
+
+        phaseTick += 0.055;
+        requestAnimationFrame(drawWaveforms);
+    }
+
+    updateAncSliders();
+    drawWaveforms();
+    </script>
 
 </body>
 </html>
