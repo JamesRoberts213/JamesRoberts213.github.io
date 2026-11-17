@@ -2376,20 +2376,20 @@ void loop() {
         assemblyGroup.rotation.x = -Math.PI / 2; // Orient SolidWorks Z-up into Three.js Y-up
         scene.add(assemblyGroup);
 
-        // 12 Key STL Components + Color + Explosion Offset [dx, dy, dz] in mm
+        // 12 Key STL Components (Uppercase .STL matching models/) + Color + Explosion Offset [dx, dy, dz] in mm
         const assemblyParts = [
-            { file: 'RangefinderAssembly1 - ScreenAssem-1 ScreenCover-1.stl',      color: 0x38bdf8, offset: [0, 0, 55] },
-            { file: 'RangefinderAssembly1 - TopOfCase-1.stl',                      color: 0xe2e8f0, offset: [0, 0, 38] },
-            { file: 'RangefinderAssembly1 - buttons-1.stl',                        color: 0xf59e0b, offset: [0, 0, 28] },
-            { file: 'RangefinderAssembly1 - ScreenAssem-1 screen-1.stl',           color: 0x1e293b, offset: [0, 0, 18] },
-            { file: 'RangefinderAssembly1 - ScreenAssem-1 screenSupportBar#-1.stl', color: 0x94a3b8, offset: [-18, 0, 12] },
-            { file: 'RangefinderAssembly1 - ScreenAssem-1 screenSupportBar#-2.stl', color: 0x94a3b8, offset: [18, 0, 12] },
-            { file: 'RangefinderAssembly1 - GPSAntenna-1.stl',                     color: 0xd97706, offset: [0, 22, 10] },
-            { file: 'RangefinderAssembly1 - GPSBoard-1.stl',                       color: 0x10b981, offset: [0, 15, 4] },
-            { file: 'RangefinderAssembly1 - Compass-1.stl',                        color: 0x06b6d4, offset: [0, -15, 4] },
-            { file: 'RangefinderAssembly1 - 3D_PCB_PCB_RangefinderNew_2026-10-01_202__0-01_2026-10-01.step-1 Board~9VI5.step-1.stl', color: 0x059669, offset: [0, 0, -4] },
-            { file: 'RangefinderAssembly1 - Battery-1.stl',                        color: 0x64748b, offset: [0, 0, -20] },
-            { file: 'RangefinderAssembly1 - BottomOfCase-1.stl',                   color: 0xcbd5e1, offset: [0, 0, -40] }
+            { file: 'RangefinderAssembly1 - ScreenAssem-1 ScreenCover-1.STL',      color: 0x38bdf8, offset: [0, 0, 55] },
+            { file: 'RangefinderAssembly1 - TopOfCase-1.STL',                      color: 0xe2e8f0, offset: [0, 0, 38] },
+            { file: 'RangefinderAssembly1 - buttons-1.STL',                        color: 0xf59e0b, offset: [0, 0, 28] },
+            { file: 'RangefinderAssembly1 - ScreenAssem-1 screen-1.STL',           color: 0x1e293b, offset: [0, 0, 18] },
+            { file: 'RangefinderAssembly1 - ScreenAssem-1 screenSupportBar#-1.STL', color: 0x94a3b8, offset: [-18, 0, 12] },
+            { file: 'RangefinderAssembly1 - ScreenAssem-1 screenSupportBar#-2.STL', color: 0x94a3b8, offset: [18, 0, 12] },
+            { file: 'RangefinderAssembly1 - GPSAntenna-1.STL',                     color: 0xd97706, offset: [0, 22, 10] },
+            { file: 'RangefinderAssembly1 - GPSBoard-1.STL',                       color: 0x10b981, offset: [0, 15, 4] },
+            { file: 'RangefinderAssembly1 - Compass-1.STL',                        color: 0x06b6d4, offset: [0, -15, 4] },
+            { file: 'RangefinderAssembly1 - 3D_PCB_PCB_RangefinderNew_2026-10-01_202__0-01_2026-10-01.step-1 Board~9VI5.step-1.STL', color: 0x059669, offset: [0, 0, -4] },
+            { file: 'RangefinderAssembly1 - Battery-1.STL',                        color: 0x64748b, offset: [0, 0, -20] },
+            { file: 'RangefinderAssembly1 - BottomOfCase-1.STL',                   color: 0xcbd5e1, offset: [0, 0, -40] }
         ];
 
         const loader = new STLLoader();
@@ -2421,7 +2421,7 @@ void loop() {
             if (loadedMeshes.length === 0) {
                 loadingMsg.innerHTML = `
                     <i class="fa-solid fa-cube" style="font-size: 1.75rem; color: var(--accent);"></i>
-                    <span>Add your 12 STL component files to:<br><code style="color: var(--accent);">models/</code></span>
+                    <span>Open with Live Server (HTTP) and ensure your 12 STL files are in:<br><code style="color: var(--accent);">models/</code></span>
                 `;
                 return;
             }
