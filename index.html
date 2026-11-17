@@ -216,9 +216,12 @@
             color: var(--text-muted);
             font-size: 0.76rem;
             text-align: center;
-            padding: 0.75rem;
             overflow: hidden;
             position: relative;
+        }
+
+        .card-thumb.placeholder {
+            padding: 0.75rem;
         }
 
         .tier-silver .card-thumb {
@@ -230,6 +233,8 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            pointer-events: none;
+            -webkit-user-drag: none;
         }
 
         .card-thumb i {
@@ -408,8 +413,7 @@
                     <!-- 1. ANC (GOLD - Current Research) -->
                     <a href="projects.html" class="card-item tier-gold">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-wave-square"></i>
-                            <span>images/anc-sfanc.jpg</span>
+                            <img src="images/anc-sfanc.jpg" alt="Machine Learning in Active Noise Control" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -429,8 +433,7 @@
                     <!-- 2. Airbus (GOLD - Current Industry Consultancy) -->
                     <a href="projects.html" class="card-item tier-gold">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-plane-departure"></i>
-                            <span>images/airbus-saf.jpg</span>
+                            <img src="images/airbus-saf.jpg" alt="Airbus SAF Sustainability Taxonomy" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -450,8 +453,7 @@
                     <!-- 3. VIV Dissertation (GOLD) -->
                     <a href="viv-dissertation.html" class="card-item tier-gold">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-wind"></i>
-                            <span>images/viv-dissertation.jpg</span>
+                            <img src="images/viv-dissertation.jpg" alt="VIV Energy Harvesting & Aerofoil Deflection" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -471,8 +473,7 @@
                     <!-- 4. Golf Rangefinder (GOLD) -->
                     <a href="golf-rangefinder.html" class="card-item tier-gold">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-microchip"></i>
-                            <span>images/rangefinder-physical.jpg</span>
+                            <img src="images/rangefinder-physical.jpg" alt="Handheld GPS Golf Rangefinder" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -492,8 +493,7 @@
                     <!-- 5. Private Pilot Licence (SILVER - Current Training) -->
                     <a href="projects.html" class="card-item tier-silver">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-plane"></i>
-                            <span>images/ppl-flight.jpg</span>
+                            <img src="images/ppl-flight.jpeg" alt="Private Pilot Licence Flight Training" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -510,9 +510,9 @@
                         </div>
                     </a>
 
-                    <!-- 6. ENGR7004 STM32 Thermal Control (SILVER - Current Project) -->
+                    <!-- 6. ENGR7004 STM32 Thermal Control (SILVER - Placeholder Kept) -->
                     <a href="projects.html" class="card-item tier-silver">
-                        <div class="card-thumb">
+                        <div class="card-thumb placeholder">
                             <i class="fa-solid fa-temperature-half"></i>
                             <span>images/stm32-thermal.jpg</span>
                         </div>
@@ -531,9 +531,9 @@
                         </div>
                     </a>
 
-                    <!-- 7. ENGR7013 Machine Learning (SILVER - Current Project) -->
+                    <!-- 7. ENGR7013 Machine Learning (SILVER - Placeholder Kept) -->
                     <a href="projects.html" class="card-item tier-silver">
-                        <div class="card-thumb">
+                        <div class="card-thumb placeholder">
                             <i class="fa-solid fa-network-wired"></i>
                             <span>images/engr7013-ml.jpg</span>
                         </div>
@@ -555,8 +555,7 @@
                     <!-- 8. Autonomous Line-Following Robot (SILVER) -->
                     <a href="line-following-robot.html" class="card-item tier-silver">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-robot"></i>
-                            <span>images/rat-mobile-final.jpg</span>
+                            <img src="images/rat-mobile-final.jpeg" alt="Autonomous Line-Following & Catapult Robot" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -576,8 +575,7 @@
                     <!-- 9. Vibration Saw (SILVER) -->
                     <a href="vibration-saw.html" class="card-item tier-silver">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-square-root-variable"></i>
-                            <span>images/vibration-saw.jpg</span>
+                            <img src="images/vibration-saw.jpg" alt="Vibration Saw Dynamic Modeling" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -597,8 +595,7 @@
                     <!-- 10. Aerofoil CFD (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-feather-pointed"></i>
-                            <span>images/naca0012-cfd.jpg</span>
+                            <img src="images/naca0012-cfd.jpg" alt="Turbulent NACA0012 Aerofoil CFD" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -618,8 +615,7 @@
                     <!-- 11. Turbojet Thermodynamics (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-fire-flame-curved"></i>
-                            <span>images/sr30-turbojet.jpg</span>
+                            <img src="images/sr30-turbojet.jpg" alt="SR-30 Turbojet Thermodynamic Analysis" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -639,8 +635,7 @@
                     <!-- 12. Flow-Forming Defect Diagnostics (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-industry"></i>
-                            <span>images/cryotank-flowform.jpg</span>
+                            <img src="images/cryotank-flowform.jpg" alt="Flow-Forming Defect Diagnostics" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -660,8 +655,7 @@
                     <!-- 13. Cruise Control (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-gauge-high"></i>
-                            <span>images/cruise-control.jpg</span>
+                            <img src="images/cruise-control.jpg" alt="Closed-Loop Automotive Cruise Control" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -681,8 +675,7 @@
                     <!-- 14. Website Production (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-code"></i>
-                            <span>images/portfolio-site.jpg</span>
+                            <img src="images/portfolio-site.jpg" alt="Engineering Portfolio Website Production" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
@@ -702,8 +695,7 @@
                     <!-- 15. Lancaster A-Level Scholarship (REGULAR) -->
                     <a href="projects.html" class="card-item">
                         <div class="card-thumb">
-                            <i class="fa-solid fa-graduation-cap"></i>
-                            <span>images/lancaster-scholarship.jpg</span>
+                            <img src="images/lancaster-scholarship.jpg" alt="Lancaster University A-Level Scholarship" draggable="false">
                         </div>
                         <div class="card-body">
                             <div>
