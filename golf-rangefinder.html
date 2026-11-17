@@ -223,34 +223,23 @@
             width: 100%;
             aspect-ratio: 16 / 11;
             background-color: #020617;
-            border: 1px dashed #475569;
+            border: 1px solid var(--border);
             border-radius: 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 1.5rem;
             color: var(--text-muted);
             overflow: hidden;
             position: relative;
         }
 
-        .hardware-photo-frame i {
-            font-size: 2.4rem;
-            color: var(--accent);
-            margin-bottom: 0.65rem;
-            opacity: 0.8;
-        }
-
-        .hardware-photo-frame code {
-            color: var(--accent);
-            background: rgba(56, 189, 248, 0.1);
-            padding: 0.15rem 0.45rem;
-            border-radius: 4px;
-            font-size: 0.82rem;
-            margin-top: 0.35rem;
-            display: inline-block;
+        .hardware-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
         /* Interactive Handheld UI Simulator (Exact 240x320 Masters Theme) */
@@ -814,7 +803,7 @@
             color: var(--text-main);
         }
 
-        /* Media Card & Placeholder */
+        /* Media Card & Image/Placeholder */
         .media-card {
             background-color: rgba(15, 23, 42, 0.7);
             border: 1px solid var(--border);
@@ -824,16 +813,33 @@
             flex-direction: column;
         }
 
-        .media-placeholder {
+        .media-frame {
             width: 100%;
             aspect-ratio: 16 / 10;
             background-color: #020617;
+            border-bottom: 1px solid var(--border);
+            overflow: hidden;
+            position: relative;
             display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .media-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .media-placeholder {
+            width: 100%;
+            height: 100%;
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             color: var(--text-muted);
-            border-bottom: 1px solid var(--border);
             padding: 1rem;
             text-align: center;
             font-size: 0.85rem;
@@ -844,6 +850,16 @@
             color: var(--accent);
             margin-bottom: 0.5rem;
             opacity: 0.7;
+        }
+
+        .media-placeholder code {
+            color: var(--accent);
+            background: rgba(56, 189, 248, 0.1);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-top: 0.35rem;
+            display: inline-block;
         }
 
         .media-info {
@@ -1085,12 +1101,9 @@
         <div class="section">
             <h2><i class="fa-solid fa-camera"></i> Physical Prototype & Enclosure Build</h2>
             <div class="hero-hardware-grid">
-                <!-- Photo Placeholder (Swap with <img> when ready) -->
+                <!-- Physical Rangefinder Photo (Matches Cover Card) -->
                 <div class="hardware-photo-frame">
-                    <i class="fa-solid fa-microchip"></i>
-                    <strong>Physical Hardware Prototype Photo</strong>
-                    <span style="font-size: 0.85rem; margin-top: 0.25rem;">Replace this placeholder with your assembled rangefinder image:</span>
-                    <code>images/rangefinder-physical.jpg</code>
+                    <img src="images/rangefinder-physical.jpeg" alt="Assembled Handheld GPS Golf Rangefinder Prototype">
                 </div>
 
                 <div>
@@ -1810,9 +1823,12 @@ void loop() {
                         </ul>
                     </div>
                     <div class="media-card">
-                        <div class="media-placeholder">
-                            <i class="fa-solid fa-diagram-project"></i>
-                            <span>Add PCB / Schematic render:<br><code>images/rangefinder-pcb-layout.png</code></span>
+                        <div class="media-frame">
+                            <img src="images/rangefinder-pcb-layout.png" alt="2-Layer PCB Layout & Ground Pour" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="media-placeholder">
+                                <i class="fa-solid fa-diagram-project"></i>
+                                <span>Add PCB / Schematic render:<br><code>images/rangefinder-pcb-layout.png</code></span>
+                            </div>
                         </div>
                         <div class="media-info">
                             <h3>2-Layer PCB Layout & Ground Pour</h3>
@@ -1835,9 +1851,12 @@ void loop() {
                         </ul>
                     </div>
                     <div class="media-card">
-                        <div class="media-placeholder">
-                            <i class="fa-solid fa-cube"></i>
-                            <span>Add SolidWorks CAD render:<br><code>images/rangefinder-cad-exploded.png</code></span>
+                        <div class="media-frame">
+                            <img src="images/rangefinder-cad-exploded.png" alt="SolidWorks Clamshell Assembly" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                            <div class="media-placeholder">
+                                <i class="fa-solid fa-cube"></i>
+                                <span>Add SolidWorks CAD render:<br><code>images/rangefinder-cad-exploded.png</code></span>
+                            </div>
                         </div>
                         <div class="media-info">
                             <h3>SolidWorks Clamshell Assembly</h3>
